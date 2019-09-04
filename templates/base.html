@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} 진학숲 {% endblock %}</title>
+
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% block extrastyle %}{% endblock %}" />
+
+</head>
+<body>
+    <div id="header">
+        <h2 class="maintitle">진학숲</h2>
+        <h4 class="welcome">
+            <a href="#"> ksteach81 </a>
+            <a href="#"> Logout </a>
+        </h4>
+    </div>
+
+    <div id="menu">
+        <li><a href="#"> 분석 </a> </li>
+    </div>
+
+{% block content %}{% endblock %}
+{% block footer %}{% endblock %}
+</body>
+</html>
