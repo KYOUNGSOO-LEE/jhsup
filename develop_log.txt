@@ -1,0 +1,7 @@
+<JINHAKSUP with Django Develop_log>
+2019/8/29 : 웹프로그램 개발 시작, 기본 틀 구성, Githup upload(jhsup)
+2019/8/30 : bootstrap 기본 틀 적
+2019/9/2 : config.urls, analysis.urls 구상 및 적용
+2019/9/7 : bootstrap 적용
+2019/9/8 : link active 적용
+2019/9/11 : analysis/models.py 생성
