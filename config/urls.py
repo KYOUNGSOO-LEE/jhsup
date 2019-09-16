@@ -16,9 +16,11 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from config.views import HomeView
+from analysis.views import ibsi_upload
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', HomeView.as_view(), name='home'),
     url(r'^analysis/', include('analysis.urls')),
+    url(r'^upload-csv/',ibsi_upload, name='ibsi_upload'),
 ]
