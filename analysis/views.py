@@ -31,7 +31,12 @@ def ibsi_upload(request):
     data_set = csv_file.read().decode('UTF-8')
     io_string = io.StringIO(data_set)
     next(io_string)
-    for column in csv.reader(io_string, delimiter = ',', quotechar='|'):
+    for column in csv.reader(io_string, delimiter = ',', quotechar="|"):
+
+        for i in range(0, 45):
+            if column[i] == '' or column[i] == '0':
+                column[i] = None
+
         _, created = ibsi.objects.update_or_create(
             ibsi_year=column[0],
             resion1=column[1],
@@ -79,6 +84,5 @@ def ibsi_upload(request):
             candidate_rank=column[43],
             num_students=column[44]
         )
-
     context = {}
     return render(request, template, context)
