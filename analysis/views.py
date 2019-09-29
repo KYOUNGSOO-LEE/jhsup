@@ -8,9 +8,17 @@ from .models import ibsi
 def analysis1(request):
     qs = ibsi.objects.all()
     gubun2_query = request.GET.get('gubun2')
-    print(gubun2_query)
+    gradeMin_query = request.GET.get('gradeMin')
+    gradeMax_query = request.GET.get('gradeMax')
+
     if gubun2_query != '' and gubun2_query is not None:
         qs = qs.filter(gubun2=gubun2_query)
+
+    if gradeMin_query != '' and gradeMin_query is not None:
+        qs = qs.filter(grade__gte=gradeMin_query)
+
+    if gradeMax_query != '' and gradeMax_query is not None:
+        qs = qs.filter(grade__lte=gradeMax_query)
 
     context={
         'queryset' : qs
