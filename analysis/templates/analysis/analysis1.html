@@ -2,8 +2,8 @@
 {% block title %} 진학숲 {% endblock %}
 
 {% block content %}
-<p> 설정한 등급 구간의 합불데이터를 검색합니다. </p>
-<form method="get" action="/analysis/1">
+<p> 계열과 등급 구간을 설정하여 합불데이터를 검색합니다.(전교과100 기준 정렬) </p>
+<form method="get" action="search1">
 
   <div class="form-row align-items-center">
 
@@ -34,20 +34,35 @@
 </form>
 
 <hr/>
-<div class="row">
-  <ul>
-    {% for ibsi in queryset%}
-      <li>
-        {{ibsi.gubun2}}
-        {{ibsi.ibsi_year}}
-        {{ibsi.univ_name}}
-        {{ibsi.univ_major}}
-        {{ibsi.grade}}
-        {{ibsi.final_step}}
-      </li>
-    {% endfor %}
-  </ul>
-</div>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">입시년도</th>
+      <th scope="col">대학소재</th>
+      <th scope="col">대학명</th>
+      <th scope="col">모집단위</th>
+      <th scope="col">전형유형</th>
+      <th scope="col">전교과100</th>
+      <th scope="col">환산등급</th>
+      <th scope="col">합불현황</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      {% for ibsi in queryset%}
+      <td>{{ibsi.ibsi_year}}</td>
+      <td>{{ibsi.resion2}}</td>
+      <td>{{ibsi.univ_name}}</td>
+      <td>{{ibsi.univ_major}}</td>
+      <td>{{ibsi.admission1}}</td>
+      <td>{{ibsi.all_subject_100}}</td>
+      <td>{{ibsi.grade}}</td>
+      <td class="table-danger">{{ibsi.final_step}}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
 
 {% endblock content %}
 

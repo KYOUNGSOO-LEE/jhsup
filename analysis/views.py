@@ -6,6 +6,9 @@ from .models import ibsi
 
 
 def analysis1(request):
+    return render(request, 'analysis/analysis1.html')
+
+def search1(request):
     qs = ibsi.objects.all()
     gubun2_query = request.GET.get('gubun2')
     gradeMin_query = request.GET.get('gradeMin')
@@ -19,6 +22,8 @@ def analysis1(request):
 
     if gradeMax_query != '' and gradeMax_query is not None:
         qs = qs.filter(grade__lte=gradeMax_query)
+
+    qs = qs.order_by('all_subject_100')
 
     context={
         'queryset' : qs
