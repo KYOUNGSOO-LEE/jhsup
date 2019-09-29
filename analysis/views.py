@@ -6,7 +6,16 @@ from .models import ibsi
 
 
 def analysis1(request):
-    return render(request, 'analysis/analysis1.html')
+    qs = ibsi.objects.all()
+    gubun2_query = request.GET.get('gubun2')
+    print(gubun2_query)
+    if gubun2_query != '' and gubun2_query is not None:
+        qs = qs.filter(gubun2=gubun2_query)
+
+    context={
+        'queryset' : qs
+    }
+    return render(request, 'analysis/analysis1.html', context)
 
 def analysis2(request):
     return render(request, 'analysis/analysis2.html')
