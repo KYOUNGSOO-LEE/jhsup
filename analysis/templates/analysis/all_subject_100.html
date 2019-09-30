@@ -36,7 +36,7 @@
 
 <hr/>
 
-<table class="table table-hover">
+<table class="table table-bordered table-hover">
   <thead>
     <tr>
       <th scope="col">입시년도</th>
@@ -59,7 +59,15 @@
       <td>{{ibsi.admission1}}</td>
       <td>{{ibsi.all_subject_100}}</td>
       <td>{{ibsi.grade}}</td>
-      <td>{{ibsi.final_step}}</td>
+      <td {% if ibsi.final_step == final_step.0 %}
+            class="text-danger"
+          {% elif ibsi.final_step == final_step.1 %}
+            class="text-success"
+          {% else %}
+            class="text-primary"
+          {% endif %}>
+        {{ibsi.final_step}}
+      </td>
     </tr>
   {% endfor %}
   </tbody>

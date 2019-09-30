@@ -34,13 +34,14 @@ def search1(request):
         qs = qs.filter(all_subject_100__lte=all_subject_100_max_query)
 
     qs = qs.order_by('all_subject_100')
-
     gubun2_item = ['인문', '자연', '예체능', '공통']
+    final_step = ['합격', '충원합격', '불합격']
 
     context = {
         'queryset' : qs,
         'gubun2_item' : gubun2_item,
-        'current_gubun2': gubun2_query
+        'current_gubun2': gubun2_query,
+        'final_step' : final_step
     }
     return render(request, template, context)
 
