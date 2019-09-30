@@ -2,28 +2,29 @@
 {% block title %} 진학숲 {% endblock %}
 
 {% block content %}
-<p> 계열과 등급 구간을 설정하여 합불데이터를 검색합니다.(전교과100 기준 정렬) </p>
+<p> 계열과 등급(전교과100) 구간으로 합불데이터를 검색합니다.(전교과100 기준정렬) </p>
 <form method="get" action="search1">
 
   <div class="form-row align-items-center">
 
     <div class="col-sm-2 my-1">
       <select class="custom-select mr-sm-2" id="gubun2" name="gubun2">
-        <option value="인문">인문</option>
-        <option value="자연">자연</option>
-        <option value="예체능">예체능</option>
-        <option value="공통">공통</option>
+        {% for item in gubun2_item %}
+          <option value="{{item}}" {% if item == current_gubun2 %} selected {% endif %}>{{item}}</option>
+        {% endfor %}
       </select>
     </div>
 
     <div class="col-sm-2 my-2">
-      <label class="sr-only" for="gradeMin">등급 최솟값</label>
-      <input type="number" class="form-control" id="gradeMin" name="gradeMin" placeholder="등급 최솟값" min="1" max="9" step=".001">
+      <label class="sr-only" for="all_subject_100_min">등급 최솟값</label>
+      <input type="number" class="form-control" id="all_subject_100_min" name="all_subject_100_min"
+             placeholder="등급 최솟값" min="1" max="9" step=".001">
     </div>
 
     <div class="col-sm-2 my-2">
-      <label class="sr-only" for="gradeMax">등급 최댓값</label>
-      <input type="number" class="form-control" id="gradeMax" name="gradeMax" placeholder="등급 최댓값" min="1" max="9" step=".001">
+      <label class="sr-only" for="all_subject_100_max">등급 최댓값</label>
+      <input type="number" class="form-control" id="all_subject_100_max" name="all_subject_100_max"
+             placeholder="등급 최댓값" min="1" max="9" step=".001">
     </div>
 
     <div class="col-auto my-1">
@@ -43,7 +44,7 @@
       <th scope="col">대학명</th>
       <th scope="col">모집단위</th>
       <th scope="col">전형유형</th>
-      <th scope="col">전교과100</th>
+      <th scope="col" class="table-danger">전교과100</th>
       <th scope="col">환산등급</th>
       <th scope="col">합불현황</th>
     </tr>
@@ -58,7 +59,7 @@
       <td>{{ibsi.admission1}}</td>
       <td>{{ibsi.all_subject_100}}</td>
       <td>{{ibsi.grade}}</td>
-      <td class="table-danger">{{ibsi.final_step}}</td>
+      <td>{{ibsi.final_step}}</td>
     </tr>
   {% endfor %}
   </tbody>

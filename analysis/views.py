@@ -6,33 +6,48 @@ from .models import ibsi
 
 
 def analysis1(request):
-    return render(request, 'analysis/analysis1.html')
+    template = "analysis/all_subject_100.html"
+
+    gubun2_item = ['인문', '자연', '예체능', '공통']
+
+    context = {
+        'gubun2_item' : gubun2_item
+    }
+    return render(request, template, context)
+
 
 def search1(request):
+    template = "analysis/all_subject_100.html"
+
     qs = ibsi.objects.all()
     gubun2_query = request.GET.get('gubun2')
-    gradeMin_query = request.GET.get('gradeMin')
-    gradeMax_query = request.GET.get('gradeMax')
+    all_subject_100_min_query = request.GET.get('all_subject_100_min')
+    all_subject_100_max_query = request.GET.get('all_subject_100_max')
 
     if gubun2_query != '' and gubun2_query is not None:
         qs = qs.filter(gubun2=gubun2_query)
 
-    if gradeMin_query != '' and gradeMin_query is not None:
-        qs = qs.filter(grade__gte=gradeMin_query)
+    if all_subject_100_min_query != '' and all_subject_100_min_query is not None:
+        qs = qs.filter(all_subject_100__gte=all_subject_100_min_query)
 
-    if gradeMax_query != '' and gradeMax_query is not None:
-        qs = qs.filter(grade__lte=gradeMax_query)
+    if all_subject_100_max_query != '' and all_subject_100_max_query is not None:
+        qs = qs.filter(all_subject_100__lte=all_subject_100_max_query)
 
     qs = qs.order_by('all_subject_100')
 
-    context={
-        'queryset' : qs
+    gubun2_item = ['인문', '자연', '예체능', '공통']
+
+    context = {
+        'queryset' : qs,
+        'gubun2_item' : gubun2_item,
+        'current_gubun2': gubun2_query
     }
-    return render(request, 'analysis/analysis1.html', context)
+    return render(request, template, context)
+
 
 def analysis2(request):
     return render(request, 'analysis/analysis2.html')
-# Create your views here.
+
 
 @permission_required('admin.can_add_log_entry')
 def ibsi_upload(request):
