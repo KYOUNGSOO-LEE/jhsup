@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %} 진학숲 - 학과기준 사례검색 {% endblock %}
+
+{% block content %}
+
+<span>
+  <strong>
+    &#8251 학과 이름으로 합불데이터를 검색합니다.<br>
+    &#8251 검색어 '수학'으로 '수학과', '수학교육과', '응용수학과' 등 '수학'을 포함하는 데이터를 검색할 수 있습니다.<br>
+    &#8251 정렬기준 : 모든 계열(전교과100)
+  </strong>
+</span>
+
+<form method="get" action="search2">
+
+  <div class="form-row align-items-center">
+
+    <div class="col-sm-4 my-2">
+      <label class="sr-only" for="univ_major">학과 이름</label>
+      <input type="text" class="form-control" id="univ_major" name="univ_major"
+             value="{{current_univ_major}}" placeholder="학과 이름">
+    </div>
+
+    <div class="col-auto my-1">
+      <button type="submit" class="btn btn-primary">검색</button>
+    </div>
+
+  </div>
+</form>
+
+<hr/>
+
+<div class="table-responsive">
+  <table class="table table-hover table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">입시년도</th>
+        <th scope="col">대학명</th>
+        <th scope="col">모집단위</th>
+        <th scope="col">전형유형</th>
+        <th scope="col">세부유형</th>
+        <th scope="col">전교과100</th>
+        <th scope="col">국영수사100</th>
+        <th scope="col">국영수과100</th>
+        <th scope="col">환산등급</th>
+        <th scope="col">합불현황</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {% for ibsi in queryset%}
+        <td>{{ibsi.ibsi_year}}</td>
+        <td>{{ibsi.univ_name}}</td>
+        <td>{{ibsi.univ_major}}</td>
+        <td>{{ibsi.admission1}}</td>
+        <td>{{ibsi.admission2}}</td>
+        <td>{{ibsi.all_subject_100}}</td>
+        <td>{{ibsi.ko_en_math_soc_100}}</td>
+        <td>{{ibsi.ko_en_math_sci_100}}</td>
+        <td>{{ibsi.grade}}</td>
+        <td {% if ibsi.final_step == final_step.0 %}
+              class="text-danger"
+            {% elif ibsi.final_step == final_step.1 %}
+              class="text-success"
+            {% else %}
+              class="text-primary"
+            {% endif %}>
+          {{ibsi.final_step}}
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock content %}
+
+{% block footer %}
+{% endblock footer %}

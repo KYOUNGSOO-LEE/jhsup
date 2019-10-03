@@ -45,7 +45,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="{% if url_name == 'analysis2' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'analysis2' %}">
+              <a class="{% if url_name == 'analysis2' or url_name == 'search2' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'analysis2' %}">
                 학과기준 사례검색
               </a>
             </li>

@@ -6,10 +6,10 @@ from .models import ibsi
 
 
 def analysis1(request):
-    template = "analysis/all_subject_100.html"
+    template = "analysis/grade_interval_search.html"
 
     gubun2_item = ['인문', '자연', '예체능', '공통']
-    resion2_item = ['전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
+    resion2_item = ['지역 전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
                     '서울', '세종', '울산', '인천', '전남', '전북', '제주', '충남', '충북']
 
     context = {
@@ -20,7 +20,7 @@ def analysis1(request):
 
 
 def search1(request):
-    template = "analysis/all_subject_100.html"
+    template = "analysis/grade_interval_search.html"
 
     qs = ibsi.objects.all()
     gubun2_query = request.GET.get('gubun2')
@@ -32,7 +32,7 @@ def search1(request):
         qs = qs.filter(gubun2=gubun2_query)
 
     if resion2_query != '' and resion2_query is not None:
-        if resion2_query == '전체':
+        if resion2_query == '지역 전체':
             qs = qs
         else:
             qs = qs.filter(resion2=resion2_query)
@@ -71,15 +71,39 @@ def search1(request):
         'resion2_item': resion2_item,
         'current_gubun2': gubun2_query,
         'current_resion2' : resion2_query,
-        'current_ko_en_math_soc_or_sci_100_min_query' : ko_en_math_soc_or_sci_100_min_query,
-        'current_ko_en_math_soc_or_sci_100_max_query' : ko_en_math_soc_or_sci_100_max_query,
+        'current_ko_en_math_soc_or_sci_100_min' : ko_en_math_soc_or_sci_100_min_query,
+        'current_ko_en_math_soc_or_sci_100_max' : ko_en_math_soc_or_sci_100_max_query,
         'final_step' : final_step
     }
     return render(request, template, context)
 
 
 def analysis2(request):
-    return render(request, 'analysis/analysis2.html')
+    template = "analysis/univ_major_search.html"
+
+    context = {
+    }
+    return render(request, template, context)
+
+def search2(request):
+    template = "analysis/univ_major_search.html"
+
+    qs = ibsi.objects.all()
+    univ_major_query = request.GET.get('univ_major')
+
+    if univ_major_query != '' and univ_major_query is not None:
+        qs = qs.filter(univ_major__icontains=univ_major_query)
+
+    qs = qs.order_by('all_subject_100')
+
+    final_step = ['합격', '충원합격', '불합격']
+
+    context = {
+        'queryset' : qs,
+        'current_univ_major' : univ_major_query,
+        'final_step' : final_step
+    }
+    return render(request, template, context)
 
 
 @permission_required('admin.can_add_log_entry')
