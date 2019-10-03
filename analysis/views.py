@@ -9,9 +9,12 @@ def analysis1(request):
     template = "analysis/all_subject_100.html"
 
     gubun2_item = ['인문', '자연', '예체능', '공통']
+    resion2_item = ['전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
+                    '서울', '세종', '울산', '인천', '전남', '전북', '제주', '충남', '충북']
 
     context = {
-        'gubun2_item' : gubun2_item
+        'gubun2_item' : gubun2_item,
+        'resion2_item' : resion2_item
     }
     return render(request, template, context)
 
@@ -21,11 +24,18 @@ def search1(request):
 
     qs = ibsi.objects.all()
     gubun2_query = request.GET.get('gubun2')
+    resion2_query = request.GET.get('resion2')
     all_subject_100_min_query = request.GET.get('all_subject_100_min')
     all_subject_100_max_query = request.GET.get('all_subject_100_max')
 
     if gubun2_query != '' and gubun2_query is not None:
         qs = qs.filter(gubun2=gubun2_query)
+
+    if resion2_query != '' and resion2_query is not None:
+        if resion2_query == '전체':
+            qs = qs
+        else:
+            qs = qs.filter(resion2=resion2_query)
 
     if all_subject_100_min_query != '' and all_subject_100_min_query is not None:
         qs = qs.filter(all_subject_100__gte=all_subject_100_min_query)
@@ -35,12 +45,16 @@ def search1(request):
 
     qs = qs.order_by('all_subject_100')
     gubun2_item = ['인문', '자연', '예체능', '공통']
+    resion2_item = ['전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
+                    '서울', '세종', '울산', '인천', '전남', '전북', '제주', '충남', '충북']
     final_step = ['합격', '충원합격', '불합격']
 
     context = {
         'queryset' : qs,
         'gubun2_item' : gubun2_item,
+        'resion2_item': resion2_item,
         'current_gubun2': gubun2_query,
+        'current_resion2' : resion2_query,
         'final_step' : final_step
     }
     return render(request, template, context)

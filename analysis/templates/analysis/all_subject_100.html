@@ -15,6 +15,14 @@
       </select>
     </div>
 
+    <div class="col-sm-2 my-1">
+      <select class="custom-select mr-sm-2" id="resion2" name="resion2">
+        {% for item in resion2_item %}
+          <option value="{{item}}" {% if item == current_resion2 %} selected {% endif %}>{{item}}</option>
+        {% endfor %}
+      </select>
+    </div>
+
     <div class="col-sm-2 my-2">
       <label class="sr-only" for="all_subject_100_min">등급 최솟값</label>
       <input type="number" class="form-control" id="all_subject_100_min" name="all_subject_100_min"
@@ -36,43 +44,44 @@
 
 <hr/>
 
-<table class="table table-bordered table-hover">
-  <thead>
-    <tr>
-      <th scope="col">입시년도</th>
-      <th scope="col">대학소재</th>
-      <th scope="col">대학명</th>
-      <th scope="col">모집단위</th>
-      <th scope="col">전형유형</th>
-      <th scope="col" class="table-danger">전교과100</th>
-      <th scope="col">환산등급</th>
-      <th scope="col">합불현황</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      {% for ibsi in queryset%}
-      <td>{{ibsi.ibsi_year}}</td>
-      <td>{{ibsi.resion2}}</td>
-      <td>{{ibsi.univ_name}}</td>
-      <td>{{ibsi.univ_major}}</td>
-      <td>{{ibsi.admission1}}</td>
-      <td>{{ibsi.all_subject_100}}</td>
-      <td>{{ibsi.grade}}</td>
-      <td {% if ibsi.final_step == final_step.0 %}
-            class="text-danger"
-          {% elif ibsi.final_step == final_step.1 %}
-            class="text-success"
-          {% else %}
-            class="text-primary"
-          {% endif %}>
-        {{ibsi.final_step}}
-      </td>
-    </tr>
-  {% endfor %}
-  </tbody>
-</table>
-
+<div class="table-responsive">
+  <table class="table table-hover table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">입시년도</th>
+        <th scope="col">대학명</th>
+        <th scope="col">모집단위</th>
+        <th scope="col">전형유형</th>
+        <th scope="col">세부유형</th>
+        <th scope="col" class="table-danger">전교과100</th>
+        <th scope="col">환산등급</th>
+        <th scope="col">합불현황</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {% for ibsi in queryset%}
+        <td>{{ibsi.ibsi_year}}</td>
+        <td>{{ibsi.univ_name}}</td>
+        <td>{{ibsi.univ_major}}</td>
+        <td>{{ibsi.admission1}}</td>
+        <td>{{ibsi.admission2}}</td>
+        <td class="table-danger">{{ibsi.all_subject_100}}</td>
+        <td>{{ibsi.grade}}</td>
+        <td {% if ibsi.final_step == final_step.0 %}
+              class="text-danger"
+            {% elif ibsi.final_step == final_step.1 %}
+              class="text-success"
+            {% else %}
+              class="text-primary"
+            {% endif %}>
+          {{ibsi.final_step}}
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock content %}
 
 {% block footer %}
