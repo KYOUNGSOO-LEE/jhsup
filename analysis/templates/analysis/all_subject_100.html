@@ -2,7 +2,13 @@
 {% block title %} 진학숲 {% endblock %}
 
 {% block content %}
-<p> 계열과 등급(전교과100) 구간으로 합불데이터를 검색합니다.(전교과100 기준정렬) </p>
+<span>
+  <strong>
+    &#8251 계열과 등급 구간(국영수 + 사/과)으로 합불데이터를 검색합니다.<br>
+    &#8251 정렬기준 : 인문, 예체능(국영수사100), 자연(국영수과100), 공통(국영수사과100)
+  </strong>
+</span>
+
 <form method="get" action="search1">
 
   <div class="form-row align-items-center">
@@ -24,14 +30,14 @@
     </div>
 
     <div class="col-sm-2 my-2">
-      <label class="sr-only" for="all_subject_100_min">등급 최솟값</label>
-      <input type="number" class="form-control" id="all_subject_100_min" name="all_subject_100_min"
+      <label class="sr-only" for="ko_en_math_soc_or_sci_100_min">등급 최솟값</label>
+      <input type="number" class="form-control" id="ko_en_math_soc_or_sci_100_min" name="ko_en_math_soc_or_sci_100_min"
              placeholder="등급 최솟값" min="1" max="9" step=".001">
     </div>
 
     <div class="col-sm-2 my-2">
-      <label class="sr-only" for="all_subject_100_max">등급 최댓값</label>
-      <input type="number" class="form-control" id="all_subject_100_max" name="all_subject_100_max"
+      <label class="sr-only" for="ko_en_math_soc_or_sci_100_max">등급 최댓값</label>
+      <input type="number" class="form-control" id="ko_en_math_soc_or_sci_100_max" name="ko_en_math_soc_or_sci_100_max"
              placeholder="등급 최댓값" min="1" max="9" step=".001">
     </div>
 
@@ -46,14 +52,21 @@
 
 <div class="table-responsive">
   <table class="table table-hover table-bordered">
-    <thead>
+    <thead class="thead-dark">
       <tr>
         <th scope="col">입시년도</th>
         <th scope="col">대학명</th>
         <th scope="col">모집단위</th>
         <th scope="col">전형유형</th>
         <th scope="col">세부유형</th>
-        <th scope="col" class="table-danger">전교과100</th>
+        <th scope="col">전교과100</th>
+        {% if current_gubun2 == '자연' %}
+          <th scope="col">국영수과100</th>
+        {% elif current_gubun2 == '공통' %}
+          <th scope="col">국영수사과100</th>
+        {% else %}
+          <th scope="col">국영수사100</th>
+        {% endif %}
         <th scope="col">환산등급</th>
         <th scope="col">합불현황</th>
       </tr>
@@ -66,7 +79,14 @@
         <td>{{ibsi.univ_major}}</td>
         <td>{{ibsi.admission1}}</td>
         <td>{{ibsi.admission2}}</td>
-        <td class="table-danger">{{ibsi.all_subject_100}}</td>
+        <td>{{ibsi.all_subject_100}}</td>
+        {% if current_gubun2 == '자연' %}
+          <td>{{ibsi.ko_en_math_sci_100}}</td>
+        {% elif current_gubun2 == '공통' %}
+          <td>{{ibsi.ko_en_math_soc_sci_100}}</td>
+        {% else %}
+          <td>{{ibsi.ko_en_math_soc_100}}</td>
+        {% endif %}
         <td>{{ibsi.grade}}</td>
         <td {% if ibsi.final_step == final_step.0 %}
               class="text-danger"

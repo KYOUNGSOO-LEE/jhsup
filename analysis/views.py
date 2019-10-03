@@ -25,8 +25,8 @@ def search1(request):
     qs = ibsi.objects.all()
     gubun2_query = request.GET.get('gubun2')
     resion2_query = request.GET.get('resion2')
-    all_subject_100_min_query = request.GET.get('all_subject_100_min')
-    all_subject_100_max_query = request.GET.get('all_subject_100_max')
+    ko_en_math_soc_or_sci_100_min_query = request.GET.get('ko_en_math_soc_or_sci_100_min')
+    ko_en_math_soc_or_sci_100_max_query = request.GET.get('ko_en_math_soc_or_sci_100_max')
 
     if gubun2_query != '' and gubun2_query is not None:
         qs = qs.filter(gubun2=gubun2_query)
@@ -37,13 +37,29 @@ def search1(request):
         else:
             qs = qs.filter(resion2=resion2_query)
 
-    if all_subject_100_min_query != '' and all_subject_100_min_query is not None:
-        qs = qs.filter(all_subject_100__gte=all_subject_100_min_query)
+    if ko_en_math_soc_or_sci_100_min_query != '' and ko_en_math_soc_or_sci_100_min_query is not None:
+        if gubun2_query == '자연':
+            qs = qs.filter(ko_en_math_sci_100__gte=ko_en_math_soc_or_sci_100_min_query)
+        elif gubun2_query == '공통':
+            qs = qs.filter(ko_en_math_soc_sci_100__gte=ko_en_math_soc_or_sci_100_min_query)
+        else:
+            qs = qs.filter(ko_en_math_soc_100__gte=ko_en_math_soc_or_sci_100_min_query)
 
-    if all_subject_100_max_query != '' and all_subject_100_max_query is not None:
-        qs = qs.filter(all_subject_100__lte=all_subject_100_max_query)
+    if ko_en_math_soc_or_sci_100_max_query != '' and ko_en_math_soc_or_sci_100_max_query is not None:
+        if gubun2_query == '자연':
+            qs = qs.filter(ko_en_math_sci_100__lte=ko_en_math_soc_or_sci_100_max_query)
+        elif gubun2_query == '공통':
+            qs = qs.filter(ko_en_math_soc_sci_100__lte=ko_en_math_soc_or_sci_100_max_query)
+        else:
+            qs = qs.filter(ko_en_math_soc_100__lte=ko_en_math_soc_or_sci_100_max_query)
 
-    qs = qs.order_by('all_subject_100')
+    if gubun2_query == '자연':
+        qs = qs.order_by('ko_en_math_sci_100')
+    elif gubun2_query == '공통':
+        qs = qs.order_by('ko_en_math_soc_sci_100')
+    else:
+        qs = qs.order_by('ko_en_math_soc_100')
+
     gubun2_item = ['인문', '자연', '예체능', '공통']
     resion2_item = ['전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
                     '서울', '세종', '울산', '인천', '전남', '전북', '제주', '충남', '충북']
