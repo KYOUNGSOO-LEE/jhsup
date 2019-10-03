@@ -36,17 +36,17 @@
             {% with url_name=request.resolver_match.url_name %}
             <li class="nav-item">
               <a class="{% if url_name == 'home' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'home' %}">
-                Home <span class="sr-only">(current)</span>
+                공지사항 <span class="sr-only">(current)</span>
               </a>
             </li>
             <li class="nav-item">
               <a class="{% if url_name == 'analysis1' or url_name == 'search1' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'analysis1' %}">
-                등급구간 합불검색
+                등급기준 사례검색
               </a>
             </li>
             <li class="nav-item">
               <a class="{% if url_name == 'analysis2' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'analysis2' %}">
-                analysis2
+                학과기준 사례검색
               </a>
             </li>
             {% endwith %}
