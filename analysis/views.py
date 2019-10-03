@@ -71,6 +71,8 @@ def search1(request):
         'resion2_item': resion2_item,
         'current_gubun2': gubun2_query,
         'current_resion2' : resion2_query,
+        'current_ko_en_math_soc_or_sci_100_min_query' : float(ko_en_math_soc_or_sci_100_min_query),
+        'current_ko_en_math_soc_or_sci_100_max_query' : float(ko_en_math_soc_or_sci_100_max_query),
         'final_step' : final_step
     }
     return render(request, template, context)
