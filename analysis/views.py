@@ -13,8 +13,8 @@ def analysis1(request):
                     '서울', '세종', '울산', '인천', '전남', '전북', '제주', '충남', '충북']
 
     context = {
-        'gubun2_item' : gubun2_item,
-        'resion2_item' : resion2_item
+        'gubun2_item': gubun2_item,
+        'resion2_item': resion2_item
     }
     return render(request, template, context)
 
@@ -66,14 +66,14 @@ def search1(request):
     final_step = ['합격', '충원합격', '불합격']
 
     context = {
-        'queryset' : qs,
-        'gubun2_item' : gubun2_item,
+        'queryset': qs,
+        'gubun2_item': gubun2_item,
         'resion2_item': resion2_item,
         'current_gubun2': gubun2_query,
-        'current_resion2' : resion2_query,
-        'current_ko_en_math_soc_or_sci_100_min' : ko_en_math_soc_or_sci_100_min_query,
-        'current_ko_en_math_soc_or_sci_100_max' : ko_en_math_soc_or_sci_100_max_query,
-        'final_step' : final_step
+        'current_resion2': resion2_query,
+        'current_ko_en_math_soc_or_sci_100_min': ko_en_math_soc_or_sci_100_min_query,
+        'current_ko_en_math_soc_or_sci_100_max': ko_en_math_soc_or_sci_100_max_query,
+        'final_step': final_step
     }
     return render(request, template, context)
 
@@ -84,6 +84,7 @@ def analysis2(request):
     context = {
     }
     return render(request, template, context)
+
 
 def search2(request):
     template = "analysis/univ_major_search.html"
@@ -99,9 +100,9 @@ def search2(request):
     final_step = ['합격', '충원합격', '불합격']
 
     context = {
-        'queryset' : qs,
-        'current_univ_major' : univ_major_query,
-        'final_step' : final_step
+        'queryset': qs,
+        'current_univ_major': univ_major_query,
+        'final_step': final_step
     }
     return render(request, template, context)
 
@@ -112,9 +113,10 @@ def analysis3(request):
     admission1_item = ['종합', '교과']
 
     context = {
-        'admission1_item' : admission1_item
+        'admission1_item': admission1_item
     }
     return render(request, template, context)
+
 
 def search3(request):
     template = "analysis/admission_search.html"
@@ -135,11 +137,112 @@ def search3(request):
     final_step = ['합격', '충원합격', '불합격']
 
     context = {
-        'queryset' : qs,
+        'queryset': qs,
         'admission1_item': admission1_item,
-        'current_admission1' : admission1_query,
-        'current_admission2' : admission2_query,
-        'final_step' : final_step
+        'current_admission1': admission1_query,
+        'current_admission2': admission2_query,
+        'final_step': final_step
+    }
+    return render(request, template, context)
+
+
+def analysis4(request):
+    template = "analysis/univ_name_search.html"
+
+    gubun2_item = ['인문', '자연', '예체능', '공통']
+    resion2_item = ['지역 전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
+                    '서울', '세종', '울산', '인천', '전남', '전북', '제주', '충남', '충북']
+    context = {
+        'gubun2_item': gubun2_item,
+        'resion2_item': resion2_item,
+    }
+    return render(request, template, context)
+
+
+def search4(request):
+    template = "analysis/univ_name_search.html"
+
+    qs = ibsi.objects.all()
+    gubun2_query = request.GET.get('gubun2')
+    resion2_query = request.GET.get('resion2')
+    univ_name_query = request.GET.get('univ_name')
+
+    if gubun2_query != '' and gubun2_query is not None:
+        qs = qs.filter(gubun2=gubun2_query)
+
+    if resion2_query != '' and resion2_query is not None:
+        if resion2_query == '지역 전체':
+            qs = qs
+        else:
+            qs = qs.filter(resion2=resion2_query)
+
+    if univ_name_query != '' and univ_name_query is not None:
+        qs = qs.filter(univ_name__icontains=univ_name_query)
+
+    qs = qs.order_by('all_subject_100')
+
+    gubun2_item = ['인문', '자연', '예체능', '공통']
+    resion2_item = ['지역 전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
+                    '서울', '세종', '울산', '인천', '전남', '전북', '제주', '충남', '충북']
+    final_step = ['합격', '충원합격', '불합격']
+
+    context = {
+        'queryset': qs,
+        'gubun2_item': gubun2_item,
+        'resion2_item': resion2_item,
+        'current_gubun2': gubun2_query,
+        'current_resion2': resion2_query,
+        'current_univ_name': univ_name_query,
+        'final_step': final_step
+    }
+    return render(request, template, context)
+
+
+def analysis5(request):
+    template = "analysis/advanced_search.html"
+
+    gubun2_item = ['인문', '자연', '예체능', '공통']
+    resion2_item = ['지역 전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
+                    '서울', '세종', '울산', '인천', '전남', '전북', '제주', '충남', '충북']
+    context = {
+        'gubun2_item': gubun2_item,
+        'resion2_item': resion2_item,
+    }
+    return render(request, template, context)
+
+
+def search5(request):
+    template = "analysis/advanced_search.html"
+
+    qs = ibsi.objects.all()
+    gubun2_query = request.GET.get('gubun2')
+    resion2_query = request.GET.get('resion2')
+    univ_name_query = request.GET.get('univ_name')
+
+    if gubun2_query != '' and gubun2_query is not None:
+        qs = qs.filter(gubun2=gubun2_query)
+
+    if resion2_query != '' and resion2_query is not None:
+        qs = qs.filter(resion2=resion2_query)
+
+    if univ_name_query != '' and univ_name_query is not None:
+        qs = qs.filter(univ_name=univ_name_query)
+
+    qs = qs.order_by('all_subject_100')
+
+    gubun2_item = ['인문', '자연', '예체능', '공통']
+    resion2_item = ['지역 전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
+                    '서울', '세종', '울산', '인천', '전남', '전북', '제주', '충남', '충북']
+    final_step = ['합격', '충원합격', '불합격']
+
+    context = {
+        'queryset': qs,
+        'gubun2_item': gubun2_item,
+        'resion2_item': resion2_item,
+        'current_gubun2': gubun2_query,
+        'current_resion2': resion2_query,
+        'current_univ_name': univ_name_query,
+        'final_step': final_step
     }
     return render(request, template, context)
 
@@ -163,7 +266,7 @@ def ibsi_upload(request):
     data_set = csv_file.read().decode('UTF-8')
     io_string = io.StringIO(data_set)
     next(io_string)
-    for column in csv.reader(io_string, delimiter = ',', quotechar="|"):
+    for column in csv.reader(io_string, delimiter=',', quotechar="|"):
 
         for i in range(0, 45):
             if column[i] == '' or column[i] == '0':
