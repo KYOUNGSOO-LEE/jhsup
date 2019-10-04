@@ -49,7 +49,7 @@ body {
 }
 
 .sidebar .nav-link.active {
-  color: #007bff;
+  color: #ff0000;
 }
 
 .sidebar .nav-link:hover .feather,
