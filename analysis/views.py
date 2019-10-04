@@ -81,7 +81,10 @@ def search1(request):
 def analysis2(request):
     template = "analysis/univ_major_search.html"
 
+    gubun2_item = ['인문', '자연', '예체능', '공통']
+
     context = {
+        'gubun2_item': gubun2_item
     }
     return render(request, template, context)
 
@@ -90,18 +93,50 @@ def search2(request):
     template = "analysis/univ_major_search.html"
 
     qs = ibsi.objects.all()
+    gubun2_query = request.GET.get('gubun2')
     univ_major_query = request.GET.get('univ_major')
+    ko_en_math_soc_or_sci_100_min_query = request.GET.get('ko_en_math_soc_or_sci_100_min')
+    ko_en_math_soc_or_sci_100_max_query = request.GET.get('ko_en_math_soc_or_sci_100_max')
+
+    if gubun2_query != '' and gubun2_query is not None:
+        qs = qs.filter(gubun2=gubun2_query)
 
     if univ_major_query != '' and univ_major_query is not None:
         qs = qs.filter(univ_major__icontains=univ_major_query)
 
-    qs = qs.order_by('all_subject_100')
+    if ko_en_math_soc_or_sci_100_min_query != '' and ko_en_math_soc_or_sci_100_min_query is not None:
+        if gubun2_query == '자연':
+            qs = qs.filter(ko_en_math_sci_100__gte=ko_en_math_soc_or_sci_100_min_query)
+        elif gubun2_query == '공통':
+            qs = qs.filter(ko_en_math_soc_sci_100__gte=ko_en_math_soc_or_sci_100_min_query)
+        else:
+            qs = qs.filter(ko_en_math_soc_100__gte=ko_en_math_soc_or_sci_100_min_query)
 
+    if ko_en_math_soc_or_sci_100_max_query != '' and ko_en_math_soc_or_sci_100_max_query is not None:
+        if gubun2_query == '자연':
+            qs = qs.filter(ko_en_math_sci_100__lte=ko_en_math_soc_or_sci_100_max_query)
+        elif gubun2_query == '공통':
+            qs = qs.filter(ko_en_math_soc_sci_100__lte=ko_en_math_soc_or_sci_100_max_query)
+        else:
+            qs = qs.filter(ko_en_math_soc_100__lte=ko_en_math_soc_or_sci_100_max_query)
+
+    if gubun2_query == '자연':
+        qs = qs.order_by('ko_en_math_sci_100')
+    elif gubun2_query == '공통':
+        qs = qs.order_by('ko_en_math_soc_sci_100')
+    else:
+        qs = qs.order_by('ko_en_math_soc_100')
+
+    gubun2_item = ['인문', '자연', '예체능', '공통']
     final_step = ['합격', '충원합격', '불합격']
 
     context = {
         'queryset': qs,
+        'gubun2_item': gubun2_item,
+        'current_gubun2': gubun2_query,
         'current_univ_major': univ_major_query,
+        'current_ko_en_math_soc_or_sci_100_min': ko_en_math_soc_or_sci_100_min_query,
+        'current_ko_en_math_soc_or_sci_100_max': ko_en_math_soc_or_sci_100_max_query,
         'final_step': final_step
     }
     return render(request, template, context)
