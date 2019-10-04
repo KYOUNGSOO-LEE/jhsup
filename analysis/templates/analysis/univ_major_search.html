@@ -1,7 +1,5 @@
 {% extends "base.html" %}
-
 {% block title %} 진학숲 - 학과기준 사례검색 {% endblock %}
-
 {% block content %}
 
 <p class="font-weight-bold text-info">
@@ -23,9 +21,9 @@
     </div>
 
     <div class="col-md-3 my-2">
-      <label class="sr-only" for="univ_major">학과 이름</label>
+      <label class="sr-only" for="univ_major">학과명</label>
       <input type="text" class="form-control" id="univ_major" name="univ_major"
-             value="{{current_univ_major}}" placeholder="학과 이름">
+             value="{{current_univ_major}}" placeholder="학과명">
     </div>
 
     <div class="col-md-2 my-2">
@@ -41,7 +39,7 @@
     </div>
 
     <div class="col-auto my-1">
-      <button type="submit" class="btn btn-primary">검색</button>
+      <button type="submit" class="btn btn-warning">검색</button>
     </div>
 
   </div>
