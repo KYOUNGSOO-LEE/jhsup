@@ -106,6 +106,44 @@ def search2(request):
     return render(request, template, context)
 
 
+def analysis3(request):
+    template = "analysis/admission_search.html"
+
+    admission1_item = ['종합', '교과']
+
+    context = {
+        'admission1_item' : admission1_item
+    }
+    return render(request, template, context)
+
+def search3(request):
+    template = "analysis/admission_search.html"
+
+    qs = ibsi.objects.all()
+    admission1_query = request.GET.get('admission1')
+    admission2_query = request.GET.get('admission2')
+
+    if admission1_query != '' and admission1_query is not None:
+        qs = qs.filter(admission1=admission1_query)
+
+    if admission2_query != '' and admission2_query is not None:
+        qs = qs.filter(admission2__icontains=admission2_query)
+
+    qs = qs.order_by('all_subject_100')
+
+    admission1_item = ['종합', '교과']
+    final_step = ['합격', '충원합격', '불합격']
+
+    context = {
+        'queryset' : qs,
+        'admission1_item': admission1_item,
+        'current_admission1' : admission1_query,
+        'current_admission2' : admission2_query,
+        'final_step' : final_step
+    }
+    return render(request, template, context)
+
+
 @permission_required('admin.can_add_log_entry')
 def ibsi_upload(request):
     template = "ibsi_upload.html"

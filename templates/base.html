@@ -49,6 +49,11 @@
                 학과기준 사례검색
               </a>
             </li>
+            <li class="nav-item">
+              <a class="{% if url_name == 'analysis3' or url_name == 'search3' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'analysis3' %}">
+                전형기준 사례검색
+              </a>
+            </li>
             {% endwith %}
           </ul>
         </div>
