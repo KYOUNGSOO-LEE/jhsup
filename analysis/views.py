@@ -146,7 +146,7 @@ def analysis3(request):
     template = "analysis/advanced_search.html"
 
     gubun2_item = ['인문', '자연', '예체능', '공통']
-    resion2_item = ['전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
+    resion2_item = ['지역 전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
                     '서울', '세종', '울산', '인천', '전남', '전북', '제주', '충남', '충북']
     admission1_item = ['종합', '교과']
 
