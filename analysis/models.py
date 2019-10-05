@@ -1,19 +1,19 @@
 from django.db import models
 
-# Create your models here.
-class ibsi(models.Model):
-    ibsi_year = models.IntegerField()  # 입시학년도
-    resion1 = models.CharField(max_length=3)  # 수합지역
-    gubun1 = models.CharField(max_length=3)  # 일반대/특수대/산업대
-    resion2 = models.CharField(max_length=2)  # 대학소재
-    gubun2 = models.CharField(max_length=3)  # 계열
+
+class Student(models.Model):
+    entrance_year = models.IntegerField()  # 입시학년도
+    student_region = models.CharField(max_length=3)  # 수합지역
+    univ_group = models.CharField(max_length=3)  # 일반대/특수대/산업대
+    univ_region = models.CharField(max_length=2)  # 대학소재
+    major_group = models.CharField(max_length=3)  # 계열
     univ_name = models.CharField(max_length=10)  # 대학명
     univ_major = models.CharField(max_length=10)  # 모집단위
     admission1 = models.CharField(max_length=2)  # 전형유형(교과/논술/실시/종합)
     admission2 = models.CharField(max_length=20)  # 세부유형(일반전형/농어촌학생 등)
     admission3 = models.CharField(max_length=10)  # 선발유형(일괄합산/1단계 등)
     grade = models.DecimalField(decimal_places=3, max_digits=4, null=True)  # 등급(대학별 환산등급)
-    myscore = models.DecimalField(decimal_places=3, max_digits=10, null=True)  # 대학별 환산점수
+    univ_score = models.DecimalField(decimal_places=3, max_digits=10, null=True)  # 대학별 환산점수
     korean = models.DecimalField(decimal_places=3, max_digits=4)  # 국어
     english = models.DecimalField(decimal_places=3, max_digits=4)  # 영어
     mathematics = models.DecimalField(decimal_places=3, max_digits=4)  # 수학

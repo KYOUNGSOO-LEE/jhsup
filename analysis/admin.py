@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import ibsi
+from .models import Student
 # Register your models here.
 
-admin.site.register(ibsi)
+admin.site.register(Student)

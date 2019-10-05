@@ -2,19 +2,19 @@ import csv, io
 from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
-from .models import ibsi
+from .models import Student
 
 
 def analysis1(request):
     template = "analysis/grade_interval_search.html"
 
-    gubun2_item = ['인문', '자연', '예체능', '공통']
-    resion2_item = ['지역 전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
-                    '서울', '세종', '울산', '인천', '전남', '전북', '제주', '충남', '충북']
+    major_group_item = ['인문', '자연', '예체능', '공통']
+    univ_region_item = ['지역 전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
+                        '서울', '세종', '울산', '인천', '전남', '전북', '제주', '충남', '충북']
 
     context = {
-        'gubun2_item': gubun2_item,
-        'resion2_item': resion2_item
+        'major_group_item': major_group_item,
+        'univ_region_item': univ_region_item
     }
     return render(request, template, context)
 
@@ -22,55 +22,55 @@ def analysis1(request):
 def search1(request):
     template = "analysis/grade_interval_search.html"
 
-    qs = ibsi.objects.all()
-    gubun2_query = request.GET.get('gubun2')
-    resion2_query = request.GET.get('resion2')
+    qs = Student.objects.all()
+    major_group_query = request.GET.get('major_group')
+    univ_region_query = request.GET.get('univ_region')
     ko_en_math_soc_or_sci_100_min_query = request.GET.get('ko_en_math_soc_or_sci_100_min')
     ko_en_math_soc_or_sci_100_max_query = request.GET.get('ko_en_math_soc_or_sci_100_max')
 
-    if gubun2_query != '' and gubun2_query is not None:
-        qs = qs.filter(gubun2=gubun2_query)
+    if major_group_query != '' and major_group_query is not None:
+        qs = qs.filter(major_group=major_group_query)
 
-    if resion2_query != '' and resion2_query is not None:
-        if resion2_query == '지역 전체':
+    if univ_region_query != '' and univ_region_query is not None:
+        if univ_region_query == '지역 전체':
             qs = qs
         else:
-            qs = qs.filter(resion2=resion2_query)
+            qs = qs.filter(univ_region=univ_region_query)
 
     if ko_en_math_soc_or_sci_100_min_query != '' and ko_en_math_soc_or_sci_100_min_query is not None:
-        if gubun2_query == '자연':
+        if major_group_query == '자연':
             qs = qs.filter(ko_en_math_sci_100__gte=ko_en_math_soc_or_sci_100_min_query)
-        elif gubun2_query == '공통':
+        elif major_group_query == '공통':
             qs = qs.filter(ko_en_math_soc_sci_100__gte=ko_en_math_soc_or_sci_100_min_query)
         else:
             qs = qs.filter(ko_en_math_soc_100__gte=ko_en_math_soc_or_sci_100_min_query)
 
     if ko_en_math_soc_or_sci_100_max_query != '' and ko_en_math_soc_or_sci_100_max_query is not None:
-        if gubun2_query == '자연':
+        if major_group_query == '자연':
             qs = qs.filter(ko_en_math_sci_100__lte=ko_en_math_soc_or_sci_100_max_query)
-        elif gubun2_query == '공통':
+        elif major_group_query == '공통':
             qs = qs.filter(ko_en_math_soc_sci_100__lte=ko_en_math_soc_or_sci_100_max_query)
         else:
             qs = qs.filter(ko_en_math_soc_100__lte=ko_en_math_soc_or_sci_100_max_query)
 
-    if gubun2_query == '자연':
+    if major_group_query == '자연':
         qs = qs.order_by('-final_step', 'ko_en_math_sci_100')
-    elif gubun2_query == '공통':
+    elif major_group_query == '공통':
         qs = qs.order_by('-final_step', 'ko_en_math_soc_sci_100')
     else:
         qs = qs.order_by('-final_step', 'ko_en_math_soc_100')
 
-    gubun2_item = ['인문', '자연', '예체능', '공통']
-    resion2_item = ['전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
-                    '서울', '세종', '울산', '인천', '전남', '전북', '제주', '충남', '충북']
+    major_group_item = ['인문', '자연', '예체능', '공통']
+    univ_region_item = ['전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
+                        '서울', '세종', '울산', '인천', '전남', '전북', '제주', '충남', '충북']
     final_step = ['합격', '충원합격', '불합격']
 
     context = {
         'queryset': qs,
-        'gubun2_item': gubun2_item,
-        'resion2_item': resion2_item,
-        'current_gubun2': gubun2_query,
-        'current_resion2': resion2_query,
+        'major_group_item': major_group_item,
+        'univ_region_item': univ_region_item,
+        'current_major_group': major_group_query,
+        'current_univ_region': univ_region_query,
         'current_ko_en_math_soc_or_sci_100_min': ko_en_math_soc_or_sci_100_min_query,
         'current_ko_en_math_soc_or_sci_100_max': ko_en_math_soc_or_sci_100_max_query,
         'final_step': final_step
@@ -81,10 +81,10 @@ def search1(request):
 def analysis2(request):
     template = "analysis/univ_major_search.html"
 
-    gubun2_item = ['인문', '자연', '예체능', '공통']
+    major_group_item = ['인문', '자연', '예체능', '공통']
 
     context = {
-        'gubun2_item': gubun2_item
+        'major_group_item': major_group_item
     }
     return render(request, template, context)
 
@@ -92,48 +92,48 @@ def analysis2(request):
 def search2(request):
     template = "analysis/univ_major_search.html"
 
-    qs = ibsi.objects.all()
-    gubun2_query = request.GET.get('gubun2')
+    qs = Student.objects.all()
+    major_group_query = request.GET.get('major_group')
     univ_major_query = request.GET.get('univ_major')
     ko_en_math_soc_or_sci_100_min_query = request.GET.get('ko_en_math_soc_or_sci_100_min')
     ko_en_math_soc_or_sci_100_max_query = request.GET.get('ko_en_math_soc_or_sci_100_max')
 
-    if gubun2_query != '' and gubun2_query is not None:
-        qs = qs.filter(gubun2=gubun2_query)
+    if major_group_query != '' and major_group_query is not None:
+        qs = qs.filter(major_group=major_group_query)
 
     if univ_major_query != '' and univ_major_query is not None:
         qs = qs.filter(univ_major__icontains=univ_major_query)
 
     if ko_en_math_soc_or_sci_100_min_query != '' and ko_en_math_soc_or_sci_100_min_query is not None:
-        if gubun2_query == '자연':
+        if major_group_query == '자연':
             qs = qs.filter(ko_en_math_sci_100__gte=ko_en_math_soc_or_sci_100_min_query)
-        elif gubun2_query == '공통':
+        elif major_group_query == '공통':
             qs = qs.filter(ko_en_math_soc_sci_100__gte=ko_en_math_soc_or_sci_100_min_query)
         else:
             qs = qs.filter(ko_en_math_soc_100__gte=ko_en_math_soc_or_sci_100_min_query)
 
     if ko_en_math_soc_or_sci_100_max_query != '' and ko_en_math_soc_or_sci_100_max_query is not None:
-        if gubun2_query == '자연':
+        if major_group_query == '자연':
             qs = qs.filter(ko_en_math_sci_100__lte=ko_en_math_soc_or_sci_100_max_query)
-        elif gubun2_query == '공통':
+        elif major_group_query == '공통':
             qs = qs.filter(ko_en_math_soc_sci_100__lte=ko_en_math_soc_or_sci_100_max_query)
         else:
             qs = qs.filter(ko_en_math_soc_100__lte=ko_en_math_soc_or_sci_100_max_query)
 
-    if gubun2_query == '자연':
+    if major_group_query == '자연':
         qs = qs.order_by('-final_step', 'ko_en_math_sci_100')
-    elif gubun2_query == '공통':
+    elif major_group_query == '공통':
         qs = qs.order_by('-final_step', 'ko_en_math_soc_sci_100')
     else:
         qs = qs.order_by('-final_step', 'ko_en_math_soc_100')
 
-    gubun2_item = ['인문', '자연', '예체능', '공통']
+    major_group_item = ['인문', '자연', '예체능', '공통']
     final_step = ['합격', '충원합격', '불합격']
 
     context = {
         'queryset': qs,
-        'gubun2_item': gubun2_item,
-        'current_gubun2': gubun2_query,
+        'major_group_item': major_group_item,
+        'current_major_group': major_group_query,
         'current_univ_major': univ_major_query,
         'current_ko_en_math_soc_or_sci_100_min': ko_en_math_soc_or_sci_100_min_query,
         'current_ko_en_math_soc_or_sci_100_max': ko_en_math_soc_or_sci_100_max_query,
@@ -145,14 +145,14 @@ def search2(request):
 def analysis3(request):
     template = "analysis/advanced_search.html"
 
-    gubun2_item = ['인문', '자연', '예체능', '공통']
-    resion2_item = ['지역 전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
-                    '서울', '세종', '울산', '인천', '전남', '전북', '제주', '충남', '충북']
+    major_group_item = ['인문', '자연', '예체능', '공통']
+    univ_region_item = ['지역 전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
+                        '서울', '세종', '울산', '인천', '전남', '전북', '제주', '충남', '충북']
     admission1_item = ['종합', '교과']
 
     context = {
-        'gubun2_item': gubun2_item,
-        'resion2_item': resion2_item,
+        'major_group_item': major_group_item,
+        'univ_region_item': univ_region_item,
         'admission1_item': admission1_item,
     }
     return render(request, template, context)
@@ -161,9 +161,9 @@ def analysis3(request):
 def search3(request):
     template = "analysis/advanced_search.html"
 
-    qs = ibsi.objects.all()
-    gubun2_query = request.GET.get('gubun2')
-    resion2_query = request.GET.get('resion2')
+    qs = Student.objects.all()
+    major_group_query = request.GET.get('major_group')
+    univ_region_query = request.GET.get('univ_region')
     univ_name_query = request.GET.get('univ_name')
     univ_major_query = request.GET.get('univ_major')
     admission1_query = request.GET.get('admission1')
@@ -171,14 +171,14 @@ def search3(request):
     ko_en_math_soc_or_sci_100_min_query = request.GET.get('ko_en_math_soc_or_sci_100_min')
     ko_en_math_soc_or_sci_100_max_query = request.GET.get('ko_en_math_soc_or_sci_100_max')
 
-    if gubun2_query != '' and gubun2_query is not None:
-        qs = qs.filter(gubun2=gubun2_query)
+    if major_group_query != '' and major_group_query is not None:
+        qs = qs.filter(major_group=major_group_query)
 
-    if resion2_query != '' and resion2_query is not None:
-        if resion2_query == '지역 전체':
+    if univ_region_query != '' and univ_region_query is not None:
+        if univ_region_query == '지역 전체':
             qs = qs
         else:
-            qs = qs.filter(resion2=resion2_query)
+            qs = qs.filter(univ_region=univ_region_query)
 
     if univ_name_query != '' and univ_name_query is not None:
         if univ_name_query == '':
@@ -205,41 +205,41 @@ def search3(request):
             qs = qs.filter(admission2__icontains=admission2_query)
 
     if ko_en_math_soc_or_sci_100_min_query != '' and ko_en_math_soc_or_sci_100_min_query is not None:
-        if gubun2_query == '자연':
+        if major_group_query == '자연':
             qs = qs.filter(ko_en_math_sci_100__gte=ko_en_math_soc_or_sci_100_min_query)
-        elif gubun2_query == '공통':
+        elif major_group_query == '공통':
             qs = qs.filter(ko_en_math_soc_sci_100__gte=ko_en_math_soc_or_sci_100_min_query)
         else:
             qs = qs.filter(ko_en_math_soc_100__gte=ko_en_math_soc_or_sci_100_min_query)
 
     if ko_en_math_soc_or_sci_100_max_query != '' and ko_en_math_soc_or_sci_100_max_query is not None:
-        if gubun2_query == '자연':
+        if major_group_query == '자연':
             qs = qs.filter(ko_en_math_sci_100__lte=ko_en_math_soc_or_sci_100_max_query)
-        elif gubun2_query == '공통':
+        elif major_group_query == '공통':
             qs = qs.filter(ko_en_math_soc_sci_100__lte=ko_en_math_soc_or_sci_100_max_query)
         else:
             qs = qs.filter(ko_en_math_soc_100__lte=ko_en_math_soc_or_sci_100_max_query)
 
-    if gubun2_query == '자연':
+    if major_group_query == '자연':
         qs = qs.order_by('-final_step', 'ko_en_math_sci_100')
-    elif gubun2_query == '공통':
+    elif major_group_query == '공통':
         qs = qs.order_by('-final_step', 'ko_en_math_soc_sci_100')
     else:
         qs = qs.order_by('-final_step', 'ko_en_math_soc_100')
 
-    gubun2_item = ['인문', '자연', '예체능', '공통']
-    resion2_item = ['지역 전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
-                    '서울', '세종', '울산', '인천', '전남', '전북', '제주', '충남', '충북']
+    major_group_item = ['인문', '자연', '예체능', '공통']
+    univ_region_item = ['지역 전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
+                        '서울', '세종', '울산', '인천', '전남', '전북', '제주', '충남', '충북']
     admission1_item = ['종합', '교과']
     final_step = ['합격', '충원합격', '불합격']
 
     context = {
         'queryset': qs,
-        'gubun2_item': gubun2_item,
-        'resion2_item': resion2_item,
+        'major_group_item': major_group_item,
+        'univ_region_item': univ_region_item,
         'admission1_item': admission1_item,
-        'current_gubun2': gubun2_query,
-        'current_resion2': resion2_query,
+        'current_major_group': major_group_query,
+        'current_univ_region': univ_region_query,
         'current_univ_name': univ_name_query,
         'current_univ_major': univ_major_query,
         'current_admission1': admission1_query,
@@ -252,11 +252,11 @@ def search3(request):
 
 
 @permission_required('admin.can_add_log_entry')
-def ibsi_upload(request):
-    template = "ibsi_upload.html"
+def student_data_upload(request):
+    template = "student_data_upload.html"
 
     prompt = {
-        'order': 'ibsi.csv uploader'
+        'order': 'student_data.csv uploader'
     }
 
     if request.method == 'GET':
@@ -272,23 +272,37 @@ def ibsi_upload(request):
     next(io_string)
     for column in csv.reader(io_string, delimiter=',', quotechar="|"):
 
-        for i in range(0, 45):
-            if column[i] == '' or column[i] == '0':
-                column[i] = None
+        if column[10] == '' or column[10] == '0':
+            column[10] = None
 
-        _, created = ibsi.objects.update_or_create(
-            ibsi_year=column[0],
-            resion1=column[1],
-            gubun1=column[2],
-            resion2=column[3],
-            gubun2=column[4],
+        if column[11] == '' or column[11] == '0':
+            column[11] = None
+
+        if column[40] == '' or column[40] == '0':
+            column[40] = None
+
+        if column[42] == '' or column[42] == '0':
+            column[42] = None
+
+        if column[43] == '' or column[43] == '0':
+            column[43] = None
+
+        if column[44] == '' or column[44] == '0':
+            column[44] = None
+
+        _, created = Student.objects.update_or_create(
+            entrance_year=column[0],
+            student_region=column[1],
+            univ_group=column[2],
+            univ_region=column[3],
+            major_group=column[4],
             univ_name=column[5],
             univ_major=column[6],
             admission1=column[7],
             admission2=column[8],
             admission3=column[9],
             grade=column[10],
-            myscore=column[11],
+            univ_score=column[11],
             korean=column[12],
             english=column[13],
             mathematics=column[14],
