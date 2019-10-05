@@ -12,7 +12,7 @@ class Student(models.Model):
     admission1 = models.CharField(max_length=2)  # 전형유형(교과/논술/실시/종합)
     admission2 = models.CharField(max_length=20)  # 세부유형(일반전형/농어촌학생 등)
     admission3 = models.CharField(max_length=10)  # 선발유형(일괄합산/1단계 등)
-    grade = models.DecimalField(decimal_places=3, max_digits=4, null=True)  # 등급(대학별 환산등급)
+    grade = models.DecimalField(decimal_places=3, max_digits=4)  # 등급(대학별 환산등급)
     univ_score = models.DecimalField(decimal_places=3, max_digits=10, null=True)  # 대학별 환산점수
     korean = models.DecimalField(decimal_places=3, max_digits=4)  # 국어
     english = models.DecimalField(decimal_places=3, max_digits=4)  # 영어

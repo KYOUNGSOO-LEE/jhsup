@@ -272,9 +272,6 @@ def student_data_upload(request):
     next(io_string)
     for column in csv.reader(io_string, delimiter=',', quotechar="|"):
 
-        if column[10] == '' or column[10] == '0':
-            column[10] = None
-
         if column[11] == '' or column[11] == '0':
             column[11] = None
 
