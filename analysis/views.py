@@ -23,7 +23,7 @@ def search1(request):
     template = "analysis/grade_interval_search.html"
 
     major_group_item = ['인문', '자연', '예체능', '공통']
-    univ_region_item = ['전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
+    univ_region_item = ['지역 전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
                         '서울', '세종', '울산', '인천', '전남', '전북', '제주', '충남', '충북']
     final_step = ['합격', '충원합격', '불합격']
 

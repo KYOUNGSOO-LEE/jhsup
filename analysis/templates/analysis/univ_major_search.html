@@ -78,11 +78,11 @@
         <td>{{student.admission2}}</td>
         <td>{{student.all_subject_100}}</td>
         {% if current_major_group == '자연' %}
-          <td>{{student.ko_en_math_sci_100}}</td>
+          <td class="table-primary">{{student.ko_en_math_sci_100}}</td>
         {% elif current_major_group == '공통' %}
-          <td>{{student.ko_en_math_soc_sci_100}}</td>
+          <td class="table-info">{{student.ko_en_math_soc_sci_100}}</td>
         {% else %}
-          <td>{{student.ko_en_math_soc_100}}</td>
+          <td class="table-warning">{{student.ko_en_math_soc_100}}</td>
         {% endif %}
         <td>{{student.grade}}</td>
         <td {% if student.final_step == final_step.0 %}
