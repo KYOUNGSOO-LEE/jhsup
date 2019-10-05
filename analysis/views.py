@@ -22,6 +22,11 @@ def analysis1(request):
 def search1(request):
     template = "analysis/grade_interval_search.html"
 
+    major_group_item = ['인문', '자연', '예체능', '공통']
+    univ_region_item = ['전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
+                        '서울', '세종', '울산', '인천', '전남', '전북', '제주', '충남', '충북']
+    final_step = ['합격', '충원합격', '불합격']
+
     qs = Student.objects.all()
     major_group_query = request.GET.get('major_group')
     univ_region_query = request.GET.get('univ_region')
@@ -60,11 +65,6 @@ def search1(request):
     else:
         qs = qs.order_by('-final_step', 'ko_en_math_soc_100')
 
-    major_group_item = ['인문', '자연', '예체능', '공통']
-    univ_region_item = ['전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
-                        '서울', '세종', '울산', '인천', '전남', '전북', '제주', '충남', '충북']
-    final_step = ['합격', '충원합격', '불합격']
-
     context = {
         'queryset': qs,
         'major_group_item': major_group_item,
@@ -91,6 +91,9 @@ def analysis2(request):
 
 def search2(request):
     template = "analysis/univ_major_search.html"
+
+    major_group_item = ['인문', '자연', '예체능', '공통']
+    final_step = ['합격', '충원합격', '불합격']
 
     qs = Student.objects.all()
     major_group_query = request.GET.get('major_group')
@@ -127,9 +130,6 @@ def search2(request):
     else:
         qs = qs.order_by('-final_step', 'ko_en_math_soc_100')
 
-    major_group_item = ['인문', '자연', '예체능', '공통']
-    final_step = ['합격', '충원합격', '불합격']
-
     context = {
         'queryset': qs,
         'major_group_item': major_group_item,
@@ -160,6 +160,12 @@ def analysis3(request):
 
 def search3(request):
     template = "analysis/advanced_search.html"
+
+    major_group_item = ['인문', '자연', '예체능', '공통']
+    univ_region_item = ['지역 전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
+                        '서울', '세종', '울산', '인천', '전남', '전북', '제주', '충남', '충북']
+    admission1_item = ['종합', '교과']
+    final_step = ['합격', '충원합격', '불합격']
 
     qs = Student.objects.all()
     major_group_query = request.GET.get('major_group')
@@ -226,12 +232,6 @@ def search3(request):
         qs = qs.order_by('-final_step', 'ko_en_math_soc_sci_100')
     else:
         qs = qs.order_by('-final_step', 'ko_en_math_soc_100')
-
-    major_group_item = ['인문', '자연', '예체능', '공통']
-    univ_region_item = ['지역 전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
-                        '서울', '세종', '울산', '인천', '전남', '전북', '제주', '충남', '충북']
-    admission1_item = ['종합', '교과']
-    final_step = ['합격', '충원합격', '불합격']
 
     context = {
         'queryset': qs,
