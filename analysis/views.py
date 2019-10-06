@@ -17,13 +17,12 @@ from .models import Personnel
 def analysis1(request):
     template = "analysis/grade_interval_search.html"
 
-    major_group_item = ['인문', '자연', '예체능', '공통']
-    univ_region_item = ['지역 전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
-                        '서울', '세종', '울산', '인천', '전남', '전북', '제주', '충남', '충북']
+    major_group_qs = MajorGroup.objects.all().order_by('major_group')
+    univ_region_qs = UnivRegion.objects.all().order_by('univ_region')
 
     context = {
-        'major_group_item': major_group_item,
-        'univ_region_item': univ_region_item
+        'major_group_item': major_group_qs,
+        'univ_region_item': univ_region_qs
     }
     return render(request, template, context)
 
@@ -31,53 +30,52 @@ def analysis1(request):
 def search1(request):
     template = "analysis/grade_interval_search.html"
 
-    major_group_item = ['인문', '자연', '예체능', '공통']
-    univ_region_item = ['지역 전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
-                        '서울', '세종', '울산', '인천', '전남', '전북', '제주', '충남', '충북']
+    major_group_qs = MajorGroup.objects.all().order_by('major_group')
+    univ_region_qs = UnivRegion.objects.all().order_by('univ_region')
+    student_qs = Student.objects.all()
     final_step = ['합격', '충원합격', '불합격']
 
-    qs = Student.objects.all()
     major_group_query = request.GET.get('major_group')
     univ_region_query = request.GET.get('univ_region')
     ko_en_math_soc_or_sci_100_min_query = request.GET.get('ko_en_math_soc_or_sci_100_min')
     ko_en_math_soc_or_sci_100_max_query = request.GET.get('ko_en_math_soc_or_sci_100_max')
 
     if major_group_query != '' and major_group_query is not None:
-        qs = qs.filter(major_group=major_group_query)
+        student_qs = student_qs.filter(major_group=major_group_query)
 
     if univ_region_query != '' and univ_region_query is not None:
         if univ_region_query == '지역 전체':
-            qs = qs
+            student_qs = student_qs
         else:
-            qs = qs.filter(univ_region=univ_region_query)
+            student_qs = student_qs.filter(univ_region=univ_region_qs[0])
 
     if ko_en_math_soc_or_sci_100_min_query != '' and ko_en_math_soc_or_sci_100_min_query is not None:
         if major_group_query == '자연':
-            qs = qs.filter(ko_en_math_sci_100__gte=ko_en_math_soc_or_sci_100_min_query)
+            student_qs = student_qs.filter(ko_en_math_sci_100__gte=ko_en_math_soc_or_sci_100_min_query)
         elif major_group_query == '공통':
-            qs = qs.filter(ko_en_math_soc_sci_100__gte=ko_en_math_soc_or_sci_100_min_query)
+            student_qs = student_qs.filter(ko_en_math_soc_sci_100__gte=ko_en_math_soc_or_sci_100_min_query)
         else:
-            qs = qs.filter(ko_en_math_soc_100__gte=ko_en_math_soc_or_sci_100_min_query)
+            student_qs = student_qs.filter(ko_en_math_soc_100__gte=ko_en_math_soc_or_sci_100_min_query)
 
     if ko_en_math_soc_or_sci_100_max_query != '' and ko_en_math_soc_or_sci_100_max_query is not None:
         if major_group_query == '자연':
-            qs = qs.filter(ko_en_math_sci_100__lte=ko_en_math_soc_or_sci_100_max_query)
+            student_qs = student_qs.filter(ko_en_math_sci_100__lte=ko_en_math_soc_or_sci_100_max_query)
         elif major_group_query == '공통':
-            qs = qs.filter(ko_en_math_soc_sci_100__lte=ko_en_math_soc_or_sci_100_max_query)
+            student_qs = student_qs.filter(ko_en_math_soc_sci_100__lte=ko_en_math_soc_or_sci_100_max_query)
         else:
-            qs = qs.filter(ko_en_math_soc_100__lte=ko_en_math_soc_or_sci_100_max_query)
+            student_qs = student_qs.filter(ko_en_math_soc_100__lte=ko_en_math_soc_or_sci_100_max_query)
 
     if major_group_query == '자연':
-        qs = qs.order_by('-final_step', 'ko_en_math_sci_100')
+        student_qs = student_qs.order_by('-final_step', 'ko_en_math_sci_100')
     elif major_group_query == '공통':
-        qs = qs.order_by('-final_step', 'ko_en_math_soc_sci_100')
+        student_qs = student_qs.order_by('-final_step', 'ko_en_math_soc_sci_100')
     else:
-        qs = qs.order_by('-final_step', 'ko_en_math_soc_100')
+        student_qs = student_qs.order_by('-final_step', 'ko_en_math_soc_100')
 
     context = {
-        'queryset': qs,
-        'major_group_item': major_group_item,
-        'univ_region_item': univ_region_item,
+        'queryset': student_qs,
+        'major_group_item': major_group_qs,
+        'univ_region_item': univ_region_qs,
         'current_major_group': major_group_query,
         'current_univ_region': univ_region_query,
         'current_ko_en_math_soc_or_sci_100_min': ko_en_math_soc_or_sci_100_min_query,

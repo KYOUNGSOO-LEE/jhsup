@@ -13,16 +13,16 @@
 
     <div class="col-md-2 my-1">
       <select class="custom-select mr-sm-2" id="major_group" name="major_group">
-        {% for item in major_group_item %}
-          <option value="{{item}}" {% if item == current_major_group %} selected {% endif %}>{{item}}</option>
+        {% for major_group in major_group_item %}
+          <option value="{{major_group.pk}}" {% if major_group == current_major_group %} selected {% endif %}>{{major_group}}</option>
         {% endfor %}
       </select>
     </div>
 
     <div class="col-md-2 my-1">
       <select class="custom-select mr-sm-2" id="univ_region" name="univ_region">
-        {% for item in univ_region_item %}
-          <option value="{{item}}" {% if item == current_univ_region %} selected {% endif %}>{{item}}</option>
+        {% for univ_region in univ_region_item %}
+          <option value="{{univ_region.pk}}" {% if univ_region == current_univ_region %} selected {% endif %}>{{univ_region}}</option>
         {% endfor %}
       </select>
     </div>
