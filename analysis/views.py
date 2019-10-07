@@ -2,6 +2,7 @@ import csv, io
 from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
+from django.db.models import Q
 from .models import Student
 from .models import UnivGroup
 from .models import UnivRegion
@@ -101,6 +102,7 @@ def search2(request):
     template = "analysis/univ_major_search.html"
 
     major_group_qs = MajorGroup.objects.all().order_by('major_group')
+    univ_major_qs = UnivMajor.objects.all()
     student_qs = Student.objects.all()
     final_step = ['합격', '충원합격', '불합격']
 
@@ -113,27 +115,32 @@ def search2(request):
         student_qs = student_qs.filter(major_group=major_group_query)
 
     if univ_major_query != '' and univ_major_query is not None:
-        major_group_qs = major_group_qs.filter(univ_major__icontains=univ_major_query)
+        univ_major_qs = univ_major_qs.filter(univ_major__icontains=univ_major_query)
+
+        union_qs = Student.objects.filter(univ_major='0')
+        for univ_major in univ_major_qs:
+            union_qs = union_qs | student_qs.filter(univ_major=univ_major.id)
+        student_qs = union_qs
 
     if ko_en_math_soc_or_sci_100_min_query != '' and ko_en_math_soc_or_sci_100_min_query is not None:
-        if major_group_query == '자연':
+        if major_group_qs.get(pk=major_group_query) == '자연':
             student_qs = student_qs.filter(ko_en_math_sci_100__gte=ko_en_math_soc_or_sci_100_min_query)
-        elif major_group_query == '공통':
+        elif major_group_qs.get(pk=major_group_query) == '공통':
             student_qs = student_qs.filter(ko_en_math_soc_sci_100__gte=ko_en_math_soc_or_sci_100_min_query)
         else:
             student_qs = student_qs.filter(ko_en_math_soc_100__gte=ko_en_math_soc_or_sci_100_min_query)
 
     if ko_en_math_soc_or_sci_100_max_query != '' and ko_en_math_soc_or_sci_100_max_query is not None:
-        if major_group_query == '자연':
+        if major_group_qs.get(pk=major_group_query) == '자연':
             student_qs = student_qs.filter(ko_en_math_sci_100__lte=ko_en_math_soc_or_sci_100_max_query)
-        elif major_group_query == '공통':
+        elif major_group_qs.get(pk=major_group_query) == '공통':
             student_qs = student_qs.filter(ko_en_math_soc_sci_100__lte=ko_en_math_soc_or_sci_100_max_query)
         else:
             student_qs = student_qs.filter(ko_en_math_soc_100__lte=ko_en_math_soc_or_sci_100_max_query)
 
-    if major_group_query == '자연':
+    if major_group_qs.get(pk=major_group_query) == '자연':
         student_qs = student_qs.order_by('-final_step', 'ko_en_math_sci_100')
-    elif major_group_query == '공통':
+    elif major_group_qs.get(pk=major_group_query) == '공통':
         student_qs = student_qs.order_by('-final_step', 'ko_en_math_soc_sci_100')
     else:
         student_qs = student_qs.order_by('-final_step', 'ko_en_math_soc_100')
@@ -141,8 +148,9 @@ def search2(request):
     context = {
         'queryset': student_qs,
         'major_group_item': major_group_qs,
-        'current_major_group': major_group_query,
+        'current_major_group': int(major_group_query),
         'current_univ_major': univ_major_query,
+        'current_major_group_str': str(major_group_qs.get(pk=major_group_query)),
         'current_ko_en_math_soc_or_sci_100_min': ko_en_math_soc_or_sci_100_min_query,
         'current_ko_en_math_soc_or_sci_100_max': ko_en_math_soc_or_sci_100_max_query,
         'final_step': final_step

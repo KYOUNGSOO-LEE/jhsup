@@ -14,8 +14,8 @@
 
     <div class="col-md-2 my-1">
       <select class="custom-select mr-sm-2" id="major_group" name="major_group">
-        {% for major_group in major_group_item %}
-          <option value="{{major_group.pk}}" {% if major_group == current_major_group %} selected {% endif %}>{{major_group}}</option>
+        {% for item in major_group_item %}
+          <option value="{{item.pk}}" {% if item.pk == current_major_group %} selected {% endif %}>{{item.major_group}}</option>
         {% endfor %}
       </select>
     </div>
@@ -57,9 +57,9 @@
         <th scope="col">전형유형</th>
         <th scope="col">세부유형</th>
         <th scope="col">전교과100</th>
-        {% if current_major_group == '자연' %}
+        {% if current_major_group_str == '자연' %}
           <th scope="col">국영수과100</th>
-        {% elif current_major_group == '공통' %}
+        {% elif current_major_group_str == '공통' %}
           <th scope="col">국영수사과100</th>
         {% else %}
           <th scope="col">국영수사100</th>
@@ -77,9 +77,9 @@
         <td>{{student.admission1}}</td>
         <td>{{student.admission2}}</td>
         <td>{{student.all_subject_100}}</td>
-        {% if current_major_group == '자연' %}
+        {% if current_major_group_str == '자연' %}
           <td class="table-primary">{{student.ko_en_math_sci_100}}</td>
-        {% elif current_major_group == '공통' %}
+        {% elif current_major_group_str == '공통' %}
           <td class="table-info">{{student.ko_en_math_soc_sci_100}}</td>
         {% else %}
           <td class="table-warning">{{student.ko_en_math_soc_100}}</td>
