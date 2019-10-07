@@ -47,7 +47,73 @@ def search1(request):
         if univ_region_query == '지역 전체':
             student_qs = student_qs
         else:
-            student_qs = student_qs.filter(univ_region=univ_region_qs[0])
+            student_qs = student_qs.filter(univ_region=univ_region_query)
+
+    if ko_en_math_soc_or_sci_100_min_query != '' and ko_en_math_soc_or_sci_100_min_query is not None:
+        if major_group_qs.get(pk=major_group_query) == '자연':
+            student_qs = student_qs.filter(ko_en_math_sci_100__gte=ko_en_math_soc_or_sci_100_min_query)
+        elif major_group_qs.get(pk=major_group_query) == '공통':
+            student_qs = student_qs.filter(ko_en_math_soc_sci_100__gte=ko_en_math_soc_or_sci_100_min_query)
+        else:
+            student_qs = student_qs.filter(ko_en_math_soc_100__gte=ko_en_math_soc_or_sci_100_min_query)
+
+    if ko_en_math_soc_or_sci_100_max_query != '' and ko_en_math_soc_or_sci_100_max_query is not None:
+        if major_group_qs.get(pk=major_group_query) == '자연':
+            student_qs = student_qs.filter(ko_en_math_sci_100__lte=ko_en_math_soc_or_sci_100_max_query)
+        elif major_group_qs.get(pk=major_group_query) == '공통':
+            student_qs = student_qs.filter(ko_en_math_soc_sci_100__lte=ko_en_math_soc_or_sci_100_max_query)
+        else:
+            student_qs = student_qs.filter(ko_en_math_soc_100__lte=ko_en_math_soc_or_sci_100_max_query)
+
+    if major_group_qs.get(pk=major_group_query) == '자연':
+        student_qs = student_qs.order_by('-final_step', 'ko_en_math_sci_100')
+    elif major_group_qs.get(pk=major_group_query) == '공통':
+        student_qs = student_qs.order_by('-final_step', 'ko_en_math_soc_sci_100')
+    else:
+        student_qs = student_qs.order_by('-final_step', 'ko_en_math_soc_100')
+
+    context = {
+        'queryset': student_qs,
+        'major_group_item': major_group_qs,
+        'univ_region_item': univ_region_qs,
+        'current_major_group': int(major_group_query),
+        'current_univ_region': int(univ_region_query),
+        'current_major_group_str': str(major_group_qs.get(pk=major_group_query)),
+        'current_ko_en_math_soc_or_sci_100_min': ko_en_math_soc_or_sci_100_min_query,
+        'current_ko_en_math_soc_or_sci_100_max': ko_en_math_soc_or_sci_100_max_query,
+        'final_step': final_step
+    }
+    return render(request, template, context)
+
+
+def analysis2(request):
+    template = "analysis/univ_major_search.html"
+
+    major_group_qs = MajorGroup.objects.all().order_by('major_group')
+
+    context = {
+        'major_group_item': major_group_qs
+    }
+    return render(request, template, context)
+
+
+def search2(request):
+    template = "analysis/univ_major_search.html"
+
+    major_group_qs = MajorGroup.objects.all().order_by('major_group')
+    student_qs = Student.objects.all()
+    final_step = ['합격', '충원합격', '불합격']
+
+    major_group_query = request.GET.get('major_group')
+    univ_major_query = request.GET.get('univ_major')
+    ko_en_math_soc_or_sci_100_min_query = request.GET.get('ko_en_math_soc_or_sci_100_min')
+    ko_en_math_soc_or_sci_100_max_query = request.GET.get('ko_en_math_soc_or_sci_100_max')
+
+    if major_group_query != '' and major_group_query is not None:
+        student_qs = student_qs.filter(major_group=major_group_query)
+
+    if univ_major_query != '' and univ_major_query is not None:
+        major_group_qs = major_group_qs.filter(univ_major__icontains=univ_major_query)
 
     if ko_en_math_soc_or_sci_100_min_query != '' and ko_en_math_soc_or_sci_100_min_query is not None:
         if major_group_query == '자연':
@@ -75,71 +141,6 @@ def search1(request):
     context = {
         'queryset': student_qs,
         'major_group_item': major_group_qs,
-        'univ_region_item': univ_region_qs,
-        'current_major_group': major_group_query,
-        'current_univ_region': univ_region_query,
-        'current_ko_en_math_soc_or_sci_100_min': ko_en_math_soc_or_sci_100_min_query,
-        'current_ko_en_math_soc_or_sci_100_max': ko_en_math_soc_or_sci_100_max_query,
-        'final_step': final_step
-    }
-    return render(request, template, context)
-
-
-def analysis2(request):
-    template = "analysis/univ_major_search.html"
-
-    major_group_item = ['인문', '자연', '예체능', '공통']
-
-    context = {
-        'major_group_item': major_group_item
-    }
-    return render(request, template, context)
-
-
-def search2(request):
-    template = "analysis/univ_major_search.html"
-
-    major_group_item = ['인문', '자연', '예체능', '공통']
-    final_step = ['합격', '충원합격', '불합격']
-
-    qs = Student.objects.all()
-    major_group_query = request.GET.get('major_group')
-    univ_major_query = request.GET.get('univ_major')
-    ko_en_math_soc_or_sci_100_min_query = request.GET.get('ko_en_math_soc_or_sci_100_min')
-    ko_en_math_soc_or_sci_100_max_query = request.GET.get('ko_en_math_soc_or_sci_100_max')
-
-    if major_group_query != '' and major_group_query is not None:
-        qs = qs.filter(major_group=major_group_query)
-
-    if univ_major_query != '' and univ_major_query is not None:
-        qs = qs.filter(univ_major__icontains=univ_major_query)
-
-    if ko_en_math_soc_or_sci_100_min_query != '' and ko_en_math_soc_or_sci_100_min_query is not None:
-        if major_group_query == '자연':
-            qs = qs.filter(ko_en_math_sci_100__gte=ko_en_math_soc_or_sci_100_min_query)
-        elif major_group_query == '공통':
-            qs = qs.filter(ko_en_math_soc_sci_100__gte=ko_en_math_soc_or_sci_100_min_query)
-        else:
-            qs = qs.filter(ko_en_math_soc_100__gte=ko_en_math_soc_or_sci_100_min_query)
-
-    if ko_en_math_soc_or_sci_100_max_query != '' and ko_en_math_soc_or_sci_100_max_query is not None:
-        if major_group_query == '자연':
-            qs = qs.filter(ko_en_math_sci_100__lte=ko_en_math_soc_or_sci_100_max_query)
-        elif major_group_query == '공통':
-            qs = qs.filter(ko_en_math_soc_sci_100__lte=ko_en_math_soc_or_sci_100_max_query)
-        else:
-            qs = qs.filter(ko_en_math_soc_100__lte=ko_en_math_soc_or_sci_100_max_query)
-
-    if major_group_query == '자연':
-        qs = qs.order_by('-final_step', 'ko_en_math_sci_100')
-    elif major_group_query == '공통':
-        qs = qs.order_by('-final_step', 'ko_en_math_soc_sci_100')
-    else:
-        qs = qs.order_by('-final_step', 'ko_en_math_soc_100')
-
-    context = {
-        'queryset': qs,
-        'major_group_item': major_group_item,
         'current_major_group': major_group_query,
         'current_univ_major': univ_major_query,
         'current_ko_en_math_soc_or_sci_100_min': ko_en_math_soc_or_sci_100_min_query,
