@@ -117,7 +117,7 @@ def search2(request):
     if univ_major_query != '' and univ_major_query is not None:
         univ_major_qs = univ_major_qs.filter(univ_major__icontains=univ_major_query)
 
-        union_qs = Student.objects.filter(univ_major='0')
+        union_qs = Student.objects.none()
         for univ_major in univ_major_qs:
             union_qs = union_qs | student_qs.filter(univ_major=univ_major.id)
         student_qs = union_qs
@@ -161,15 +161,12 @@ def search2(request):
 def analysis3(request):
     template = "analysis/advanced_search.html"
 
-    major_group_item = ['인문', '자연', '예체능', '공통']
-    univ_region_item = ['지역 전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
-                        '서울', '세종', '울산', '인천', '전남', '전북', '제주', '충남', '충북']
-    admission1_item = ['종합', '교과']
+    major_group_qs = MajorGroup.objects.all().order_by('major_group')
+    univ_region_qs = UnivRegion.objects.all().order_by('univ_region')
 
     context = {
-        'major_group_item': major_group_item,
-        'univ_region_item': univ_region_item,
-        'admission1_item': admission1_item,
+        'major_group_item': major_group_qs,
+        'univ_region_item': univ_region_qs,
     }
     return render(request, template, context)
 
@@ -177,10 +174,8 @@ def analysis3(request):
 def search3(request):
     template = "analysis/advanced_search.html"
 
-    major_group_item = ['인문', '자연', '예체능', '공통']
-    univ_region_item = ['지역 전체', '강원', '경기', '경남', '경북', '광주', '대구', '대전', '부산',
-                        '서울', '세종', '울산', '인천', '전남', '전북', '제주', '충남', '충북']
-    admission1_item = ['종합', '교과']
+    major_group_qs = MajorGroup.objects.all().order_by('major_group')
+    univ_region_qs = UnivRegion.objects.all().order_by('univ_region')
     final_step = ['합격', '충원합격', '불합격']
 
     qs = Student.objects.all()
@@ -197,65 +192,50 @@ def search3(request):
         qs = qs.filter(major_group=major_group_query)
 
     if univ_region_query != '' and univ_region_query is not None:
-        if univ_region_query == '지역 전체':
-            qs = qs
-        else:
-            qs = qs.filter(univ_region=univ_region_query)
+        qs = qs.filter(univ_region=univ_region_query)
 
     if univ_name_query != '' and univ_name_query is not None:
-        if univ_name_query == '':
-            qs = qs
-        else:
-            qs = qs.filter(univ_name__icontains=univ_name_query)
+        qs = qs.filter(univ_name__icontains=univ_name_query)
 
     if univ_major_query != '' and univ_major_query is not None:
-        if univ_major_query == '':
-            qs = qs
-        else:
-            qs = qs.filter(univ_major__icontains=univ_major_query)
+        qs = qs.filter(univ_major__icontains=univ_major_query)
 
     if admission1_query != '' and admission1_query is not None:
-        if admission1_query == '':
-            qs = qs
-        else:
-            qs = qs.filter(admission1=admission1_query)
+        qs = qs.filter(admission1=admission1_query)
 
     if admission2_query != '' and admission2_query is not None:
-        if admission2_query == '':
-            qs = qs
-        else:
-            qs = qs.filter(admission2__icontains=admission2_query)
+        qs = qs.filter(admission2__icontains=admission2_query)
 
     if ko_en_math_soc_or_sci_100_min_query != '' and ko_en_math_soc_or_sci_100_min_query is not None:
-        if major_group_query == '자연':
+        if major_group_qs.get(pk=major_group_query) == '자연':
             qs = qs.filter(ko_en_math_sci_100__gte=ko_en_math_soc_or_sci_100_min_query)
-        elif major_group_query == '공통':
+        elif major_group_qs.get(pk=major_group_query) == '공통':
             qs = qs.filter(ko_en_math_soc_sci_100__gte=ko_en_math_soc_or_sci_100_min_query)
         else:
             qs = qs.filter(ko_en_math_soc_100__gte=ko_en_math_soc_or_sci_100_min_query)
 
     if ko_en_math_soc_or_sci_100_max_query != '' and ko_en_math_soc_or_sci_100_max_query is not None:
-        if major_group_query == '자연':
+        if major_group_qs.get(pk=major_group_query) == '자연':
             qs = qs.filter(ko_en_math_sci_100__lte=ko_en_math_soc_or_sci_100_max_query)
-        elif major_group_query == '공통':
+        elif major_group_qs.get(pk=major_group_query) == '공통':
             qs = qs.filter(ko_en_math_soc_sci_100__lte=ko_en_math_soc_or_sci_100_max_query)
         else:
             qs = qs.filter(ko_en_math_soc_100__lte=ko_en_math_soc_or_sci_100_max_query)
 
-    if major_group_query == '자연':
+    if major_group_qs.get(pk=major_group_query) == '자연':
         qs = qs.order_by('-final_step', 'ko_en_math_sci_100')
-    elif major_group_query == '공통':
+    elif major_group_qs.get(pk=major_group_query) == '공통':
         qs = qs.order_by('-final_step', 'ko_en_math_soc_sci_100')
     else:
         qs = qs.order_by('-final_step', 'ko_en_math_soc_100')
 
     context = {
         'queryset': qs,
-        'major_group_item': major_group_item,
-        'univ_region_item': univ_region_item,
-        'admission1_item': admission1_item,
-        'current_major_group': major_group_query,
-        'current_univ_region': univ_region_query,
+        'major_group_item': major_group_qs,
+        'univ_region_item': univ_region_qs,
+        'current_major_group': int(major_group_query),
+        'current_major_group_str': str(major_group_qs.get(pk=major_group_query)),
+        'current_univ_region': int(univ_region_query),
         'current_univ_name': univ_name_query,
         'current_univ_major': univ_major_query,
         'current_admission1': admission1_query,
@@ -265,6 +245,34 @@ def search3(request):
         'final_step': final_step
     }
     return render(request, template, context)
+
+
+def load_univ_name(request):
+    template = "analysis/advanced_search.html"
+    univ_region = request.GET.get('univ_region')
+    univ_name_qs = UnivName.objects.filter(univ_region=univ_region).order_by('univ_name')
+    return render(request, template, {'univ_name_item': univ_name_qs})
+
+
+def load_univ_major(request):
+    template = "analysis/advanced_search.html"
+    univ_name = request.GET.get('univ_name')
+    univ_major_list = UnivMajor.objects.filter(univ_name=univ_name)
+    return render(request, template, {'univ_major_list': univ_major_list})
+
+
+def load_admission1(request):
+    template = "analysis/advanced_search.html"
+    univ_major = request.GET.get('univ_major')
+    admission1_list = Admission1.objects.filter(univ_major=univ_major)
+    return render(request, template, {'admission1_list': admission1_list})
+
+
+def load_admission2(request):
+    template = "analysis/advanced_search.html"
+    admission1 = request.GET.get('admission1')
+    admission2_list = Admission2.objects.filter(admission1=admission1)
+    return render(request, template, {'admission2_list': admission2_list})
 
 
 @permission_required('admin.can_add_log_entry')
