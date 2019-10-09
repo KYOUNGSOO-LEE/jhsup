@@ -2,17 +2,7 @@ import csv, io
 from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
-from django.db.models import Q
-from .models import Student
-from .models import UnivGroup
-from .models import UnivRegion
-from .models import MajorGroup
-from .models import UnivName
-from .models import UnivMajor
-from .models import Admission1
-from .models import Admission2
-from .models import Admission3
-from .models import Personnel
+from .models import *
 
 
 def analysis1(request):
@@ -251,6 +241,7 @@ def load_univ_name(request):
     template = "analysis/advanced_search.html"
     univ_region = request.GET.get('univ_region')
     univ_name_qs = UnivName.objects.filter(univ_region=univ_region).order_by('univ_name')
+    print(univ_name_qs)
     return render(request, template, {'univ_name_item': univ_name_qs})
 
 

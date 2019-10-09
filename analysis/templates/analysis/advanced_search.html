@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %} 진학숲 - 전형기준 사례검색 {% endblock %}
+{% block title %} 진학숲 - 상세조건 사례검색 {% endblock %}
 {% block content %}
 
 <p class="font-weight-bold text-info">
@@ -7,19 +7,18 @@
     &#8251 정렬기준 : 인문, 예체능(국영수사100), 자연(국영수과100), 공통(국영수사과100)<br>
 </p>
 
-<form method="get" action="search3">
+<form method="get" id="advanced_form", data-univ-name-url="{% url 'ajax_load_univ_name' %}" action="search3">
+
   <div class="form-row align-items-center">
-    <div class="col-md-1 my-1">
+    <div class="col-md-1.5 my-1">
       <select class="custom-select mr-sm-2" id="major_group" name="major_group">
-        <option value=""> 계열 </option>
         {% for item in major_group_item %}
           <option value="{{item.pk}}" {% if item.pk == current_major_group %} selected {% endif %}>{{item.major_group}}</option>
         {% endfor %}
       </select>
     </div>
-    <div class="col-md-1 my-1">
+    <div class="col-md-1.5 my-1">
       <select class="custom-select mr-sm-2" id="univ_region" name="univ_region">
-        <option value=""> 지역 </option>
         {% for item in univ_region_item %}
           <option value="{{item.pk}}" {% if item.pk == current_univ_region %} selected {% endif %}>{{item.univ_region}}</option>
         {% endfor %}
@@ -27,7 +26,7 @@
     </div>
     <div class="col-md-2 my-1">
       <select class="custom-select mr-sm-2" id="univ_name" name="univ_name">
-          <option value=""> 대학 </option>
+          <option value=""> 대학명 </option>
         {% for item in univ_name_item %}
           <option value="{{item.pk}}" {% if item.pk == current_univ_name %} selected {% endif %}>{{item.univ_name}}</option>
         {% endfor %}
@@ -35,7 +34,7 @@
     </div>
     <div class="col-md-2 my-1">
       <select class="custom-select mr-sm-2" id="univ_major" name="univ_major">
-        <option value=""> 학과 </option>
+        <option value=""> 학과명 </option>
         {% for item in univ_major_item %}
           <option value="{{item.pk}}" {% if item.pk == current_univ_major %} selected {% endif %}>{{item.univ_major}}</option>
         {% endfor %}
@@ -73,20 +72,26 @@
       <button type="submit" class="btn btn-warning">검색</button>
     </div>
   </div>
+
 </form>
+
 <script>
-  $("#univ_region").change(function(){
+$(document).ready(function(){
+  $("#univ_region").change(function () {
+    var url = $("#advanced_form").attr("data-univ-name-url");
     var univ_region = $(this).val();
+
     $.ajax({
-      url: "ajax/load_univ_name",
+      url: url,
       data: {
         'univ_region': univ_region
       },
       success: function (data) {
-        console.log(data);
+        $("#univ_name").html(data);
       }
     });
   });
+});
 </script>
 
 <hr/>
