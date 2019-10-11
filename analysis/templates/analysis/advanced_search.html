@@ -24,14 +24,9 @@
         {% endfor %}
       </select>
     </div>
-    <div class="col-md-2 my-1">
-      <select class="custom-select mr-sm-2" id="univ_name" name="univ_name">
-          <option value=""> 대학명 </option>
-        {% for item in univ_name_item %}
-          <option value="{{item.pk}}" {% if item.pk == current_univ_name %} selected {% endif %}>{{item.univ_name}}</option>
-        {% endfor %}
-      </select>
-    </div>
+
+    {{ form }}
+
     <div class="col-md-2 my-1">
       <select class="custom-select mr-sm-2" id="univ_major" name="univ_major">
         <option value=""> 학과명 </option>
@@ -87,7 +82,7 @@ $(document).ready(function(){
         'univ_region': univ_region
       },
       success: function (data) {
-        $("#univ_name").html(data);
+        $("#univ_name").html(data)
       }
     });
   });

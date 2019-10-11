@@ -238,10 +238,9 @@ def search3(request):
 
 
 def load_univ_name(request):
-    template = "analysis/advanced_search.html"
+    template = "analysis/univ_name_dropdown.html"
     univ_region = request.GET.get('univ_region')
     univ_name_qs = UnivName.objects.filter(univ_region=univ_region).order_by('univ_name')
-    print(univ_name_qs)
     return render(request, template, {'univ_name_item': univ_name_qs})
 
 
