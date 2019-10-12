@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from .models import *
+from .forms import AdvancedForm
 
 
 def analysis1(request):
@@ -151,10 +152,13 @@ def search2(request):
 def analysis3(request):
     template = "analysis/advanced_search.html"
 
+    form = AdvancedForm()
+
     major_group_qs = MajorGroup.objects.all().order_by('major_group')
     univ_region_qs = UnivRegion.objects.all().order_by('univ_region')
 
     context = {
+        'form': form,
         'major_group_item': major_group_qs,
         'univ_region_item': univ_region_qs,
     }
@@ -245,10 +249,10 @@ def load_univ_name(request):
 
 
 def load_univ_major(request):
-    template = "analysis/advanced_search.html"
+    template = "analysis/univ_major_dropdown.html"
     univ_name = request.GET.get('univ_name')
-    univ_major_list = UnivMajor.objects.filter(univ_name=univ_name)
-    return render(request, template, {'univ_major_list': univ_major_list})
+    univ_major_qs = UnivMajor.objects.filter(univ_name=univ_name).order_by('univ_major')
+    return render(request, template, {'univ_major_item': univ_major_qs})
 
 
 def load_admission1(request):

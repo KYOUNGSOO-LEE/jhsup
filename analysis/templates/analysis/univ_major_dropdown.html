@@ -1,0 +1,8 @@
+<div class="col-md-2 my-1">
+  <select class="custom-select mr-sm-2" id="univ_major" name="univ_major">
+    <option value=""> 학과명 </option>
+    {% for item in univ_major_item %}
+      <option value="{{item.pk}}" {% if item.pk == current_univ_major %} selected {% endif %}>{{item.univ_major}}</option>
+    {% endfor %}
+  </select>
+</div>

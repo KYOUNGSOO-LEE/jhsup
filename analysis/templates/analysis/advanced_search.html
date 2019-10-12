@@ -7,72 +7,37 @@
     &#8251 정렬기준 : 인문, 예체능(국영수사100), 자연(국영수과100), 공통(국영수사과100)<br>
 </p>
 
-<form method="get" id="advanced_form", data-univ-name-url="{% url 'ajax_load_univ_name' %}" action="search3">
+<form method="get" id="advanced_form"
+      data-univ-name-url="{% url 'ajax_load_univ_name' %}"
+      data-univ-major-url="{% url 'ajax_load_univ_major' %}"
+      action="search3">
 
   <div class="form-row align-items-center">
-    <div class="col-md-1.5 my-1">
-      <select class="custom-select mr-sm-2" id="major_group" name="major_group">
-        {% for item in major_group_item %}
-          <option value="{{item.pk}}" {% if item.pk == current_major_group %} selected {% endif %}>{{item.major_group}}</option>
-        {% endfor %}
-      </select>
-    </div>
-    <div class="col-md-1.5 my-1">
-      <select class="custom-select mr-sm-2" id="univ_region" name="univ_region">
-        {% for item in univ_region_item %}
-          <option value="{{item.pk}}" {% if item.pk == current_univ_region %} selected {% endif %}>{{item.univ_region}}</option>
-        {% endfor %}
-      </select>
-    </div>
 
     {{ form }}
 
-    <div class="col-md-2 my-1">
-      <select class="custom-select mr-sm-2" id="univ_major" name="univ_major">
-        <option value=""> 학과명 </option>
-        {% for item in univ_major_item %}
-          <option value="{{item.pk}}" {% if item.pk == current_univ_major %} selected {% endif %}>{{item.univ_major}}</option>
-        {% endfor %}
-      </select>
-    </div>
-    <div class="col-md-1 my-1">
-      <select class="custom-select mr-sm-2" id="admission1" name="admission1">
-        <option value=""> 전형 </option>
-        {% for item in admission1_item %}
-          <option value="{{item.pk}}" {% if item.pk == current_admission1 %} selected {% endif %}>{{item.admission1}}</option>
-        {% endfor %}
-      </select>
-    </div>
-    <div class="col-md-4 my-1">
-      <select class="custom-select mr-sm-2" id="admission2" name="admission2">
-        <option value=""> 세부전형 </option>
-        {% for item in admission2_item %}
-          <option value="{{item.pk}}" {% if item.pk == current_admission1 %} selected {% endif %}>{{item.admission2}}</option>
-        {% endfor %}
-      </select>
-    </div>
-  </div>
-  <div class="form-row align-items-center">
     <div class="col-md-2 my-2">
       <label class="sr-only" for="ko_en_math_soc_or_sci_100_min">등급 최솟값</label>
       <input type="number" class="form-control" id="ko_en_math_soc_or_sci_100_min" name="ko_en_math_soc_or_sci_100_min"
              value="{{current_ko_en_math_soc_or_sci_100_min}}" placeholder="등급 최솟값" min="1" max="9" step=".001">
     </div>
+
     <div class="col-md-2 my-2">
       <label class="sr-only" for="ko_en_math_soc_or_sci_100_max">등급 최댓값</label>
       <input type="number" class="form-control" id="ko_en_math_soc_or_sci_100_max" name="ko_en_math_soc_or_sci_100_max"
              value="{{current_ko_en_math_soc_or_sci_100_max}}" placeholder="등급 최댓값" min="1" max="9" step=".001">
     </div>
+
     <div class="col-auto my-1">
       <button type="submit" class="btn btn-warning">검색</button>
     </div>
-  </div>
 
+  </div>
 </form>
 
 <script>
 $(document).ready(function(){
-  $("#univ_region").change(function () {
+  $("#id_univ_region").change(function () {
     var url = $("#advanced_form").attr("data-univ-name-url");
     var univ_region = $(this).val();
 
@@ -82,7 +47,22 @@ $(document).ready(function(){
         'univ_region': univ_region
       },
       success: function (data) {
-        $("#univ_name").html(data)
+        $("#id_univ_name").html(data)
+      }
+    });
+  });
+
+    $("#id_univ_name").change(function () {
+    var url = $("#advanced_form").attr("data-univ-major-url");
+    var univ_name = $(this).val();
+
+    $.ajax({
+      url: url,
+      data: {
+        'univ_name': univ_name
+      },
+      success: function (data) {
+        $("#id_univ_major").html(data)
       }
     });
   });
