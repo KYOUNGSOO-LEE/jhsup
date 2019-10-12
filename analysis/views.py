@@ -6,7 +6,7 @@ from .models import *
 from .forms import AdvancedForm
 
 
-def analysis1(request):
+def grade(request):
     template = "analysis/grade_interval_search.html"
 
     major_group_qs = MajorGroup.objects.all().order_by('major_group')
@@ -19,7 +19,7 @@ def analysis1(request):
     return render(request, template, context)
 
 
-def search1(request):
+def grade_search(request):
     template = "analysis/grade_interval_search.html"
 
     major_group_qs = MajorGroup.objects.all().order_by('major_group')
@@ -78,7 +78,7 @@ def search1(request):
     return render(request, template, context)
 
 
-def analysis2(request):
+def major(request):
     template = "analysis/univ_major_search.html"
 
     major_group_qs = MajorGroup.objects.all().order_by('major_group')
@@ -89,7 +89,7 @@ def analysis2(request):
     return render(request, template, context)
 
 
-def search2(request):
+def major_search(request):
     template = "analysis/univ_major_search.html"
 
     major_group_qs = MajorGroup.objects.all().order_by('major_group')
@@ -149,7 +149,7 @@ def search2(request):
     return render(request, template, context)
 
 
-def analysis3(request):
+def advanced(request):
     template = "analysis/advanced_search.html"
 
     form = AdvancedForm()
@@ -160,7 +160,7 @@ def analysis3(request):
     return render(request, template, context)
 
 
-def search3(request):
+def advanced_search(request):
     template = "analysis/advanced_search.html"
 
     form = AdvancedForm()
@@ -216,7 +216,7 @@ def search3(request):
     return render(request, template, context)
 
 
-def analysis4(request):
+def university(request):
     template = "analysis/univ_name_search.html"
 
     major_group_qs = MajorGroup.objects.all().order_by('major_group')
@@ -227,7 +227,7 @@ def analysis4(request):
     return render(request, template, context)
 
 
-def search4(request):
+def university_search(request):
     template = "analysis/univ_name_search.html"
 
     major_group_qs = MajorGroup.objects.all().order_by('major_group')
