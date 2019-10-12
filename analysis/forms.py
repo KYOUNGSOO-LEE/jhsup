@@ -10,5 +10,4 @@ class AdvancedForm(forms.ModelForm):
                   'univ_name',
                   'univ_major',
                   'admission1',
-                  'admission2',
-                  )
+        )

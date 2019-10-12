@@ -20,7 +20,7 @@
 
 <body>
   <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/"> 진학숲 JINHAKSUP</a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/"> 진학숲 / JINHAKSUP </a>
     <ul class="navbar-nav px-3">
       <li class="nav-item text-nowrap">
         <a class="nav-link" href="#">Sign out</a>
@@ -45,13 +45,18 @@
               </a>
             </li>
             <li class="nav-item">
+              <a class="{% if url_name == 'analysis4' or url_name == 'search4' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'analysis4' %}">
+                학교기준 사례검색
+              </a>
+            </li>
+            <li class="nav-item">
               <a class="{% if url_name == 'analysis2' or url_name == 'search2' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'analysis2' %}">
                 학과기준 사례검색
               </a>
             </li>
             <li class="nav-item">
               <a class="{% if url_name == 'analysis3' or url_name == 'search3' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'analysis3' %}">
-                상세조건 사례검색
+                상세기준 사례검색
               </a>
             </li>
             {% endwith %}

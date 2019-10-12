@@ -1,4 +1,0 @@
-<option value=""> 세부전형 </option>
-{% for item in admission2_item %}
-<option value="{{item.pk}}" {% if item.pk == current_admission1 %} selected {% endif %}>{{item.admission2}}</option>
-{% endfor %}
