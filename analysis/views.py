@@ -296,8 +296,9 @@ def load_univ_name(request):
 
 def load_univ_major(request):
     template = "analysis/univ_major_dropdown.html"
+    major_group = request.GET.get('major_group')
     univ_name = request.GET.get('univ_name')
-    univ_major_qs = UnivMajor.objects.filter(univ_name=univ_name).order_by('univ_major')
+    univ_major_qs = UnivMajor.objects.filter(univ_name=univ_name).filter(major_group=major_group).order_by('univ_major')
     return render(request, template, {'univ_major_item': univ_major_qs})
 
 
