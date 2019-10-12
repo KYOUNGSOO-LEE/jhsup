@@ -1,8 +1,4 @@
-<div class="col-md-4 my-1">
-  <select class="custom-select mr-sm-2" id="admission2" name="admission2">
-    <option value=""> 세부전형 </option>
-    {% for item in admission2_item %}
-      <option value="{{item.pk}}" {% if item.pk == current_admission1 %} selected {% endif %}>{{item.admission2}}</option>
-    {% endfor %}
-  </select>
-</div>
+<option value=""> 세부전형 </option>
+{% for item in admission2_item %}
+<option value="{{item.pk}}" {% if item.pk == current_admission1 %} selected {% endif %}>{{item.admission2}}</option>
+{% endfor %}

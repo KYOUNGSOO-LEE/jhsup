@@ -154,19 +154,16 @@ def analysis3(request):
 
     form = AdvancedForm()
 
-    major_group_qs = MajorGroup.objects.all().order_by('major_group')
-    univ_region_qs = UnivRegion.objects.all().order_by('univ_region')
-
     context = {
         'form': form,
-        'major_group_item': major_group_qs,
-        'univ_region_item': univ_region_qs,
     }
     return render(request, template, context)
 
 
 def search3(request):
     template = "analysis/advanced_search.html"
+
+    form = AdvancedForm()
 
     major_group_qs = MajorGroup.objects.all().order_by('major_group')
     univ_region_qs = UnivRegion.objects.all().order_by('univ_region')
@@ -189,16 +186,16 @@ def search3(request):
         qs = qs.filter(univ_region=univ_region_query)
 
     if univ_name_query != '' and univ_name_query is not None:
-        qs = qs.filter(univ_name__icontains=univ_name_query)
+        qs = qs.filter(univ_name=univ_name_query)
 
     if univ_major_query != '' and univ_major_query is not None:
-        qs = qs.filter(univ_major__icontains=univ_major_query)
+        qs = qs.filter(univ_major=univ_major_query)
 
     if admission1_query != '' and admission1_query is not None:
         qs = qs.filter(admission1=admission1_query)
 
     if admission2_query != '' and admission2_query is not None:
-        qs = qs.filter(admission2__icontains=admission2_query)
+        qs = qs.filter(admission2=admission2_query)
 
     if ko_en_math_soc_or_sci_100_min_query != '' and ko_en_math_soc_or_sci_100_min_query is not None:
         if major_group_qs.get(pk=major_group_query) == '자연':
@@ -224,6 +221,7 @@ def search3(request):
         qs = qs.order_by('-final_step', 'ko_en_math_soc_100')
 
     context = {
+        'form': form,
         'queryset': qs,
         'major_group_item': major_group_qs,
         'univ_region_item': univ_region_qs,
@@ -256,17 +254,17 @@ def load_univ_major(request):
 
 
 def load_admission1(request):
-    template = "analysis/advanced_search.html"
+    template = "analysis/admission1_dropdown.html"
     univ_major = request.GET.get('univ_major')
-    admission1_list = Admission1.objects.filter(univ_major=univ_major)
-    return render(request, template, {'admission1_list': admission1_list})
+    admission1_qs = Admission1.objects.filter(univ_major=univ_major)
+    return render(request, template, {'admission1_item': admission1_qs})
 
 
 def load_admission2(request):
-    template = "analysis/advanced_search.html"
+    template = "analysis/admission2_dropdown.html"
     admission1 = request.GET.get('admission1')
-    admission2_list = Admission2.objects.filter(admission1=admission1)
-    return render(request, template, {'admission2_list': admission2_list})
+    admission2_qs = Admission2.objects.filter(admission1=admission1)
+    return render(request, template, {'admission2_item': admission2_qs})
 
 
 @permission_required('admin.can_add_log_entry')

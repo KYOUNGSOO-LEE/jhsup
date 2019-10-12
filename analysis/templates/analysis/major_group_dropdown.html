@@ -1,7 +1,0 @@
-<div class="col-md-1.5 my-1">
-  <select class="custom-select mr-sm-2" id="major_group" name="major_group">
-    {% for item in major_group_item %}
-      <option value="{{item.pk}}" {% if item.pk == current_major_group %} selected {% endif %}>{{item.major_group}}</option>
-    {% endfor %}
-  </select>
-</div>

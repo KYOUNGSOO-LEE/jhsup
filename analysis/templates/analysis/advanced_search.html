@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 {% block title %} 진학숲 - 상세조건 사례검색 {% endblock %}
 {% block content %}
 
@@ -10,12 +11,32 @@
 <form method="get" id="advanced_form"
       data-univ-name-url="{% url 'ajax_load_univ_name' %}"
       data-univ-major-url="{% url 'ajax_load_univ_major' %}"
+      data-admission1-url="{% url 'ajax_load_admission1' %}"
+      data-admission2-url="{% url 'ajax_load_admission2' %}"
       action="search3">
 
-  <div class="form-row align-items-center">
+  <div class="form-row">
+    <div class="form-group col-md-1 mb-0">
+      {{ form.major_group|as_crispy_field }}
+    </div>
+    <div class="form-group col-md-1 mb-0">
+      {{ form.univ_region|as_crispy_field }}
+    </div>
+    <div class="form-group col-md-3 mb-0">
+      {{ form.univ_name|as_crispy_field }}
+    </div>
+    <div class="form-group col-md-3 mb-0">
+      {{ form.univ_major|as_crispy_field }}
+    </div>
+    <div class="form-group col-md-1 mb-0">
+      {{ form.admission1|as_crispy_field }}
+    </div>
+    <div class="form-group col-md-3 mb-0">
+      {{ form.admission2|as_crispy_field }}
+    </div>
+  </div>
 
-    {{ form }}
-
+  <div class="form-row">
     <div class="col-md-2 my-2">
       <label class="sr-only" for="ko_en_math_soc_or_sci_100_min">등급 최솟값</label>
       <input type="number" class="form-control" id="ko_en_math_soc_or_sci_100_min" name="ko_en_math_soc_or_sci_100_min"
@@ -31,8 +52,8 @@
     <div class="col-auto my-1">
       <button type="submit" class="btn btn-warning">검색</button>
     </div>
-
   </div>
+
 </form>
 
 <script>
@@ -52,7 +73,7 @@ $(document).ready(function(){
     });
   });
 
-    $("#id_univ_name").change(function () {
+  $("#id_univ_name").change(function () {
     var url = $("#advanced_form").attr("data-univ-major-url");
     var univ_name = $(this).val();
 
@@ -66,6 +87,37 @@ $(document).ready(function(){
       }
     });
   });
+
+  $("#id_univ_major").change(function () {
+    var url = $("#advanced_form").attr("data-admission1-url");
+    var univ_major = $(this).val();
+
+    $.ajax({
+      url: url,
+      data: {
+        'univ_major': univ_major
+      },
+      success: function (data) {
+        $("#id_admission1").html(data)
+      }
+    });
+  });
+
+  $("#id_admission1").change(function () {
+    var url = $("#advanced_form").attr("data-admission2-url");
+    var admission1 = $(this).val();
+
+    $.ajax({
+      url: url,
+      data: {
+        'admission1': admission1
+      },
+      success: function (data) {
+        $("#id_admission2").html(data)
+      }
+    });
+  });
+
 });
 </script>
 
