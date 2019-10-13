@@ -48,16 +48,20 @@ $(document).ready(function(){
     var major_group = $("#id_major_group").val();
     var univ_name = $("#id_univ_name").val();
 
-    $.ajax({
-      url: url,
-      data: {
-        'major_group': major_group,
-        'univ_name': univ_name
-      },
-      success: function (data) {
-        $("#id_univ_major").html(data)
-      }
-    });
+    if (univ_name != "") {
+      $.ajax({
+        url: url,
+        data: {
+          'major_group': major_group,
+          'univ_name': univ_name
+        },
+        success: function (data) {
+          $("#id_univ_major").html(data)
+        }
+      });
+    } else {
+      pass;
+    }
   });
 
   $("#id_univ_region").change(function () {
@@ -80,6 +84,7 @@ $(document).ready(function(){
       url: url_load_univ_major,
       data: {
         'univ_region': univ_region,
+        'univ_name': 0,
       },
       success: function (data) {
         $("#id_univ_major").html(data)
@@ -88,13 +93,12 @@ $(document).ready(function(){
     $.ajax({
       url: url_load_admission1,
       data: {
-        'univ_major': univ_major
+        'univ_major': 0
       },
       success: function (data) {
         $("#id_admission1").html(data)
       }
     });
-
   });
 
   $("#id_univ_name").change(function () {
@@ -118,7 +122,7 @@ $(document).ready(function(){
     $.ajax({
       url: url_load_admission1,
       data: {
-        'univ_major': univ_major,
+        'univ_major': 0,
       },
       success: function (data) {
         $("#id_admission1").html(data)
