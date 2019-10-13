@@ -1,0 +1,4 @@
+<option value=""> 대학소재 </option>
+{% for item in univ_region_item %}
+<option value="{{item.pk}}" {% if item.pk == current_univ_region %} selected {% endif %}>{{item.univ_region}}</option>
+{% endfor %}
