@@ -3,6 +3,9 @@
 {% load crispy_forms_tags %}
 
 {% block title %} 진학숲 - 상세조건 사례검색 {% endblock %}
+
+{% block head %}{% endblock %}
+
 {% block content %}
 
 <p class="font-weight-bold text-info">
@@ -46,13 +49,13 @@
 $(document).ready(function(){
 
   $("#id_major_group").change(function () {
-    var url = $("#advanced_form").attr("data-univ-major-url");
+    var url_load_univ_major = $("#advanced_form").attr("data-univ-major-url");
     var major_group = $("#id_major_group").val();
     var univ_name = $("#id_univ_name").val();
 
-    if (univ_name != "") {
+    if (univ_name > 0) {
       $.ajax({
-        url: url,
+        url: url_load_univ_major,
         data: {
           'major_group': major_group,
           'univ_name': univ_name
@@ -62,7 +65,16 @@ $(document).ready(function(){
         }
       });
     } else {
-      pass;
+      $.ajax({
+        url: url_load_univ_major,
+        data: {
+          'major_group': major_group,
+          'univ_name': 0
+        },
+        success: function (data) {
+          $("#id_univ_major").html(data)
+        }
+      });
     }
   });
 
@@ -72,6 +84,7 @@ $(document).ready(function(){
     var url_load_admission1 = $("#advanced_form").attr("data-admission1-url");
     var univ_region = $(this).val();
     var univ_major = $("#id_univ_major").val();
+    var major_group = $("#id_major_group").val();
 
     $.ajax({
       url: url_load_univ_name,
@@ -82,16 +95,31 @@ $(document).ready(function(){
         $("#id_univ_name").html(data)
       }
     });
-    $.ajax({
-      url: url_load_univ_major,
-      data: {
-        'univ_region': univ_region,
-        'univ_name': 0,
-      },
-      success: function (data) {
-        $("#id_univ_major").html(data)
-      }
-    });
+
+    if (major_group != "") {
+      $.ajax({
+        url: url_load_univ_major,
+        data: {
+          'major_group': major_group,
+          'univ_name': 0,
+        },
+        success: function (data) {
+          $("#id_univ_major").html(data)
+        }
+      });
+    } else {
+      $.ajax({
+        url: url_load_univ_major,
+        data: {
+          'major_group': 0,
+          'univ_name': 0,
+        },
+        success: function (data) {
+          $("#id_univ_major").html(data)
+        }
+      });
+    }
+
     $.ajax({
       url: url_load_admission1,
       data: {
