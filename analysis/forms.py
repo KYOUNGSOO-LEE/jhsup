@@ -9,9 +9,9 @@ class AdvancedForm(forms.Form):
 
     major_group = forms.ModelChoiceField(queryset=MajorGroup.objects.all().order_by('major_group'), empty_label='계열')
     univ_region = forms.ModelChoiceField(queryset=UnivRegion.objects.all().order_by('univ_region'), empty_label='지역')
-    univ_name = forms.ChoiceField()
-    univ_major = forms.ChoiceField()
-    admission1 = forms.ChoiceField()
+    univ_name = forms.ModelChoiceField(queryset=UnivName.objects.none(), empty_label='대학명')
+    univ_major = forms.ModelChoiceField(queryset=UnivMajor.objects.none(), empty_label='학과명')
+    admission1 = forms.ModelChoiceField(queryset=Admission1.objects.none(), empty_label='전형')
 
 """
 class AdvancedForm(forms.ModelForm):
