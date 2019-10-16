@@ -1,4 +1,0 @@
-<option value=""> 계열 </option>
-{% for item in major_group_item %}
-<option value="{{item.pk}}" {% if item.pk == current_major_group %} selected {% endif %}>{{item.major_group}}</option>
-{% endfor %}

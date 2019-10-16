@@ -287,21 +287,6 @@ def university_search(request):
     return render(request, template, context)
 
 
-def load_major_group(request):
-    template = "analysis/major_group_dropdown.html"
-    major_group_qs = request.GET.all().order_by('major_group')
-    context = {
-        'major_group_item': major_group_qs,
-    }
-    return render(request, template, context)
-
-
-def load_univ_region(request):
-    template = "analysis/univ_region_dropdown.html"
-    univ_region_qs = request.GET.all().order_by('univ_region')
-    return render(request, template, {'univ_region_item': univ_region_qs})
-
-
 def load_univ_name(request):
     template = "analysis/univ_name_dropdown.html"
     univ_region = request.GET.get('univ_region')

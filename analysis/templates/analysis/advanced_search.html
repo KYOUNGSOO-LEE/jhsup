@@ -14,8 +14,6 @@
 </p>
 
 <form method="get" id="advanced_form"
-      data-major-group-url="{% url 'ajax_load_major_group' %}"
-      data-univ-region-url="{% url 'ajax_load_univ_region' %}"
       data-univ-name-url="{% url 'ajax_load_univ_name' %}"
       data-univ-major-url="{% url 'ajax_load_univ_major' %}"
       data-admission1-url="{% url 'ajax_load_admission1' %}"
@@ -176,43 +174,6 @@ $(document).ready(function(){
   });
 
 });
-</script>
-
-<script>
-  $("#btn_search_adv").click(function() {
-      var url_load_univ_major = $("#advanced_form").attr("data-univ-major-url");
-      var major_group = $("#id_major_group").val();
-      var univ_name = $("#id_univ_name").val();
-
-      if (univ_name > 0) {
-        $.ajax({
-          url: url_load_univ_major,
-          data: {
-            'major_group': major_group,
-            'univ_name': univ_name,
-            'current_major_group': 1,
-          },
-          success: function (data) {
-            $("#id_univ_major").html(data)
-          }
-        });
-      } else {
-        $.ajax({
-          url: url_load_univ_major,
-          data: {
-            'major_group': major_group,
-            'univ_name': 0
-            'current_major_group': 1,
-          },
-          success: function (data) {
-            $("#id_univ_major").html(data)
-          }
-        });
-      }
-    });
-  });
-</script>
-
 </script>
 
 <hr/>
