@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e372554f-7f81-47bf-a249-91e5510304f4" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/jhsup.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jhsup.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/analysis/templates/analysis/advanced_search.html" beforeDir="false" afterPath="$PROJECT_DIR$/analysis/templates/analysis/advanced_search.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/analysis/templates/analysis/major_group_dropdown.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/analysis/templates/analysis/univ_region_dropdown.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/analysis/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/analysis/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -42,7 +40,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="PythonVerboseRegExp" />
     <property name="editor.config.ad.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../dependent-dropdown-example" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
