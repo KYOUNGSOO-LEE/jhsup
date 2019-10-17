@@ -152,7 +152,7 @@ def major_search(request):
 def advanced(request):
     template = "analysis/advanced_search.html"
 
-    form = AdvancedForm()
+    form = AdvancedForm('', '', '')
 
     context = {
         'form': form,
@@ -162,8 +162,6 @@ def advanced(request):
 
 def advanced_search(request):
     template = "analysis/advanced_search.html"
-
-    form = AdvancedForm()
 
     major_group_qs = MajorGroup.objects.all().order_by('major_group')
     univ_region_qs = UnivRegion.objects.all().order_by('univ_region')
@@ -199,13 +197,23 @@ def advanced_search(request):
     else:
         qs = qs.order_by('-final_step', 'ko_en_math_soc_100')
 
+    form = AdvancedForm(univ_region_query,
+                        univ_name_query,
+                        univ_major_query,
+                        initial={'major_group': major_group_query,
+                                 'univ_region': univ_region_query,
+                                 'univ_name': univ_name_query,
+                                 'univ_major': univ_major_query,
+                                 'admission1': admission1_query,
+                                 }
+    )
+
     context = {
         'form': form,
         'queryset': qs,
         'major_group_item': major_group_qs,
         'univ_region_item': univ_region_qs,
         'current_major_group': int(major_group_query),
-        'current_major_group_str': str(major_group_qs.get(pk=major_group_query)),
         'current_univ_region': int(univ_region_query),
         'current_univ_name': univ_name_query,
         'current_univ_major': univ_major_query,
@@ -291,10 +299,7 @@ def load_univ_name(request):
     template = "analysis/univ_name_dropdown.html"
     univ_region = request.GET.get('univ_region')
     univ_name_qs = UnivName.objects.filter(univ_region=univ_region).order_by('univ_name')
-    context = {
-        'univ_name_item': univ_name_qs,
-    }
-    return render(request, template, context)
+    return render(request, template, {'univ_name_item': univ_name_qs})
 
 
 def load_univ_major(request):
