@@ -30,19 +30,3 @@ class AdvancedForm(forms.Form):
             self.fields['admission1'].queryset = Admission1.objects.filter(univ_major=univ_major)
         else:
             self.fields['admission1'].queryset = Admission1.objects.none()
-
-
-"""
-class AdvancedForm(forms.ModelForm):
-    helper = FormHelper()
-    helper.form_show_labels = False
-
-    class Meta:
-        model = Student
-        fields = ('major_group',
-                  'univ_region',
-                  'univ_name',
-                  'univ_major',
-                  'admission1',
-        )
-"""

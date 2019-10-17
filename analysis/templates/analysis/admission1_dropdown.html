@@ -1,4 +1,4 @@
 <option value=""> 전형 </option>
 {% for item in admission1_item %}
-<option value="{{item.pk}}" {% if item.pk == current_admission1 %} selected {% endif %}>{{item.admission1}}</option>
+<option value="{{item.pk}}">{{item.admission1}}</option>
 {% endfor %}

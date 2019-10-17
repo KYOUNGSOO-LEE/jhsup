@@ -164,7 +164,6 @@ def advanced_search(request):
     template = "analysis/advanced_search.html"
 
     major_group_qs = MajorGroup.objects.all().order_by('major_group')
-    univ_region_qs = UnivRegion.objects.all().order_by('univ_region')
     final_step = ['합격', '충원합격', '불합격']
 
     qs = Student.objects.all()
@@ -173,7 +172,6 @@ def advanced_search(request):
     univ_name_query = request.GET.get('univ_name')
     univ_major_query = request.GET.get('univ_major')
     admission1_query = request.GET.get('admission1')
-    admission2_query = request.GET.get('admission2')
 
     if major_group_query != '' and major_group_query is not None:
         qs = qs.filter(major_group=major_group_query)
@@ -205,21 +203,15 @@ def advanced_search(request):
                                  'univ_name': univ_name_query,
                                  'univ_major': univ_major_query,
                                  'admission1': admission1_query,
-                                 }
+                        }
     )
 
     context = {
         'form': form,
         'queryset': qs,
-        'major_group_item': major_group_qs,
-        'univ_region_item': univ_region_qs,
+        'final_step': final_step,
         'current_major_group': int(major_group_query),
-        'current_univ_region': int(univ_region_query),
-        'current_univ_name': univ_name_query,
-        'current_univ_major': univ_major_query,
-        'current_admission1': admission1_query,
-        'current_admission2': admission2_query,
-        'final_step': final_step
+        'current_major_group_str': str(major_group_qs.get(pk=major_group_query)),
     }
     return render(request, template, context)
 
