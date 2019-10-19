@@ -12,6 +12,8 @@
   <title>{% block title %} 진학숲 {% endblock %}</title>
 
   <script src=https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.js> </script>
+  <!-- chart.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
    <!-- Bootstrap core CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <!-- Custom styles for this template -->
@@ -41,8 +43,19 @@
               </a>
             </li>
           </ul>
-            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-              <span>사례검색</span></h6>
+
+          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>통계분석</span></h6>
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="{% if url_name == 'statistic1'%}nav-link active{%else%}nav-link{% endif %}" href="{% url 'statistic1' %}">
+                지역별 지원통계
+              </a>
+            </li>
+          </ul>
+
+          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>사례검색</span></h6>
           <ul class="nav flex-column">
             <li class="nav-item">
               <a class="{% if url_name == 'grade' or url_name == 'grade_search' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'grade' %}">

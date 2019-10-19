@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', HomeView.as_view(), name='home'),
     url(r'^analysis/', include('analysis.urls')),
+    url(r'^statistic/', include('statistic.urls')),
     url(r'^upload-csv1/', univ_data_upload1, name='univ_data_upload1'),
     url(r'^upload-csv2/', univ_data_upload2, name='univ_data_upload2'),
     url(r'^upload-csv3/', univ_data_upload3, name='univ_data_upload3'),
