@@ -57,7 +57,7 @@
         <th scope="col">전교과100</th>
         {% if current_major_group_str == '자연' %}
           <th scope="col">국영수과100</th>
-        {% elif current_major_group_str == '공통' %}
+        {% elif current_major_group_str|safe == '공통' %}
           <th scope="col">국영수사과100</th>
         {% else %}
           <th scope="col">국영수사100</th>
