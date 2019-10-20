@@ -3,18 +3,71 @@
 
 {% block content %}
 
-<h4> 2019학년도 입시 충남, 충북, 대전, 세종 {{student_sum}} 건의 지원 중 </h4>
-<canvas id="myChart" width="400" height="100"></canvas>
+<h4> 2019학년도 입시 충남, 충북, 대전, 세종 지역 {{chart1_sum}} 건의 지원 중 </h4>
+<canvas id="Chart1" width="400" height="100"></canvas>
 
 <script>
-var ctx = document.getElementById('myChart').getContext('2d');
+var ctx = document.getElementById('Chart1').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'horizontalBar',
     data: {
-        labels: {{ univ_name | safe }},
+        labels: {{ chart1_univ_name_list | safe }},
         datasets: [{
-            label: '지원학교현황',
-            data: {{ univ_freq }},
+            label: '대학별 지원건수',
+            data: {{ chart1_univ_freq_list }},
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+</script>
+
+<br><br><br>
+
+<h4> 2019학년도 입시 충남지역 {{chart2_sum}} 건의 지원 중 </h4>
+<canvas id="Chart2" width="400" height="100"></canvas>
+
+<script>
+var ctx = document.getElementById('Chart2').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'horizontalBar',
+    data: {
+        labels: {{ chart2_univ_name_list | safe }},
+        datasets: [{
+            label: '대학별 지원건수',
+            data: {{ chart2_univ_freq_list }},
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
