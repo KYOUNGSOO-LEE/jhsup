@@ -48,12 +48,12 @@
             <span>수시 통계분석</span></h6>
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a class="{% if url_name == 'num_application'%}nav-link active{%else%}nav-link{% endif %}" href="{% url 'num_application' %}">
+              <a class="{% if url_name == 'app_region' or url_name == 'app_tap_region_dj' or url_name == 'app_tap_region_sj' or url_name == 'app_tap_region_cn' or url_name == 'app_tap_region_cb' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region' %}">
                 지역별 지원대학 통계
               </a>
             </li>
             <li class="nav-item">
-              <a class="{% if url_name == 'num_application'%}nav-link active{%else%}nav-link{% endif %}" href="{% url 'num_application' %}">
+              <a class="{% if url_name == 'app_region'%}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region' %}">
                 등급별 지원대학 통계
               </a>
             </li>

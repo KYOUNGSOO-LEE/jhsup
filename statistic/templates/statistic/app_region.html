@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block title %} 진학숲 지원통계 {% endblock %}
+
+{% block content %}
+
+<h4> 지역별 지원 사례수 </h4>
+<canvas id="Chart0" width="550" height="100"></canvas>
+
+<script>
+var ctx = document.getElementById('Chart0').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: {{ chart0_student_region_list | safe }},
+        datasets: [{
+            label: '대학별 지원 사례 수',
+            data: {{ chart0_student_region_freq_list }},
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+            ],
+            borderWidth: 1
+        }]
+    }
+});
+</script>
+
+<ul>
+  <li>{{chart0_student_region_list.0}} 사례 수: {{chart0_student_region_freq_list.0}} 건</li>
+  <li>{{chart0_student_region_list.1}} 사례 수: {{chart0_student_region_freq_list.1}} 건</li>
+  <li>{{chart0_student_region_list.2}} 사례 수: {{chart0_student_region_freq_list.2}} 건</li>
+  <li>{{chart0_student_region_list.3}} 사례 수: {{chart0_student_region_freq_list.3}} 건</li>
+</ul>
+
+<br>
+
+{% with url_name=request.resolver_match.url_name %}
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="{% if url_name == 'app_region' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region' %}">충청도</a>
+  </li>
+  <li class="nav-item">
+    <a class="{% if url_name == 'app_tap_region_dj' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_tap_region_dj' %}">대전</a>
+  </li>
+  <li class="nav-item">
+    <a class="{% if url_name == 'app_tap_region_sj' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_tap_region_sj' %}">세종</a>
+  </li>
+  <li class="nav-item">
+    <a class="{% if url_name == 'app_tap_region_cn' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_tap_region_cn' %}">충남</a>
+  </li>
+  <li class="nav-item">
+    <a class="{% if url_name == 'app_tap_region_cb' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_tap_region_cb' %}">충북</a>
+  </li>
+</ul>
+{% endwith %}
+<br>
+{% block tap_content %}
+
+<canvas id="Chart1" width="400" height="100"></canvas>
+<script>
+var ctx = document.getElementById('Chart1').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'horizontalBar',
+    data: {
+        labels: {{ chart1_univ_name_list | safe }},
+        datasets: [{
+            label: '대학별 지원건수',
+            data: {{ chart1_univ_freq_list }},
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+</script>
+
+{% endblock %}
+
+{% endblock content %}
