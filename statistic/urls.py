@@ -7,4 +7,6 @@ urlpatterns = [
     url(r'^app-region/app-tab-sj$', views.app_tap_region_sj, name="app_tap_region_sj"),
     url(r'^app-region/app-tab-cn$', views.app_tap_region_cn, name="app_tap_region_cn"),
     url(r'^app-region/app-tab-cb$', views.app_tap_region_cb, name="app_tap_region_cb"),
+
+    url(r'^app-grade-ja$', views.app_grade_ja, name="app_grade_ja"),
 ]

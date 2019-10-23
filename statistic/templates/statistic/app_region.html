@@ -1,20 +1,20 @@
 {% extends "base.html" %}
-{% block title %} 진학숲 지원통계 {% endblock %}
+{% block title %} 지역별 지원통계 {% endblock %}
 
 {% block content %}
 
-<h4> 지역별 지원 사례수 </h4>
-<canvas id="Chart0" width="550" height="100"></canvas>
+<h4> 지역별 지원통계 </h4>
+<canvas id="app_region_chart" width="550" height="100"></canvas>
 
 <script>
-var ctx = document.getElementById('Chart0').getContext('2d');
+var ctx = document.getElementById('app_region_chart').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'doughnut',
     data: {
-        labels: {{ chart0_student_region_list | safe }},
+        labels: {{ student_region_list | safe }},
         datasets: [{
             label: '대학별 지원 사례 수',
-            data: {{ chart0_student_region_freq_list }},
+            data: {{ student_region_freq_list }},
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -34,10 +34,10 @@ var myChart = new Chart(ctx, {
 </script>
 
 <ul>
-  <li>{{chart0_student_region_list.0}} 사례 수: {{chart0_student_region_freq_list.0}} 건</li>
-  <li>{{chart0_student_region_list.1}} 사례 수: {{chart0_student_region_freq_list.1}} 건</li>
-  <li>{{chart0_student_region_list.2}} 사례 수: {{chart0_student_region_freq_list.2}} 건</li>
-  <li>{{chart0_student_region_list.3}} 사례 수: {{chart0_student_region_freq_list.3}} 건</li>
+  <li>{{student_region_list.0}} 사례 수: {{student_region_freq_list.0}} 건</li>
+  <li>{{student_region_list.1}} 사례 수: {{student_region_freq_list.1}} 건</li>
+  <li>{{student_region_list.2}} 사례 수: {{student_region_freq_list.2}} 건</li>
+  <li>{{student_region_list.3}} 사례 수: {{student_region_freq_list.3}} 건</li>
 </ul>
 
 <br>
@@ -64,16 +64,16 @@ var myChart = new Chart(ctx, {
 <br>
 {% block tap_content %}
 
-<canvas id="Chart1" width="400" height="100"></canvas>
+<canvas id="app_region_chart_cc" width="400" height="100"></canvas>
 <script>
-var ctx = document.getElementById('Chart1').getContext('2d');
+var ctx = document.getElementById('app_region_chart_cc').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'horizontalBar',
     data: {
-        labels: {{ chart1_univ_name_list | safe }},
+        labels: {{ application_univ_name_cc_list | safe }},
         datasets: [{
             label: '대학별 지원건수',
-            data: {{ chart1_univ_freq_list }},
+            data: {{ application_univ_freq_cc_list }},
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
