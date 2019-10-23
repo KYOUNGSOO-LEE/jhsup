@@ -20,12 +20,20 @@ var myChart = new Chart(ctx, {
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(255, 206, 86, 0.2)',
                 'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
             ],
             borderColor: [
                 'rgba(255, 99, 132, 1)',
                 'rgba(54, 162, 235, 1)',
                 'rgba(255, 206, 86, 1)',
                 'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
             ],
             borderWidth: 1
         }]
@@ -34,27 +42,69 @@ var myChart = new Chart(ctx, {
 </script>
 
 <br>
-
 {% with url_name=request.resolver_match.url_name %}
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="{% if url_name == 'app_region' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region' %}">충청도</a>
+    <a class="{% if url_name == 'app_grade_ja' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_grade_ja' %}">1등급대</a>
   </li>
   <li class="nav-item">
-    <a class="{% if url_name == 'app_tap_region_dj' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_tap_region_dj' %}">대전</a>
+    <a class="{% if url_name == 'app_tab_grade_ja_2' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_tab_grade_ja_2' %}">2등급대</a>
   </li>
   <li class="nav-item">
-    <a class="{% if url_name == 'app_tap_region_sj' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_tap_region_sj' %}">세종</a>
-  </li>
-  <li class="nav-item">
-    <a class="{% if url_name == 'app_tap_region_cn' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_tap_region_cn' %}">충남</a>
-  </li>
-  <li class="nav-item">
-    <a class="{% if url_name == 'app_tap_region_cb' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_tap_region_cb' %}">충북</a>
+    <a class="{% if url_name == 'app_tab_grade_ja_3' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_tab_grade_ja_3' %}">3등급대</a>
   </li>
 </ul>
 {% endwith %}
 <br>
-{% block tap_content %}{% endblock %}
+{% block grade_tab_content %}
+<canvas id="app_grade_chart_1" width="400" height="100"></canvas>
+<script>
+var ctx = document.getElementById('app_grade_chart_1').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'horizontalBar',
+    data: {
+        labels: {{ application_univ_name_1_list | safe }},
+        datasets: [{
+            label: '등급별 지원건수(1등급대)',
+            data: {{ application_univ_freq_1_list }},
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+</script>
+{% endblock %}
 
 {% endblock content %}
