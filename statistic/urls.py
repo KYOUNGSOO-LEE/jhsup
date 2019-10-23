@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^app-grade-ja/app-tab-ja-2$', views.app_tab_grade_ja_2, name="app_tab_grade_ja_2"),
     url(r'^app-grade-ja/app-tab-ja-3$', views.app_tab_grade_ja_3, name="app_tab_grade_ja_3"),
     url(r'^app-grade-ja/app-tab-ja-4$', views.app_tab_grade_ja_4, name="app_tab_grade_ja_4"),
+    url(r'^app-grade-ja/app-tab-ja-5$', views.app_tab_grade_ja_5, name="app_tab_grade_ja_5"),
 ]

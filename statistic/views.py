@@ -353,3 +353,44 @@ def app_tab_grade_ja_4(request):
         'application_univ_freq_4_list': application_univ_freq_4_list,
     }
     return render(request, template, context)
+
+
+def app_tab_grade_ja_5(request):
+    template = "statistic/app_grade_ja_tab_5.html"
+
+    # 등급별 사례수
+    student_grade_freq_qs = Student.objects.filter(major_group=1) \
+        .values_list(Floor('ko_en_math_sci_100')) \
+        .annotate(student_grade_count=Count(Floor('ko_en_math_sci_100'))) \
+        .order_by(Floor('ko_en_math_sci_100'))
+    student_grade_ja_list = []
+    student_grade_ja_freq_list = []
+
+    for student_grade in student_grade_freq_qs:
+        student_grade_ja_list.append(int(student_grade[0]))
+        student_grade_ja_freq_list.append(student_grade[1])
+
+    # 자연 5등급대 학생 지원대학 현황
+    univ_name_qs = UnivName.objects.all()
+
+    application_5_sum = Student.objects.filter(ko_en_math_sci_100__gte=5).filter(ko_en_math_sci_100__lt=6).count()
+    application_univ_freq_5_qs = Student.objects.filter(ko_en_math_sci_100__gte=5).filter(ko_en_math_sci_100__lt=6)\
+                                     .values_list('univ_name').annotate(univ_count=Count('univ_name'))\
+                                     .order_by('-univ_count')[:10]
+    application_univ_name_5_list = []
+    application_univ_freq_5_list = []
+
+    for univ in application_univ_freq_5_qs:
+        application_univ_name_5 = univ_name_qs.get(pk=univ[0])
+        application_univ_name_5_list.append(application_univ_name_5.univ_name)
+        application_univ_freq_5_list.append(univ[1])
+
+    context = {
+        'student_grade_ja_list': student_grade_ja_list,
+        'student_grade_ja_freq_list': student_grade_ja_freq_list,
+
+        'application_5_sum': application_5_sum,
+        'application_univ_name_5_list': application_univ_name_5_list,
+        'application_univ_freq_5_list': application_univ_freq_5_list,
+    }
+    return render(request, template, context)
