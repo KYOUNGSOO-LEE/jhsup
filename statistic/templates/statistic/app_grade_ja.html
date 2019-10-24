@@ -4,7 +4,7 @@
 {% block content %}
 
 <h4> 등급별 지원통계(자연) </h4>
-<canvas id="app_grade_ja_chart" width="550" height="100"></canvas>
+<canvas id="app_grade_ja_chart" width="500" height="100"></canvas>
 
 <script>
 var ctx = document.getElementById('app_grade_ja_chart').getContext('2d');
@@ -59,11 +59,20 @@ var myChart = new Chart(ctx, {
   <li class="nav-item">
     <a class="{% if url_name == 'app_tab_grade_ja_5' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_tab_grade_ja_5' %}">5등급대</a>
   </li>
+  <li class="nav-item">
+    <a class="{% if url_name == 'app_tab_grade_ja_6' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_tab_grade_ja_6' %}">6등급대</a>
+  </li>
+  <li class="nav-item">
+    <a class="{% if url_name == 'app_tab_grade_ja_7' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_tab_grade_ja_7' %}">7등급대</a>
+  </li>
+  <li class="nav-item">
+    <a class="{% if url_name == 'app_tab_grade_ja_8' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_tab_grade_ja_8' %}">8등급대</a>
+  </li>
 </ul>
 {% endwith %}
 <br>
 {% block grade_tab_content %}
-<canvas id="app_grade_chart_1" width="400" height="100"></canvas>
+<canvas id="app_grade_chart_1" width="200" height="100"></canvas>
 <script>
 var ctx = document.getElementById('app_grade_chart_1').getContext('2d');
 var myChart = new Chart(ctx, {
