@@ -20,7 +20,7 @@ def app_region(request):
     univ_name_qs = UnivName.objects.all()
 
     application_cc_sum = Student.objects.all().count()
-    application_univ_freq_cc_qs = Student.objects.values_list('univ_name').annotate(univ_count=Count('univ_name')).order_by('-univ_count')[:10]
+    application_univ_freq_cc_qs = Student.objects.values_list('univ_name').annotate(univ_count=Count('univ_name')).order_by('-univ_count')[:25]
     application_univ_name_cc_list = []
     application_univ_freq_cc_list = []
 
@@ -59,7 +59,7 @@ def app_tab_region_dj(request):
     # 대전지역 학생 지원대학 현황
     application_dj_sum = Student.objects.filter(student_region='대전').count()
     application_univ_freq_dj_qs = Student.objects.filter(student_region='대전').values_list('univ_name').annotate(
-        univ_count=Count('univ_name')).order_by('-univ_count')[:10]
+        univ_count=Count('univ_name')).order_by('-univ_count')[:25]
     application_univ_name_dj_list = []
     application_univ_freq_dj_list = []
 
@@ -97,7 +97,7 @@ def app_tab_region_sj(request):
     # 세종지역 학생 지원대학 현황
     application_sj_sum = Student.objects.filter(student_region='세종').count()
     application_univ_freq_sj_qs = Student.objects.filter(student_region='세종').values_list('univ_name').annotate(
-        univ_count=Count('univ_name')).order_by('-univ_count')[:10]
+        univ_count=Count('univ_name')).order_by('-univ_count')[:25]
     application_univ_name_sj_list = []
     application_univ_freq_sj_list = []
 
@@ -135,7 +135,7 @@ def app_tab_region_cn(request):
     # 충남지역 학생 지원대학 현황
     application_cn_sum = Student.objects.filter(student_region='충남').count()
     application_univ_freq_cn_qs = Student.objects.filter(student_region='충남').values_list('univ_name').annotate(
-        univ_count=Count('univ_name')).order_by('-univ_count')[:10]
+        univ_count=Count('univ_name')).order_by('-univ_count')[:25]
     application_univ_name_cn_list = []
     application_univ_freq_cn_list = []
 
@@ -173,7 +173,7 @@ def app_tab_region_cb(request):
     # 충북지역 학생 지원대학 현황
     application_cb_sum = Student.objects.filter(student_region='충북').count()
     application_univ_freq_cb_qs = Student.objects.filter(student_region='충북').values_list('univ_name').annotate(
-        univ_count=Count('univ_name')).order_by('-univ_count')[:10]
+        univ_count=Count('univ_name')).order_by('-univ_count')[:25]
     application_univ_name_cb_list = []
     application_univ_freq_cb_list = []
 
