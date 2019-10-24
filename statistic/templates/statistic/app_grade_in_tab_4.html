@@ -1,17 +1,17 @@
-{% extends "statistic/app_grade_ja.html" %}
+{% extends "statistic/app_grade_in.html" %}
 
-{% block grade_ja_tab_content %}
+{% block grade_in_tab_content %}
 
-<canvas id="app_grade_ja_chart_6" width="200" height="100"></canvas>
+<canvas id="app_grade_in_chart_4" width="200" height="100"></canvas>
 <script>
-var ctx = document.getElementById('app_grade_ja_chart_6').getContext('2d');
+var ctx = document.getElementById('app_grade_in_chart_4').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'horizontalBar',
     data: {
-        labels: {{ application_univ_name_6_list | safe }},
+        labels: {{ application_univ_name_4_list | safe }},
         datasets: [{
-            label: '등급별 지원건수(6등급대)',
-            data: {{ application_univ_freq_6_list }},
+            label: '등급별 지원건수(4등급대)',
+            data: {{ application_univ_freq_4_list }},
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',

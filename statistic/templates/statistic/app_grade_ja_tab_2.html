@@ -1,10 +1,10 @@
 {% extends "statistic/app_grade_ja.html" %}
 
-{% block grade_tab_content %}
+{% block grade_ja_tab_content %}
 
-<canvas id="app_grade_chart_2" width="200" height="100"></canvas>
+<canvas id="app_grade_ja_chart_2" width="200" height="100"></canvas>
 <script>
-var ctx = document.getElementById('app_grade_chart_2').getContext('2d');
+var ctx = document.getElementById('app_grade_ja_chart_2').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'horizontalBar',
     data: {

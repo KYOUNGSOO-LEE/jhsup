@@ -1,20 +1,20 @@
 {% extends "base.html" %}
-{% block title %} 등급별 지원통계(자연) {% endblock %}
+{% block title %} 등급별 지원통계(인문) {% endblock %}
 
 {% block content %}
 
-<h4> 등급별 지원통계(자연) </h4>
-<canvas id="app_grade_ja_chart" width="500" height="100"></canvas>
+<h4> 등급별 지원통계(인문) </h4>
+<canvas id="app_grade_in_chart" width="500" height="100"></canvas>
 
 <script>
-var ctx = document.getElementById('app_grade_ja_chart').getContext('2d');
+var ctx = document.getElementById('app_grade_in_chart').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: {{ student_grade_ja_list | safe }},
+        labels: {{ student_grade_in_list | safe }},
         datasets: [{
             label: '등급별 지원 학생 수',
-            data: {{ student_grade_ja_freq_list }},
+            data: {{ student_grade_in_freq_list }},
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -45,36 +45,36 @@ var myChart = new Chart(ctx, {
 {% with url_name=request.resolver_match.url_name %}
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="{% if url_name == 'app_grade_ja' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_grade_ja' %}">1등급대</a>
+    <a class="{% if url_name == 'app_grade_in' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_grade_ja' %}">1등급대</a>
   </li>
   <li class="nav-item">
-    <a class="{% if url_name == 'app_tab_grade_ja_2' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_tab_grade_ja_2' %}">2등급대</a>
+    <a class="{% if url_name == 'app_tab_grade_in_2' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_tab_grade_in_2' %}">2등급대</a>
   </li>
   <li class="nav-item">
-    <a class="{% if url_name == 'app_tab_grade_ja_3' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_tab_grade_ja_3' %}">3등급대</a>
+    <a class="{% if url_name == 'app_tab_grade_in_3' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_tab_grade_in_3' %}">3등급대</a>
   </li>
   <li class="nav-item">
-    <a class="{% if url_name == 'app_tab_grade_ja_4' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_tab_grade_ja_4' %}">4등급대</a>
+    <a class="{% if url_name == 'app_tab_grade_in_4' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_tab_grade_in_4' %}">4등급대</a>
   </li>
   <li class="nav-item">
-    <a class="{% if url_name == 'app_tab_grade_ja_5' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_tab_grade_ja_5' %}">5등급대</a>
+    <a class="{% if url_name == 'app_tab_grade_in_5' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_tab_grade_in_5' %}">5등급대</a>
   </li>
   <li class="nav-item">
-    <a class="{% if url_name == 'app_tab_grade_ja_6' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_tab_grade_ja_6' %}">6등급대</a>
+    <a class="{% if url_name == 'app_tab_grade_in_6' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_tab_grade_in_6' %}">6등급대</a>
   </li>
   <li class="nav-item">
-    <a class="{% if url_name == 'app_tab_grade_ja_7' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_tab_grade_ja_7' %}">7등급대</a>
+    <a class="{% if url_name == 'app_tab_grade_in_7' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_tab_grade_in_7' %}">7등급대</a>
   </li>
   <li class="nav-item">
-    <a class="{% if url_name == 'app_tab_grade_ja_8' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_tab_grade_ja_8' %}">8등급대</a>
+    <a class="{% if url_name == 'app_tab_grade_in_8' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_tab_grade_in_8' %}">8등급대</a>
   </li>
 </ul>
 {% endwith %}
 <br>
-{% block grade_ja_tab_content %}
-<canvas id="app_grade_chart_1" width="200" height="100"></canvas>
+{% block grade_in_tab_content %}
+<canvas id="app_grade_in_chart_1" width="200" height="100"></canvas>
 <script>
-var ctx = document.getElementById('app_grade_chart_1').getContext('2d');
+var ctx = document.getElementById('app_grade_in_chart_1').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'horizontalBar',
     data: {
