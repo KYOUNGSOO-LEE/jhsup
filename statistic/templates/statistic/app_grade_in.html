@@ -13,7 +13,7 @@ var myChart = new Chart(ctx, {
     data: {
         labels: {{ student_grade_in_list | safe }},
         datasets: [{
-            label: '등급별 지원 학생 수',
+            label: '등급별 지원 사례 수',
             data: {{ student_grade_in_freq_list }},
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -80,7 +80,7 @@ var myChart = new Chart(ctx, {
     data: {
         labels: {{ application_univ_name_1_list | safe }},
         datasets: [{
-            label: '등급별 지원건수(1등급대)',
+            label: '등급별 지원 사례 수(1등급대)',
             data: {{ application_univ_freq_1_list }},
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',

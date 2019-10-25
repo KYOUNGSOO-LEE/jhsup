@@ -221,6 +221,17 @@ def app_grade_ja(request):
         application_univ_name_1_list.append(application_univ_name_1.univ_name)
         application_univ_freq_1_list.append(univ[1])
 
+    # 자연 1등급대 학생 지원대학 합격현황
+    application_pass_1_sum = Student.objects.filter(major_group=1).filter(ko_en_math_sci_100__lt=2).filter(final_step='합격').count()
+    application_univ_pass_freq_1_qs = Student.objects.filter(major_group=1).filter(ko_en_math_sci_100__lt=2).filter(final_step='합격').values_list('univ_name').annotate(univ_count=Count('univ_name')).order_by('-univ_count')[:25]
+    application_univ_pass_name_1_list = []
+    application_univ_pass_freq_1_list = []
+
+    for univ in application_univ_pass_freq_1_qs:
+        application_univ_name_1 = univ_name_qs.get(pk=univ[0])
+        application_univ_pass_name_1_list.append(application_univ_name_1.univ_name)
+        application_univ_pass_freq_1_list.append(univ[1])
+
     context = {
         'student_grade_ja_list': student_grade_ja_list,
         'student_grade_ja_freq_list': student_grade_ja_freq_list,
@@ -228,6 +239,10 @@ def app_grade_ja(request):
         'application_1_sum': application_1_sum,
         'application_univ_name_1_list': application_univ_name_1_list,
         'application_univ_freq_1_list': application_univ_freq_1_list,
+
+        'application_pass_1_sum': application_pass_1_sum,
+        'application_univ_pass_name_1_list': application_univ_pass_name_1_list,
+        'application_univ_pass_freq_1_list': application_univ_pass_freq_1_list,
     }
     return render(request, template, context)
 
