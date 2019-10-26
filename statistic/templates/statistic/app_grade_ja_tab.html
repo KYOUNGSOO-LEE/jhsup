@@ -1,80 +1,10 @@
-{% extends "base.html" %}
-{% block title %} 등급별 지원통계(자연) {% endblock %}
+{% extends "statistic/app_grade_ja.html" %}
 
-{% block content %}
-
-<h4> 등급별 지원통계(자연) </h4>
-<canvas id="app_grade_ja_chart" width="500" height="100"></canvas>
-
-<script>
-var ctx = document.getElementById('app_grade_ja_chart').getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: {{ student_grade_ja_list | safe }},
-        datasets: [{
-            label: '등급별 지원 사례 수',
-            data: {{ student_grade_ja_freq_list }},
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-            ],
-            borderWidth: 1
-        }]
-    }
-});
-</script>
-
-<br>
-{% with url_name=request.resolver_match.url_name %}
-<ul class="nav nav-tabs">
-  <li class="nav-item">
-    <a class="{% if url_name == 'app_grade_ja' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_grade_ja' %}">1등급대</a>
-  </li>
-  <li class="nav-item">
-    <a class="{% if url_name == 'app_grade_ja_tab_2' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_grade_ja_tab_2' %}">2등급대</a>
-  </li>
-  <li class="nav-item">
-    <a class="{% if url_name == 'app_grade_ja_tab_3' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_grade_ja_tab_3' %}">3등급대</a>
-  </li>
-  <li class="nav-item">
-    <a class="{% if url_name == 'app_grade_ja_tab_4' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_grade_ja_tab_4' %}">4등급대</a>
-  </li>
-  <li class="nav-item">
-    <a class="{% if url_name == 'app_grade_ja_tab_5' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_grade_ja_tab_5' %}">5등급대</a>
-  </li>
-  <li class="nav-item">
-    <a class="{% if url_name == 'app_grade_ja_tab_6' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_grade_ja_tab_6' %}">6등급대</a>
-  </li>
-  <li class="nav-item">
-    <a class="{% if url_name == 'app_grade_ja_tab_7' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_grade_ja_tab_7' %}">7등급대</a>
-  </li>
-  <li class="nav-item">
-    <a class="{% if url_name == 'app_grade_ja_tab_8' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_grade_ja_tab_8' %}">8등급대</a>
-  </li>
-</ul>
-{% endwith %}
-<br>
 {% block grade_ja_tab_content %}
-<canvas id="app_grade_chart_1" width="130" height="100"></canvas>
+
+<canvas id="app_grade_ja_chart_2" width="130" height="100"></canvas>
 <script>
-var ctx = document.getElementById('app_grade_chart_1').getContext('2d');
+var ctx = document.getElementById('app_grade_ja_chart_2').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'horizontalBar',
     data: {
@@ -209,6 +139,5 @@ var myChart = new Chart(ctx, {
     }
 });
 </script>
-{% endblock %}
 
-{% endblock content %}
+{% endblock %}
