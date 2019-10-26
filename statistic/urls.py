@@ -18,11 +18,11 @@ urlpatterns = [
     url(r'^app-grade-ja/app-grade-ja-tab-8$', views.app_grade_ja_tab_8, name="app_grade_ja_tab_8"),
 
     url(r'^app-grade-in$', views.app_grade_in, name="app_grade_in"),
-    url(r'^app-grade-in/app-tab-in-2$', views.app_tab_grade_in_2, name="app_tab_grade_in_2"),
-    url(r'^app-grade-in/app-tab-in-3$', views.app_tab_grade_in_3, name="app_tab_grade_in_3"),
-    url(r'^app-grade-in/app-tab-in-4$', views.app_tab_grade_in_4, name="app_tab_grade_in_4"),
-    url(r'^app-grade-in/app-tab-in-5$', views.app_tab_grade_in_5, name="app_tab_grade_in_5"),
-    url(r'^app-grade-in/app-tab-in-6$', views.app_tab_grade_in_6, name="app_tab_grade_in_6"),
-    url(r'^app-grade-in/app-tab-in-7$', views.app_tab_grade_in_7, name="app_tab_grade_in_7"),
-    url(r'^app-grade-in/app-tab-in-8$', views.app_tab_grade_in_8, name="app_tab_grade_in_8"),
+    url(r'^app-grade-ja/app-grade-in-tab-2$', views.app_grade_in_tab_2, name="app_grade_in_tab_2"),
+    url(r'^app-grade-ja/app-grade-in-tab-3$', views.app_grade_in_tab_3, name="app_grade_in_tab_3"),
+    url(r'^app-grade-ja/app-grade-in-tab-4$', views.app_grade_in_tab_4, name="app_grade_in_tab_4"),
+    url(r'^app-grade-ja/app-grade-in-tab-5$', views.app_grade_in_tab_5, name="app_grade_in_tab_5"),
+    url(r'^app-grade-ja/app-grade-in-tab-6$', views.app_grade_in_tab_6, name="app_grade_in_tab_6"),
+    url(r'^app-grade-ja/app-grade-in-tab-7$', views.app_grade_in_tab_7, name="app_grade_in_tab_7"),
+    url(r'^app-grade-ja/app-grade-in-tab-8$', views.app_grade_in_tab_8, name="app_grade_in_tab_8"),
 ]
