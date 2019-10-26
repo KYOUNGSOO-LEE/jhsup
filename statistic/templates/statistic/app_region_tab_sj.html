@@ -9,10 +9,10 @@ var ctx = document.getElementById('app_region_chart_sj').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'horizontalBar',
     data: {
-        labels: {{ application_univ_name_sj_list | safe }},
+        labels: {{ app_univ_name_sj_list | safe }},
         datasets: [{
             label: '대학별 지원건수(세종)',
-            data: {{ application_univ_freq_sj_list }},
+            data: {{ app_univ_freq_sj_list }},
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',

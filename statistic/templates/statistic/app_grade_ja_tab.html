@@ -8,10 +8,10 @@ var ctx = document.getElementById('app_grade_ja_chart_2').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'horizontalBar',
     data: {
-        labels: {{ application_univ_name_list | safe }},
+        labels: {{ app_univ_name_list | safe }},
         datasets: [{
             label: '지원 사례 수',
-            data: {{ application_univ_freq_list }},
+            data: {{ app_univ_freq_list }},
             backgroundColor: [
                 'rgba(75, 192, 192, 0.2)',
                 'rgba(75, 192, 192, 0.2)',
@@ -70,7 +70,7 @@ var myChart = new Chart(ctx, {
         },
         {
             label: '합격 사례 수',
-            data: {{ application_univ_pass_freq_list }},
+            data: {{ app_univ_pass_freq_list }},
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(255, 99, 132, 0.2)',
