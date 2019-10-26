@@ -2,17 +2,17 @@
 
 {% block region_tab_content %}
 
-<canvas id="app_region_chart_cb" width="170" height="100"></canvas>
+<canvas id="app_region_tab_chart" width="170" height="100"></canvas>
 
 <script>
-var ctx = document.getElementById('app_region_chart_cb').getContext('2d');
+var ctx = document.getElementById('app_region_tab_chart').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'horizontalBar',
     data: {
-        labels: {{ app_univ_name_cb_list | safe }},
+        labels: {{ app_univ_name_list | safe }},
         datasets: [{
-            label: '대학별 지원건수(충북)',
-            data: {{ app_univ_freq_cb_list }},
+            label: '지원 사례 수',
+            data: {{ app_univ_freq_list }},
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
