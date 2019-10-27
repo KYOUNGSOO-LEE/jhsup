@@ -49,17 +49,22 @@
           <ul class="nav flex-column">
             <li class="nav-item">
               <a class="{% if url_name == 'app_region' or url_name == 'app_region_tab_dj' or url_name == 'app_region_tab_sj' or url_name == 'app_region_tab_cn' or url_name == 'app_region_tab_cb' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region' %}">
-                지역별 지원통계
+                지역별 합불통계
               </a>
             </li>
             <li class="nav-item">
               <a class="{% if url_name == 'app_grade_in' or url_name == 'app_grade_in_tab_2' or url_name == 'app_grade_in_tab_3' or url_name == 'app_grade_in_tab_4' or url_name == 'app_grade_in_tab_5' or url_name == 'app_grade_in_tab_6' or url_name == 'app_grade_in_tab_7' or url_name == 'app_grade_in_tab_8' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_grade_in' %}">
-                등급별 지원통계(인문)
+                등급별 합불통계(인문)
               </a>
             </li>
             <li class="nav-item">
               <a class="{% if url_name == 'app_grade_ja' or url_name == 'app_grade_ja_tab_2' or url_name == 'app_grade_ja_tab_3' or url_name == 'app_grade_ja_tab_4' or url_name == 'app_grade_ja_tab_5' or url_name == 'app_grade_ja_tab_6' or url_name == 'app_grade_ja_tab_7' or url_name == 'app_grade_ja_tab_8' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_grade_ja' %}">
-                등급별 지원통계(자연)
+                등급별 합불통계(자연)
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="{% if url_name == 'app_grade_ja' or url_name == 'app_grade_ja_tab_2' or url_name == 'app_grade_ja_tab_3' or url_name == 'app_grade_ja_tab_4' or url_name == 'app_grade_ja_tab_5' or url_name == 'app_grade_ja_tab_6' or url_name == 'app_grade_ja_tab_7' or url_name == 'app_grade_ja_tab_8' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_grade_ja' %}">
+                학과별 종합전형 분석
               </a>
             </li>
           </ul>

@@ -20,28 +20,46 @@ def app_region(request):
         student_region_freq_list.append(student_region[1])
 
     # 충청도지역 학생 지원대학 현황
+    app_univ_name_list = []
+    app_univ_freq_list = []
     univ_name_qs = UnivName.objects.all()
 
-    app_cc_sum = Student.objects.all().count()
     app_univ_freq_qs = Student.objects.values_list('univ_name')\
                                       .annotate(univ_count=Count('univ_name'))\
                                       .order_by('-univ_count')[:25]
-    app_univ_name_list = []
-    app_univ_freq_list = []
 
     for univ in app_univ_freq_qs:
         app_univ_name = univ_name_qs.get(pk=univ[0])
         app_univ_name_list.append(app_univ_name.univ_name)
         app_univ_freq_list.append(univ[1])
 
+    # 충청도 학생 지원대학 합격/불합격 인원
+    app_univ_pass_freq_list = []
+    app_univ_fail_freq_list = []
+
+    for univ in app_univ_name_list:
+        app_univ_name = univ_name_qs.get(univ_name=univ)
+        app_univ_pass_freq_count = Student.objects.filter(univ_name=app_univ_name.id) \
+            .filter(Q(final_step='합격') | Q(final_step='충원합격')) \
+            .count()
+        app_univ_fail_freq_count = Student.objects.filter(univ_name=app_univ_name.id) \
+            .filter(final_step='불합격') \
+            .count()
+        app_univ_pass_freq_list.append(app_univ_pass_freq_count)
+        app_univ_fail_freq_list.append(app_univ_fail_freq_count)
+
+    app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
+    app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
+
     context = {
         'student_region_list': student_region_list,
         'student_region_freq_list': student_region_freq_list,
 
-        'app_cc_sum': app_cc_sum,
         'app_univ_name_list': app_univ_name_list,
         'app_univ_freq_list': app_univ_freq_list,
 
+        'app_univ_pass_freq_list': app_univ_pass_freq_list,
+        'app_univ_fail_freq_list': app_univ_fail_freq_list,
     }
     return render(request, template, context)
 
@@ -63,7 +81,6 @@ def app_region_tab_dj(request):
         student_region_freq_list.append(student_region[1])
 
     # 대전지역 학생 지원대학 현황
-    app_dj_sum = Student.objects.filter(student_region='대전').count()
     app_univ_freq_qs = Student.objects.filter(student_region='대전')\
                                       .values_list('univ_name')\
                                       .annotate(univ_count=Count('univ_name'))\
@@ -76,13 +93,35 @@ def app_region_tab_dj(request):
         app_univ_name_list.append(app_univ_name.univ_name)
         app_univ_freq_list.append(univ[1])
 
+    # 대전지역 학생 지원대학 합격/불합격 인원
+    app_univ_pass_freq_list = []
+    app_univ_fail_freq_list = []
+
+    for univ in app_univ_name_list:
+        app_univ_name = univ_name_qs.get(univ_name=univ)
+        app_univ_pass_freq_count = Student.objects.filter(student_region='대전')\
+            .filter(univ_name=app_univ_name.id) \
+            .filter(Q(final_step='합격') | Q(final_step='충원합격')) \
+            .count()
+        app_univ_fail_freq_count = Student.objects.filter(student_region='대전')\
+            .filter(univ_name=app_univ_name.id) \
+            .filter(final_step='불합격') \
+            .count()
+        app_univ_pass_freq_list.append(app_univ_pass_freq_count)
+        app_univ_fail_freq_list.append(app_univ_fail_freq_count)
+
+    app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
+    app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
+
     context = {
         'student_region_list': student_region_list,
         'student_region_freq_list': student_region_freq_list,
 
-        'app_dj_sum': app_dj_sum,
         'app_univ_name_list': app_univ_name_list,
         'app_univ_freq_list': app_univ_freq_list,
+
+        'app_univ_pass_freq_list': app_univ_pass_freq_list,
+        'app_univ_fail_freq_list': app_univ_fail_freq_list,
     }
     return render(request, template, context)
 
@@ -104,7 +143,6 @@ def app_region_tab_sj(request):
     univ_name_qs = UnivName.objects.all()
 
     # 세종지역 학생 지원대학 현황
-    app_sj_sum = Student.objects.filter(student_region='세종').count()
     app_univ_freq_qs = Student.objects.filter(student_region='세종')\
                                       .values_list('univ_name').annotate(univ_count=Count('univ_name'))\
                                       .order_by('-univ_count')[:25]
@@ -116,13 +154,35 @@ def app_region_tab_sj(request):
         app_univ_name_list.append(app_univ_name.univ_name)
         app_univ_freq_list.append(univ[1])
 
+    # 세종지역 학생 지원대학 합격/불합격 인원
+    app_univ_pass_freq_list = []
+    app_univ_fail_freq_list = []
+
+    for univ in app_univ_name_list:
+        app_univ_name = univ_name_qs.get(univ_name=univ)
+        app_univ_pass_freq_count = Student.objects.filter(student_region='세종') \
+            .filter(univ_name=app_univ_name.id) \
+            .filter(Q(final_step='합격') | Q(final_step='충원합격')) \
+            .count()
+        app_univ_fail_freq_count = Student.objects.filter(student_region='세종') \
+            .filter(univ_name=app_univ_name.id) \
+            .filter(final_step='불합격') \
+            .count()
+        app_univ_pass_freq_list.append(app_univ_pass_freq_count)
+        app_univ_fail_freq_list.append(app_univ_fail_freq_count)
+
+    app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
+    app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
+
     context = {
         'student_region_list': student_region_list,
         'student_region_freq_list': student_region_freq_list,
 
-        'app_sj_sum': app_sj_sum,
         'app_univ_name_list': app_univ_name_list,
         'app_univ_freq_list': app_univ_freq_list,
+
+        'app_univ_pass_freq_list': app_univ_pass_freq_list,
+        'app_univ_fail_freq_list': app_univ_fail_freq_list,
     }
     return render(request, template, context)
 
@@ -157,13 +217,35 @@ def app_region_tab_cn(request):
         app_univ_name_list.append(app_univ_name.univ_name)
         app_univ_freq_list.append(univ[1])
 
+    # 충남지역 학생 지원대학 합격/불합격 인원
+    app_univ_pass_freq_list = []
+    app_univ_fail_freq_list = []
+
+    for univ in app_univ_name_list:
+        app_univ_name = univ_name_qs.get(univ_name=univ)
+        app_univ_pass_freq_count = Student.objects.filter(student_region='충남') \
+            .filter(univ_name=app_univ_name.id) \
+            .filter(Q(final_step='합격') | Q(final_step='충원합격')) \
+            .count()
+        app_univ_fail_freq_count = Student.objects.filter(student_region='충남') \
+            .filter(univ_name=app_univ_name.id) \
+            .filter(final_step='불합격') \
+            .count()
+        app_univ_pass_freq_list.append(app_univ_pass_freq_count)
+        app_univ_fail_freq_list.append(app_univ_fail_freq_count)
+
+    app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
+    app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
+
     context = {
         'student_region_list': student_region_list,
         'student_region_freq_list': student_region_freq_list,
 
-        'app_cn_sum': app_cn_sum,
         'app_univ_name_list': app_univ_name_list,
         'app_univ_freq_list': app_univ_freq_list,
+
+        'app_univ_pass_freq_list': app_univ_pass_freq_list,
+        'app_univ_fail_freq_list': app_univ_fail_freq_list,
     }
     return render(request, template, context)
 
@@ -198,13 +280,35 @@ def app_region_tab_cb(request):
         app_univ_name_list.append(app_univ_name.univ_name)
         app_univ_freq_list.append(univ[1])
 
+    # 충북지역 학생 지원대학 합격/불합격 인원
+    app_univ_pass_freq_list = []
+    app_univ_fail_freq_list = []
+
+    for univ in app_univ_name_list:
+        app_univ_name = univ_name_qs.get(univ_name=univ)
+        app_univ_pass_freq_count = Student.objects.filter(student_region='충북') \
+            .filter(univ_name=app_univ_name.id) \
+            .filter(Q(final_step='합격') | Q(final_step='충원합격')) \
+            .count()
+        app_univ_fail_freq_count = Student.objects.filter(student_region='충북') \
+            .filter(univ_name=app_univ_name.id) \
+            .filter(final_step='불합격') \
+            .count()
+        app_univ_pass_freq_list.append(app_univ_pass_freq_count)
+        app_univ_fail_freq_list.append(app_univ_fail_freq_count)
+
+    app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
+    app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
+
     context = {
         'student_region_list': student_region_list,
         'student_region_freq_list': student_region_freq_list,
 
-        'app_cb_sum': app_cb_sum,
         'app_univ_name_list': app_univ_name_list,
         'app_univ_freq_list': app_univ_freq_list,
+
+        'app_univ_pass_freq_list': app_univ_pass_freq_list,
+        'app_univ_fail_freq_list': app_univ_fail_freq_list,
     }
     return render(request, template, context)
 
@@ -262,8 +366,8 @@ def app_grade_in(request):
         app_univ_pass_freq_list.append(app_univ_pass_freq_count)
         app_univ_fail_freq_list.append(app_univ_fail_freq_count)
 
-        app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
-        app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
+    app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
+    app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
 
     context = {
         'student_grade_in_list': student_grade_in_list,
@@ -330,8 +434,8 @@ def app_grade_in_tab_2(request):
         app_univ_pass_freq_list.append(app_univ_pass_freq_count)
         app_univ_fail_freq_list.append(app_univ_fail_freq_count)
 
-        app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
-        app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
+    app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
+    app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
 
     context = {
         'student_grade_in_list': student_grade_in_list,
@@ -399,8 +503,8 @@ def app_grade_in_tab_3(request):
         app_univ_pass_freq_list.append(app_univ_pass_freq_count)
         app_univ_fail_freq_list.append(app_univ_fail_freq_count)
 
-        app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
-        app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
+    app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
+    app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
 
     context = {
         'student_grade_in_list': student_grade_in_list,
@@ -468,8 +572,8 @@ def app_grade_in_tab_4(request):
         app_univ_pass_freq_list.append(app_univ_pass_freq_count)
         app_univ_fail_freq_list.append(app_univ_fail_freq_count)
 
-        app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
-        app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
+    app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
+    app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
 
     context = {
         'student_grade_in_list': student_grade_in_list,
@@ -537,8 +641,8 @@ def app_grade_in_tab_5(request):
         app_univ_pass_freq_list.append(app_univ_pass_freq_count)
         app_univ_fail_freq_list.append(app_univ_fail_freq_count)
 
-        app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
-        app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
+    app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
+    app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
 
     context = {
         'student_grade_in_list': student_grade_in_list,
@@ -606,8 +710,8 @@ def app_grade_in_tab_6(request):
         app_univ_pass_freq_list.append(app_univ_pass_freq_count)
         app_univ_fail_freq_list.append(app_univ_fail_freq_count)
 
-        app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
-        app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
+    app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
+    app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
 
     context = {
         'student_grade_in_list': student_grade_in_list,
@@ -675,8 +779,8 @@ def app_grade_in_tab_7(request):
         app_univ_pass_freq_list.append(app_univ_pass_freq_count)
         app_univ_fail_freq_list.append(app_univ_fail_freq_count)
 
-        app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
-        app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
+    app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
+    app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
 
     context = {
         'student_grade_in_list': student_grade_in_list,
@@ -744,8 +848,8 @@ def app_grade_in_tab_8(request):
         app_univ_pass_freq_list.append(app_univ_pass_freq_count)
         app_univ_fail_freq_list.append(app_univ_fail_freq_count)
 
-        app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
-        app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
+    app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
+    app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
 
     context = {
         'student_grade_in_list': student_grade_in_list,
@@ -812,8 +916,8 @@ def app_grade_ja(request):
         app_univ_pass_freq_list.append(app_univ_pass_freq_count)
         app_univ_fail_freq_list.append(app_univ_fail_freq_count)
 
-        app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
-        app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
+    app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
+    app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
 
     context = {
         'student_grade_ja_list': student_grade_ja_list,
@@ -881,8 +985,8 @@ def app_grade_ja_tab_2(request):
         app_univ_pass_freq_list.append(app_univ_pass_freq_count)
         app_univ_fail_freq_list.append(app_univ_fail_freq_count)
 
-        app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
-        app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
+    app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
+    app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
 
     context = {
         'student_grade_ja_list': student_grade_ja_list,
@@ -950,8 +1054,8 @@ def app_grade_ja_tab_3(request):
         app_univ_pass_freq_list.append(app_univ_pass_freq_count)
         app_univ_fail_freq_list.append(app_univ_fail_freq_count)
 
-        app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
-        app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
+    app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
+    app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
 
     context = {
         'student_grade_ja_list': student_grade_ja_list,
@@ -1018,8 +1122,8 @@ def app_grade_ja_tab_4(request):
         app_univ_pass_freq_list.append(app_univ_pass_freq_count)
         app_univ_fail_freq_list.append(app_univ_fail_freq_count)
 
-        app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
-        app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
+    app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
+    app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
 
     context = {
         'student_grade_ja_list': student_grade_ja_list,
@@ -1086,8 +1190,8 @@ def app_grade_ja_tab_5(request):
         app_univ_pass_freq_list.append(app_univ_pass_freq_count)
         app_univ_fail_freq_list.append(app_univ_fail_freq_count)
 
-        app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
-        app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
+    app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
+    app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
 
     context = {
         'student_grade_ja_list': student_grade_ja_list,
@@ -1155,8 +1259,8 @@ def app_grade_ja_tab_6(request):
         app_univ_pass_freq_list.append(app_univ_pass_freq_count)
         app_univ_fail_freq_list.append(app_univ_fail_freq_count)
 
-        app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
-        app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
+    app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
+    app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
 
     context = {
         'student_grade_ja_list': student_grade_ja_list,
@@ -1224,8 +1328,8 @@ def app_grade_ja_tab_7(request):
         app_univ_pass_freq_list.append(app_univ_pass_freq_count)
         app_univ_fail_freq_list.append(app_univ_fail_freq_count)
 
-        app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
-        app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
+    app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
+    app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
 
     context = {
         'student_grade_ja_list': student_grade_ja_list,
@@ -1293,8 +1397,8 @@ def app_grade_ja_tab_8(request):
         app_univ_pass_freq_list.append(app_univ_pass_freq_count)
         app_univ_fail_freq_list.append(app_univ_fail_freq_count)
 
-        app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
-        app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
+    app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
+    app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
 
     context = {
         'student_grade_ja_list': student_grade_ja_list,
