@@ -11,7 +11,4 @@ urlpatterns = [
     url(r'^advanced_search$', views.advanced_search, name="advanced_search"),
     url(r'^university$', views.university, name="university"),
     url(r'^university_search$', views.university_search, name="university_search"),
-    url(r'^ajax/load_univ_name$', views.load_univ_name, name="ajax_load_univ_name"),
-    url(r'^ajax/load_univ_major$', views.load_univ_major, name="ajax_load_univ_major"),
-    url(r'^ajax/load_admission1$', views.load_admission1, name="ajax_load_admission1"),
 ]
