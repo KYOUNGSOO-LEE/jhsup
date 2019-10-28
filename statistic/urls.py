@@ -27,4 +27,5 @@ urlpatterns = [
     url(r'^app-grade-ja/app-grade-in-tab-8$', views.app_grade_in_tab_8, name="app_grade_in_tab_8"),
 
     url(r'^subject-grade$', views.subject_grade, name="subject_grade"),
+    url(r'^subject-grade-search$', views.subject_grade_search, name="subject_grade_search"),
 ]

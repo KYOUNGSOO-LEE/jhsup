@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from analysis.models import *
 from analysis.forms import AdvancedForm
-from django.db.models import Count
+from django.db.models import Count, Avg
 from django.db.models.functions import Floor
 from django.db.models import Q
 
@@ -1428,8 +1428,9 @@ def subject_grade(request):
 def subject_grade_search(request):
     template = "statistic/subject_grade.html"
 
+    grade_item_list = ['국어', '영어', '수학', '사회', '과학']
+    grade_avg_list = []
     major_group_qs = MajorGroup.objects.all().order_by('major_group')
-    final_step = ['합격', '충원합격', '불합격']
 
     qs = Student.objects.all()
     major_group_query = request.GET.get('major_group')
@@ -1455,12 +1456,26 @@ def subject_grade_search(request):
     if admission1_query != '' and admission1_query is not None:
         qs = qs.filter(admission1=admission1_query)
 
-    if current_major_group_str == '자연':
-        qs = qs.order_by('-final_step', 'ko_en_math_sci_100')
-    elif current_major_group_str == '공통':
-        qs = qs.order_by('-final_step', 'ko_en_math_soc_sci_100')
+    qs = qs.filter(Q(final_step='합격') | Q(final_step='충원합격'))
+
+    qs_avg = qs.filter()\
+        .values('korean', 'english', 'mathematics', 'society', 'science')\
+        .aggregate(
+        avg_ko=Avg('korean'),
+        avg_en=Avg('english'),
+        avg_math=Avg('mathematics'),
+        avg_soc=Avg('society'),
+        avg_sci=Avg('science'),
+        )
+
+    if qs_avg['avg_ko'] != '' and qs_avg['avg_ko'] != None:
+        grade_avg_list.append(float(qs_avg['avg_ko']))
+        grade_avg_list.append(float(qs_avg['avg_en']))
+        grade_avg_list.append(float(qs_avg['avg_math']))
+        grade_avg_list.append(float(qs_avg['avg_soc']))
+        grade_avg_list.append(float(qs_avg['avg_sci']))
     else:
-        qs = qs.order_by('-final_step', 'ko_en_math_soc_100')
+        grade_avg_list = []
 
     form = AdvancedForm(univ_region_query,
                         univ_name_query,
@@ -1476,8 +1491,7 @@ def subject_grade_search(request):
     context = {
         'form': form,
         'queryset': qs,
-        'final_step': final_step,
-        'current_major_group': int(major_group_query),
-        'current_major_group_str': current_major_group_str,
+        'grade_item_list': grade_item_list,
+        'grade_avg_list': grade_avg_list
     }
     return render(request, template, context)

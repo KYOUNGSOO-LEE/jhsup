@@ -14,7 +14,7 @@
       data-univ-name-url="{% url 'ajax_load_univ_name' %}"
       data-univ-major-url="{% url 'ajax_load_univ_major' %}"
       data-admission1-url="{% url 'ajax_load_admission1' %}"
-      action="subject_grade">
+      action="subject-grade-search">
 
   <div class="form-row">
     <div class="form-group col-md-1 mb-0">
@@ -178,11 +178,11 @@ $(document).ready(function(){
 <script>
 var ctx = document.getElementById("suject_grade_chart");
 var data = {
-  labels: ["국어", "영어", "수학", "사회", "과학", "국영수사100", "국영수과100"],
+  labels: {{grade_item_list | safe}},
   datasets: [{
-    label: "A",
+    label: "합격 사례 평균",
     backgroundColor: "rgba(200,0,0,0.2)",
-    data: []
+    data: {{grade_avg_list}}
   }]
 };
 var radarChart = new Chart(ctx, {
@@ -191,9 +191,8 @@ var radarChart = new Chart(ctx, {
   options: {
       scale: {
             ticks: {
-              beginAtZero: true,
-              min: 0,
-              max: 9,
+              reverse: true,
+              beginAtZero: false,
             },
             pointLabels: {
               fontSize: 15
