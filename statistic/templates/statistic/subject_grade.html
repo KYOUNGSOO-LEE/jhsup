@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %} 진학숲 {% endblock %}
+
+{% block head %}{% endblock %}
+
+{% block content %}
+<h4> 학과별 종합전형 분석 </h4>
+<br>
+
+<form method="get" id="advanced_form"
+      data-univ-name-url="{% url 'ajax_load_univ_name' %}"
+      data-univ-major-url="{% url 'ajax_load_univ_major' %}"
+      data-admission1-url="{% url 'ajax_load_admission1' %}"
+      action="advanced_search">
+
+  <div class="form-row">
+    <div class="form-group col-md-1 mb-0">
+      {{ form.major_group|as_crispy_field }}
+    </div>
+    <div class="form-group col-md-1 mb-0">
+      {{ form.univ_region|as_crispy_field }}
+    </div>
+    <div class="form-group col-md-3 mb-0">
+      {{ form.univ_name|as_crispy_field }}
+    </div>
+    <div class="form-group col-md-3 mb-0">
+      {{ form.univ_major|as_crispy_field }}
+    </div>
+    <div class="form-group col-md-1 mb-0">
+      {{ form.admission1|as_crispy_field }}
+    </div>
+
+    <div class="col-auto my-1">
+      <button class="btn btn-warning" type="submit">검색</button>
+    </div>
+
+  </div>
+</form>
+
+<script>
+$(document).ready(function(){
+
+  $("#id_major_group").change(function () {
+    var url_load_univ_major = $("#advanced_form").attr("data-univ-major-url");
+    var major_group = $("#id_major_group").val();
+    var univ_name = $("#id_univ_name").val();
+
+    if (univ_name > 0) {
+      $.ajax({
+        url: url_load_univ_major,
+        data: {
+          'major_group': major_group,
+          'univ_name': univ_name
+        },
+        success: function (data) {
+          $("#id_univ_major").html(data)
+        }
+      });
+    } else {
+      $.ajax({
+        url: url_load_univ_major,
+        data: {
+          'major_group': major_group,
+          'univ_name': 0
+        },
+        success: function (data) {
+          $("#id_univ_major").html(data)
+        }
+      });
+    }
+  });
+
+  $("#id_univ_region").change(function () {
+    var url_load_univ_name = $("#advanced_form").attr("data-univ-name-url");
+    var url_load_univ_major = $("#advanced_form").attr("data-univ-major-url");
+    var url_load_admission1 = $("#advanced_form").attr("data-admission1-url");
+    var univ_region = $(this).val();
+    var univ_major = $("#id_univ_major").val();
+    var major_group = $("#id_major_group").val();
+
+    $.ajax({
+      url: url_load_univ_name,
+      data: {
+        'univ_region': univ_region,
+      },
+      success: function (data) {
+        $("#id_univ_name").html(data)
+      }
+    });
+
+    if (major_group != "") {
+      $.ajax({
+        url: url_load_univ_major,
+        data: {
+          'major_group': major_group,
+          'univ_name': 0,
+        },
+        success: function (data) {
+          $("#id_univ_major").html(data)
+        }
+      });
+    } else {
+      $.ajax({
+        url: url_load_univ_major,
+        data: {
+          'major_group': 0,
+          'univ_name': 0,
+        },
+        success: function (data) {
+          $("#id_univ_major").html(data)
+        }
+      });
+    }
+
+    $.ajax({
+      url: url_load_admission1,
+      data: {
+        'univ_major': 0
+      },
+      success: function (data) {
+        $("#id_admission1").html(data)
+      }
+    });
+  });
+
+  $("#id_univ_name").change(function () {
+    var url_load_univ_major = $("#advanced_form").attr("data-univ-major-url");
+    var url_load_admission1 = $("#advanced_form").attr("data-admission1-url");
+    var major_group = $("#id_major_group").val();
+    var univ_name = $(this).val();
+    var univ_major = $("#id_univ_major").val();
+
+    $.ajax({
+      url: url_load_univ_major,
+      data: {
+        'major_group': major_group,
+        'univ_name': univ_name
+      },
+      success: function (data) {
+        $("#id_univ_major").html(data)
+      }
+    });
+
+    $.ajax({
+      url: url_load_admission1,
+      data: {
+        'univ_major': 0,
+      },
+      success: function (data) {
+        $("#id_admission1").html(data)
+      }
+    });
+  });
+
+  $("#id_univ_major").change(function () {
+    var url = $("#advanced_form").attr("data-admission1-url");
+    var univ_major = $(this).val();
+
+    $.ajax({
+      url: url,
+      data: {
+        'univ_major': univ_major
+      },
+      success: function (data) {
+        $("#id_admission1").html(data)
+      }
+    });
+  });
+
+});
+</script>
+<hr/>
+
+<canvas id="suject_grade_chart" width="250" height="100"></canvas>
+<script>
+var ctx = document.getElementById("suject_grade_chart");
+var data = {
+  labels: ["국어", "영어", "수학", "사회", "과학", "국영수사100", "국영수과100"],
+  datasets: [{
+    label: "A",
+    backgroundColor: "rgba(200,0,0,0.2)",
+    data: []
+  }]
+};
+var radarChart = new Chart(ctx, {
+  type: 'radar',
+  data: data,
+  options: {
+      scale: {
+            ticks: {
+              beginAtZero: true,
+              min: 0,
+              max: 9,
+            },
+            pointLabels: {
+              fontSize: 15
+            }
+      }
+  }
+});
+</script>
+
+{% endblock content %}

@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from analysis.models import *
+from analysis.forms import AdvancedForm
 from django.db.models import Count
 from django.db.models.functions import Floor
 from django.db.models import Q
@@ -1409,5 +1410,74 @@ def app_grade_ja_tab_8(request):
 
         'app_univ_pass_freq_list': app_univ_pass_freq_list,
         'app_univ_fail_freq_list': app_univ_fail_freq_list,
+    }
+    return render(request, template, context)
+
+
+def subject_grade(request):
+    template = "statistic/subject_grade.html"
+
+    form = AdvancedForm('', '', '')
+
+    context = {
+        'form': form,
+    }
+    return render(request, template, context)
+
+
+def subject_grade_search(request):
+    template = "statistic/subject_grade.html"
+
+    major_group_qs = MajorGroup.objects.all().order_by('major_group')
+    final_step = ['합격', '충원합격', '불합격']
+
+    qs = Student.objects.all()
+    major_group_query = request.GET.get('major_group')
+    univ_region_query = request.GET.get('univ_region')
+    univ_name_query = request.GET.get('univ_name')
+    univ_major_query = request.GET.get('univ_major')
+    admission1_query = request.GET.get('admission1')
+
+    current_major_group_str = str(major_group_qs.get(pk=major_group_query))
+
+    if major_group_query != '' and major_group_query is not None:
+        qs = qs.filter(major_group=major_group_query)
+
+    if univ_region_query != '' and univ_region_query is not None:
+        qs = qs.filter(univ_region=univ_region_query)
+
+    if univ_name_query != '' and univ_name_query is not None:
+        qs = qs.filter(univ_name=univ_name_query)
+
+    if univ_major_query != '' and univ_major_query is not None:
+        qs = qs.filter(univ_major=univ_major_query)
+
+    if admission1_query != '' and admission1_query is not None:
+        qs = qs.filter(admission1=admission1_query)
+
+    if current_major_group_str == '자연':
+        qs = qs.order_by('-final_step', 'ko_en_math_sci_100')
+    elif current_major_group_str == '공통':
+        qs = qs.order_by('-final_step', 'ko_en_math_soc_sci_100')
+    else:
+        qs = qs.order_by('-final_step', 'ko_en_math_soc_100')
+
+    form = AdvancedForm(univ_region_query,
+                        univ_name_query,
+                        univ_major_query,
+                        initial={'major_group': major_group_query,
+                                 'univ_region': univ_region_query,
+                                 'univ_name': univ_name_query,
+                                 'univ_major': univ_major_query,
+                                 'admission1': admission1_query,
+                        }
+    )
+
+    context = {
+        'form': form,
+        'queryset': qs,
+        'final_step': final_step,
+        'current_major_group': int(major_group_query),
+        'current_major_group_str': current_major_group_str,
     }
     return render(request, template, context)
