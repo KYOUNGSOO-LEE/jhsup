@@ -17,6 +17,7 @@
       data-univ-name-url="{% url 'ajax_load_univ_name' %}"
       data-univ-major-url="{% url 'ajax_load_univ_major' %}"
       data-admission1-url="{% url 'ajax_load_admission1' %}"
+      data-admission2-url="{% url 'ajax_load_admission2' %}"
       action="advanced_search">
 
   <div class="form-row">
@@ -34,6 +35,9 @@
     </div>
     <div class="form-group col-md-1 mb-0">
       {{ form.admission1|as_crispy_field }}
+    </div>
+    <div class="form-group col-md-2 mb-0">
+      {{ form.admission2|as_crispy_field }}
     </div>
 
     <div class="col-auto my-1">
@@ -173,6 +177,50 @@ $(document).ready(function(){
     });
   });
 
+  $("#id_admission1").change(function () {
+    var url = $("#advanced_form").attr("data-admission2-url");
+    var admission1 = $(this).val();
+
+    $.ajax({
+      url: url,
+      data: {
+        'admission1': admission1
+      },
+      success: function (data) {
+        $("#id_admission2").html(data)
+      }
+    });
+  });
+
+});
+</script>
+<hr/>
+
+<canvas id="advanced_search_chart" width="500" height="100"></canvas>
+<script>
+var ctx = document.getElementById("advanced_search_chart");
+var data = {
+  labels: {{grade_item_list | safe}},
+  datasets: [{
+    label: "합격 사례 평균",
+    backgroundColor: "rgba(200,0,0,0.2)",
+    data: {{grade_avg_list}}
+  }]
+};
+var radarChart = new Chart(ctx, {
+  type: 'radar',
+  data: data,
+  options: {
+      scale: {
+            ticks: {
+              reverse: true,
+              beginAtZero: false,
+            },
+            pointLabels: {
+              fontSize: 15
+            }
+      }
+  }
 });
 </script>
 

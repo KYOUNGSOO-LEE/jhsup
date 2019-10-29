@@ -12,8 +12,9 @@ class AdvancedForm(forms.Form):
     univ_name = forms.ModelChoiceField(queryset=UnivName.objects.none(), empty_label='대학명')
     univ_major = forms.ModelChoiceField(queryset=UnivMajor.objects.none(), empty_label='학과명')
     admission1 = forms.ModelChoiceField(queryset=Admission1.objects.none(), empty_label='전형')
+    admission2 = forms.ModelChoiceField(queryset=Admission2.objects.none(), empty_label='세부전형')
 
-    def __init__(self, univ_region, univ_name, univ_major, *args, **kwargs):
+    def __init__(self, univ_region, univ_name, univ_major, admission1,  *args, **kwargs):
         super(AdvancedForm, self).__init__(*args, **kwargs)
 
         if univ_region != '':
@@ -30,3 +31,8 @@ class AdvancedForm(forms.Form):
             self.fields['admission1'].queryset = Admission1.objects.filter(univ_major=univ_major)
         else:
             self.fields['admission1'].queryset = Admission1.objects.none()
+
+        if admission1 != '':
+            self.fields['admission2'].queryset = Admission2.objects.filter(admission1=admission1)
+        else:
+            self.fields['admission2'].queryset = Admission2.objects.none()

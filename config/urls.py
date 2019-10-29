@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^ajax/load_univ_name$', views.load_univ_name, name="ajax_load_univ_name"),
     url(r'^ajax/load_univ_major$', views.load_univ_major, name="ajax_load_univ_major"),
     url(r'^ajax/load_admission1$', views.load_admission1, name="ajax_load_admission1"),
+    url(r'^ajax/load_admission2$', views.load_admission2, name="ajax_load_admission2"),
 
     url(r'^upload-csv1/', views.univ_data_upload1, name='univ_data_upload1'),
     url(r'^upload-csv2/', views.univ_data_upload2, name='univ_data_upload2'),

@@ -31,6 +31,13 @@ def load_admission1(request):
     return render(request, template, {'admission1_item': admission1_qs})
 
 
+def load_admission2(request):
+    template = "dropdown_admission2.html"
+    admission1 = request.GET.get('admission1')
+    admission2_qs = Admission2.objects.filter(admission1=admission1)
+    return render(request, template, {'admission2_item': admission2_qs})
+
+
 @permission_required('admin.can_add_log_entry')
 def univ_data_upload1(request):
     template = "univ_data_upload.html"

@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from analysis.models import *
-from analysis.forms import AdvancedForm
 from django.db.models import Count, Avg
 from django.db.models.functions import Floor
 from django.db.models import Q
@@ -1410,88 +1409,5 @@ def app_grade_ja_tab_8(request):
 
         'app_univ_pass_freq_list': app_univ_pass_freq_list,
         'app_univ_fail_freq_list': app_univ_fail_freq_list,
-    }
-    return render(request, template, context)
-
-
-def subject_grade(request):
-    template = "statistic/subject_grade.html"
-
-    form = AdvancedForm('', '', '')
-
-    context = {
-        'form': form,
-    }
-    return render(request, template, context)
-
-
-def subject_grade_search(request):
-    template = "statistic/subject_grade.html"
-
-    grade_item_list = ['국어', '영어', '수학', '사회', '과학']
-    grade_avg_list = []
-    major_group_qs = MajorGroup.objects.all().order_by('major_group')
-
-    qs = Student.objects.all()
-    major_group_query = request.GET.get('major_group')
-    univ_region_query = request.GET.get('univ_region')
-    univ_name_query = request.GET.get('univ_name')
-    univ_major_query = request.GET.get('univ_major')
-    admission1_query = request.GET.get('admission1')
-
-    current_major_group_str = str(major_group_qs.get(pk=major_group_query))
-
-    if major_group_query != '' and major_group_query is not None:
-        qs = qs.filter(major_group=major_group_query)
-
-    if univ_region_query != '' and univ_region_query is not None:
-        qs = qs.filter(univ_region=univ_region_query)
-
-    if univ_name_query != '' and univ_name_query is not None:
-        qs = qs.filter(univ_name=univ_name_query)
-
-    if univ_major_query != '' and univ_major_query is not None:
-        qs = qs.filter(univ_major=univ_major_query)
-
-    if admission1_query != '' and admission1_query is not None:
-        qs = qs.filter(admission1=admission1_query)
-
-    qs = qs.filter(Q(final_step='합격') | Q(final_step='충원합격'))
-
-    qs_avg = qs.filter()\
-        .values('korean', 'english', 'mathematics', 'society', 'science')\
-        .aggregate(
-        avg_ko=Avg('korean'),
-        avg_en=Avg('english'),
-        avg_math=Avg('mathematics'),
-        avg_soc=Avg('society'),
-        avg_sci=Avg('science'),
-        )
-
-    if qs_avg['avg_ko'] != '' and qs_avg['avg_ko'] != None:
-        grade_avg_list.append(float(qs_avg['avg_ko']))
-        grade_avg_list.append(float(qs_avg['avg_en']))
-        grade_avg_list.append(float(qs_avg['avg_math']))
-        grade_avg_list.append(float(qs_avg['avg_soc']))
-        grade_avg_list.append(float(qs_avg['avg_sci']))
-    else:
-        grade_avg_list = []
-
-    form = AdvancedForm(univ_region_query,
-                        univ_name_query,
-                        univ_major_query,
-                        initial={'major_group': major_group_query,
-                                 'univ_region': univ_region_query,
-                                 'univ_name': univ_name_query,
-                                 'univ_major': univ_major_query,
-                                 'admission1': admission1_query,
-                        }
-    )
-
-    context = {
-        'form': form,
-        'queryset': qs,
-        'grade_item_list': grade_item_list,
-        'grade_avg_list': grade_avg_list
     }
     return render(request, template, context)
