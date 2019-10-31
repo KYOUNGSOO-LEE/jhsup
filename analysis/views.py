@@ -283,7 +283,20 @@ def advanced_search(request):
     else:
         qs = qs.order_by('-final_step', 'ko_en_math_soc_100')
 
-    #chart
+    form = AdvancedForm(univ_region_query,
+                        univ_name_query,
+                        univ_major_query,
+                        admission1_query,
+                        initial={'major_group': major_group_query,
+                                 'univ_region': univ_region_query,
+                                 'univ_name': univ_name_query,
+                                 'univ_major': univ_major_query,
+                                 'admission1': admission1_query,
+                                 'admission2': admission2_query,
+                        }
+    )
+
+    # chart
     grade_item_list = ['국어', '영어', '수학', '사회', '과학']
     grade_avg_list = []
 
@@ -300,26 +313,13 @@ def advanced_search(request):
     )
 
     if qs_avg['avg_ko'] != '' and qs_avg['avg_ko'] != None:
-        grade_avg_list.append(float(qs_avg['avg_ko']))
-        grade_avg_list.append(float(qs_avg['avg_en']))
-        grade_avg_list.append(float(qs_avg['avg_math']))
-        grade_avg_list.append(float(qs_avg['avg_soc']))
-        grade_avg_list.append(float(qs_avg['avg_sci']))
+        grade_avg_list.append(round(float(qs_avg['avg_ko']),3))
+        grade_avg_list.append(round(float(qs_avg['avg_en']),3))
+        grade_avg_list.append(round(float(qs_avg['avg_math']),3))
+        grade_avg_list.append(round(float(qs_avg['avg_soc']),3))
+        grade_avg_list.append(round(float(qs_avg['avg_sci']),3))
     else:
         grade_avg_list = []
-
-    form = AdvancedForm(univ_region_query,
-                        univ_name_query,
-                        univ_major_query,
-                        admission1_query,
-                        initial={'major_group': major_group_query,
-                                 'univ_region': univ_region_query,
-                                 'univ_name': univ_name_query,
-                                 'univ_major': univ_major_query,
-                                 'admission1': admission1_query,
-                                 'admission2': admission2_query,
-                        }
-    )
 
     context = {
         'form': form,

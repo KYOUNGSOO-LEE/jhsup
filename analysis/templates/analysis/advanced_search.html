@@ -196,14 +196,14 @@ $(document).ready(function(){
 </script>
 <hr/>
 
-<canvas id="advanced_search_chart" width="500" height="100"></canvas>
+<canvas id="advanced_search_chart" style="height:35vh; width:30vw"></canvas>
 <script>
 var ctx = document.getElementById("advanced_search_chart");
 var data = {
   labels: {{grade_item_list | safe}},
   datasets: [{
     label: "합격 사례 평균",
-    backgroundColor: "rgba(200,0,0,0.2)",
+    backgroundColor: "rgba(200,0,0,0.5)",
     data: {{grade_avg_list}}
   }]
 };
@@ -211,6 +211,7 @@ var radarChart = new Chart(ctx, {
   type: 'radar',
   data: data,
   options: {
+      responsive: false,
       scale: {
             ticks: {
               reverse: true,
