@@ -203,7 +203,11 @@ var data = {
   labels: {{grade_item_list | safe}},
   datasets: [{
     label: "합격사례 교과별 평균(충원합격 포함)",
-    backgroundColor: "rgba(200,0,0,0.2)",
+    backgroundColor: "rgba(242,150,97,0.2)",
+    borderColor: "rgba(255, 0, 0, 1)",
+    borderWidth: 1.5,
+    pointBackgroundColor: "rgba(255, 0, 0, 1)",
+    pointRadius: 1.3,
     data: {{grade_avg_list}}
   }]
 };
@@ -219,6 +223,9 @@ var radarChart = new Chart(ctx, {
             },
             pointLabels: {
               fontSize: 15
+            },
+            gridLines: {
+              color: ['black', 'blue', 'black', 'blue', 'black', 'blue', 'black', 'blue', 'black', 'blue', 'black', 'blue']
             }
       }
   }
