@@ -4,11 +4,14 @@ from django.contrib import messages
 from django.contrib.auth.decorators import permission_required
 from django.views.generic.base import TemplateView
 from analysis.models import *
+from django.contrib.auth.decorators import login_required
+
 
 class HomeView(TemplateView):
     template_name = 'home.html'
 
 
+@login_required(login_url="login")
 def load_univ_name(request):
     template = "dropdown_univ_name.html"
     univ_region = request.GET.get('univ_region')
@@ -16,6 +19,7 @@ def load_univ_name(request):
     return render(request, template, {'univ_name_item': univ_name_qs})
 
 
+@login_required(login_url="login")
 def load_univ_major(request):
     template = "dropdown_univ_major.html"
     major_group = request.GET.get('major_group')
@@ -24,6 +28,7 @@ def load_univ_major(request):
     return render(request, template, {'univ_major_item': univ_major_qs})
 
 
+@login_required(login_url="login")
 def load_admission1(request):
     template = "dropdown_admission1.html"
     univ_major = request.GET.get('univ_major')
@@ -31,6 +36,7 @@ def load_admission1(request):
     return render(request, template, {'admission1_item': admission1_qs})
 
 
+@login_required(login_url="login")
 def load_admission2(request):
     template = "dropdown_admission2.html"
     admission1 = request.GET.get('admission1')

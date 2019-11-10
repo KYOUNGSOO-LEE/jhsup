@@ -3,8 +3,10 @@ from .models import *
 from django.db.models import Avg
 from django.db.models import Q
 from .forms import AdvancedForm
+from django.contrib.auth.decorators import login_required
 
 
+@login_required(login_url="login")
 def grade(request):
     template = "analysis/grade_interval_search.html"
 
@@ -18,6 +20,7 @@ def grade(request):
     return render(request, template, context)
 
 
+@login_required(login_url="login")
 def grade_search(request):
     template = "analysis/grade_interval_search.html"
 
@@ -79,6 +82,7 @@ def grade_search(request):
     return render(request, template, context)
 
 
+@login_required(login_url="login")
 def university(request):
     template = "analysis/univ_name_search.html"
 
@@ -90,6 +94,7 @@ def university(request):
     return render(request, template, context)
 
 
+@login_required(login_url="login")
 def university_search(request):
     template = "analysis/univ_name_search.html"
 
@@ -152,6 +157,7 @@ def university_search(request):
     return render(request, template, context)
 
 
+@login_required(login_url="login")
 def major(request):
     template = "analysis/univ_major_search.html"
 
@@ -163,6 +169,7 @@ def major(request):
     return render(request, template, context)
 
 
+@login_required(login_url="login")
 def major_search(request):
     template = "analysis/univ_major_search.html"
 
@@ -225,6 +232,7 @@ def major_search(request):
     return render(request, template, context)
 
 
+@login_required(login_url="login")
 def advanced(request):
     template = "analysis/advanced_search.html"
 
@@ -242,6 +250,7 @@ def advanced(request):
     return render(request, template, context)
 
 
+@login_required(login_url="login")
 def advanced_search(request):
     template = "analysis/advanced_search.html"
 
