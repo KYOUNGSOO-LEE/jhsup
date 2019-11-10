@@ -3,8 +3,10 @@ from analysis.models import *
 from django.db.models import Count, Avg
 from django.db.models.functions import Floor
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 
 
+@login_required(login_url="login")
 def app_region(request):
     template = "statistic/app_region.html"
 
@@ -64,6 +66,7 @@ def app_region(request):
     return render(request, template, context)
 
 
+@login_required(login_url="login")
 def app_region_tab_dj(request):
     template = "statistic/app_region_tab.html"
 
@@ -126,6 +129,7 @@ def app_region_tab_dj(request):
     return render(request, template, context)
 
 
+@login_required(login_url="login")
 def app_region_tab_sj(request):
     template = "statistic/app_region_tab.html"
 
@@ -187,6 +191,7 @@ def app_region_tab_sj(request):
     return render(request, template, context)
 
 
+@login_required(login_url="login")
 def app_region_tab_cn(request):
     template = "statistic/app_region_tab.html"
 
@@ -250,6 +255,7 @@ def app_region_tab_cn(request):
     return render(request, template, context)
 
 
+@login_required(login_url="login")
 def app_region_tab_cb(request):
     template = "statistic/app_region_tab.html"
 
@@ -313,6 +319,7 @@ def app_region_tab_cb(request):
     return render(request, template, context)
 
 
+@login_required(login_url="login")
 def app_grade_in(request):
     template = "statistic/app_grade_in.html"
 
@@ -382,6 +389,7 @@ def app_grade_in(request):
     return render(request, template, context)
 
 
+@login_required(login_url="login")
 def app_grade_in_tab_2(request):
     template = "statistic/app_grade_in_tab.html"
 
@@ -450,6 +458,7 @@ def app_grade_in_tab_2(request):
     return render(request, template, context)
 
 
+@login_required(login_url="login")
 def app_grade_in_tab_3(request):
     template = "statistic/app_grade_in_tab.html"
 
@@ -519,6 +528,7 @@ def app_grade_in_tab_3(request):
     return render(request, template, context)
 
 
+@login_required(login_url="login")
 def app_grade_in_tab_4(request):
     template = "statistic/app_grade_in_tab.html"
 
@@ -588,6 +598,7 @@ def app_grade_in_tab_4(request):
     return render(request, template, context)
 
 
+@login_required(login_url="login")
 def app_grade_in_tab_5(request):
     template = "statistic/app_grade_in_tab.html"
 
@@ -657,6 +668,7 @@ def app_grade_in_tab_5(request):
     return render(request, template, context)
 
 
+@login_required(login_url="login")
 def app_grade_in_tab_6(request):
     template = "statistic/app_grade_in_tab.html"
 
@@ -726,6 +738,7 @@ def app_grade_in_tab_6(request):
     return render(request, template, context)
 
 
+@login_required(login_url="login")
 def app_grade_in_tab_7(request):
     template = "statistic/app_grade_in_tab.html"
 
@@ -795,6 +808,7 @@ def app_grade_in_tab_7(request):
     return render(request, template, context)
 
 
+@login_required(login_url="login")
 def app_grade_in_tab_8(request):
     template = "statistic/app_grade_in_tab.html"
 
@@ -864,6 +878,7 @@ def app_grade_in_tab_8(request):
     return render(request, template, context)
 
 
+@login_required(login_url="login")
 def app_grade_ja(request):
     template = "statistic/app_grade_ja.html"
 
@@ -932,6 +947,7 @@ def app_grade_ja(request):
     return render(request, template, context)
 
 
+@login_required(login_url="login")
 def app_grade_ja_tab_2(request):
     template = "statistic/app_grade_ja_tab.html"
 
@@ -1001,6 +1017,7 @@ def app_grade_ja_tab_2(request):
     return render(request, template, context)
 
 
+@login_required(login_url="login")
 def app_grade_ja_tab_3(request):
     template = "statistic/app_grade_ja_tab.html"
 
@@ -1070,6 +1087,7 @@ def app_grade_ja_tab_3(request):
     return render(request, template, context)
 
 
+@login_required(login_url="login")
 def app_grade_ja_tab_4(request):
     template = "statistic/app_grade_ja_tab.html"
 
@@ -1138,6 +1156,7 @@ def app_grade_ja_tab_4(request):
     return render(request, template, context)
 
 
+@login_required(login_url="login")
 def app_grade_ja_tab_5(request):
     template = "statistic/app_grade_ja_tab.html"
 
@@ -1206,6 +1225,7 @@ def app_grade_ja_tab_5(request):
     return render(request, template, context)
 
 
+@login_required(login_url="login")
 def app_grade_ja_tab_6(request):
     template = "statistic/app_grade_ja_tab.html"
 
@@ -1275,6 +1295,7 @@ def app_grade_ja_tab_6(request):
     return render(request, template, context)
 
 
+@login_required(login_url="login")
 def app_grade_ja_tab_7(request):
     template = "statistic/app_grade_ja_tab.html"
 
@@ -1344,6 +1365,7 @@ def app_grade_ja_tab_7(request):
     return render(request, template, context)
 
 
+@login_required(login_url="login")
 def app_grade_ja_tab_8(request):
     template = "statistic/app_grade_ja_tab.html"
 

@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 
 class HomeView(TemplateView):
+    LOGIN_NOT_REQUIRED = False  # The view still login required
     template_name = 'home.html'
 
 
