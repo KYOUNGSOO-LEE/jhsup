@@ -37,6 +37,7 @@
   </head>
 
   <body class="text-center">
+
     <form method="post" action="{% url 'login' %}" class="form-signin">
     {% csrf_token %}
       <h1 class="h3 mb-3 font-weight-normal">진학숲 로그인</h1>
@@ -46,6 +47,15 @@
         <input type="password" id="{{ form.password.id_for_label }}" name="{{ form.password.html_name }}" class="form-control" placeholder="Password" required>
       <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
     </form>
+
+    {% if form.errors %}
+    <div class="fixed-top">
+      <div class="alert alert-danger" role="alert">
+        ID 또는 Password가 정확하지 않습니다.
+      </div>
+    </div>
+    {% endif %}
+
   </body>
 
 </html>
