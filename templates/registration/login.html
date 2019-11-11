@@ -40,7 +40,7 @@
 
     <form method="post" action="{% url 'login' %}" class="form-signin">
     {% csrf_token %}
-      <h1 class="h3 mb-3 font-weight-normal">진학숲 로그인</h1>
+      <h1 class="h3 mb-3 font-weight-normal">진학숲 Login</h1>
       <label for="{{ form.username.id_for_label }}" class="sr-only">ID</label>
         <input class="form-control" id="{{ form.username.id_for_label }}" name="{{ form.username.html_name }}" type="text" placeholder="ID">
       <label for="{{ form.password.id_for_label }}" class="sr-only">Password</label>

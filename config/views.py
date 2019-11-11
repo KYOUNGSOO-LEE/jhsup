@@ -5,10 +5,12 @@ from django.contrib.auth.decorators import permission_required
 from django.views.generic.base import TemplateView
 from analysis.models import *
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class HomeView(TemplateView):
-    LOGIN_NOT_REQUIRED = False  # The view still login required
+class HomeView(LoginRequiredMixin, TemplateView):
+    login_url = '/accounts/login/'
+    redirect_field_name = 'redirect_to'
     template_name = 'home.html'
 
 
