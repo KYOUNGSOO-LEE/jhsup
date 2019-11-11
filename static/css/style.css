@@ -39,13 +39,16 @@ body {
 }
 
 .sidebar .nav-link {
+  font-family: 'Gothic A1', sans-serif;
+  margin-left: 10px;
+  font-size: 0.85rem;
   font-weight: 500;
-  color: #3B0B0B;
+  color: #000000;
 }
 
 .sidebar .nav-link .feather {
   margin-right: 4px;
-  color: #999;
+  color: #999999;
 }
 
 .sidebar .nav-link.active {
@@ -58,7 +61,10 @@ body {
 }
 
 .sidebar-heading {
-  font-size: .75rem;
+  font-family: 'Gothic A1', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 1000;
+  color: #005766;
   text-transform: uppercase;
 }
 
