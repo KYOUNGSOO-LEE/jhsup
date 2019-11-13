@@ -195,7 +195,6 @@ $(document).ready(function(){
 });
 </script>
 <hr/>
-
 <canvas id="advanced_search_chart" style="height:25vh; width:49vw"></canvas>
 <script>
 var ctx = document.getElementById("advanced_search_chart");
@@ -206,8 +205,10 @@ var data = {
     backgroundColor: "rgba(242,150,97,0.2)",
     borderColor: "rgba(255, 0, 0, 1)",
     borderWidth: 1.5,
-    pointBackgroundColor: "rgba(255, 0, 0, 1)",
-    pointRadius: 1.3,
+    pointBackgroundColor: "rgba(0, 90, 0, 1)",
+    pointBorderColor:"rgba(0, 90, 0, 1)",
+    pointRadius: 3,
+    pointHoverBorderWidth: 4,
     data: {{grade_avg_list}}
   }]
 };
@@ -227,7 +228,15 @@ var radarChart = new Chart(ctx, {
             gridLines: {
               color: ['black', 'blue', 'black', 'blue', 'black', 'blue', 'black', 'blue', 'black', 'blue', 'black', 'blue']
             }
-      }
+      },
+       tooltips: {
+                enabled: true,
+                callbacks: {
+                    label: function(tooltipItem, data) {
+                        return data.datasets[tooltipItem.datasetIndex].label + ' : ' + data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                    }
+                }
+       }
   }
 });
 </script>
