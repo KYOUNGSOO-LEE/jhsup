@@ -65,27 +65,25 @@ var myChart = new Chart(ctx, {
     }
 });
 </script>
-
 <br>
-{% with url_name=request.resolver_match.url_name %}
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="{% if url_name == 'app_region' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region' %}">충청도</a>
+    <input type="hidden" value="2019" id="entrance_year2">
+    <a class="{% if request.resolver_match.url_name == 'app_region' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region' %}" onclick="document.getElementById('tab').submit();">충청도</a>
   </li>
   <li class="nav-item">
-    <a class="{% if url_name == 'app_region_tab_dj' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region_tab_dj' %}">대전</a>
+    <a class="{% if request.resolver_match.url_name == 'app_region_tab_dj' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region_tab_dj' %}">대전</a>
   </li>
   <li class="nav-item">
-    <a class="{% if url_name == 'app_region_tab_sj' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region_tab_sj' %}">세종</a>
+    <a class="{% if request.resolver_match.url_name == 'app_region_tab_sj' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region_tab_sj' %}">세종</a>
   </li>
   <li class="nav-item">
-    <a class="{% if url_name == 'app_region_tab_cn' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region_tab_cn' %}">충남</a>
+    <a class="{% if request.resolver_match.url_name == 'app_region_tab_cn' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region_tab_cn' %}">충남</a>
   </li>
   <li class="nav-item">
-    <a class="{% if url_name == 'app_region_tab_cb' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region_tab_cb' %}">충북</a>
+    <a class="{% if request.resolver_match.url_name == 'app_region_tab_cb' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region_tab_cb' %}">충북</a>
   </li>
 </ul>
-{% endwith %}
 <br>
 
 <canvas id="app_region_bar_chart" width="170" height="100"></canvas>

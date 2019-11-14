@@ -90,6 +90,8 @@ def app_region_tab_dj(request):
     # 지역별 사례수
     entrance_year_item = ['2019']
     entrance_year_query = request.GET.get('entrance_year')
+    if entrance_year_query == '' or entrance_year_query is None:
+        entrance_year_query = entrance_year_item[0]
 
     student_region_freq_qs = Student.objects \
         .filter(entrance_year=entrance_year_query) \
@@ -165,6 +167,8 @@ def app_region_tab_sj(request):
     # 지역별 사례수
     entrance_year_item = ['2019']
     entrance_year_query = request.GET.get('entrance_year')
+    if entrance_year_query == '' or entrance_year_query is None:
+        entrance_year_query = entrance_year_item[0]
 
     student_region_freq_qs = Student.objects \
         .filter(entrance_year=entrance_year_query) \
@@ -241,6 +245,8 @@ def app_region_tab_cn(request):
     # 지역별 사례수
     entrance_year_item = ['2019']
     entrance_year_query = request.GET.get('entrance_year')
+    if entrance_year_query == '' or entrance_year_query is None:
+        entrance_year_query = entrance_year_item[0]
 
     student_region_freq_qs = Student.objects \
         .filter(entrance_year=entrance_year_query) \
@@ -318,6 +324,8 @@ def app_region_tab_cb(request):
     # 지역별 사례수
     entrance_year_item = ['2019']
     entrance_year_query = request.GET.get('entrance_year')
+    if entrance_year_query == '' or entrance_year_query is None:
+        entrance_year_query = entrance_year_item[0]
 
     student_region_freq_qs = Student.objects \
         .filter(entrance_year=entrance_year_query) \
