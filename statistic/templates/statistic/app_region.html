@@ -3,7 +3,25 @@
 
 {% block content %}
 
-<h4> 지역별 지원통계 </h4>
+<h4> 지역별 합불통계 </h4>
+<br>
+<form method="get" action="{% url request.resolver_match.url_name %}">
+  <div class="form-row align-items-center">
+
+    <div class="col-md-0.5 my-1">
+      <select class="custom-select mr-sm-2" id="entrance_year" name="entrance_year">
+        {% for item in entrance_year_item %}
+          <option value="{{item}}" {% if item == current_entrance_year %} selected {% endif %}>{{item}}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="col-auto my-1">
+      <button type="submit" class="btn btn-warning">검색</button>
+    </div>
+
+  </div>
+</form>
 
 <div class="container">
   <div class="row">
@@ -69,11 +87,10 @@ var myChart = new Chart(ctx, {
 </ul>
 {% endwith %}
 <br>
-{% block region_tab_content %}
 
-<canvas id="app_region_cc_chart" width="170" height="100"></canvas>
+<canvas id="app_region_bar_chart" width="170" height="100"></canvas>
 <script>
-var ctx = document.getElementById('app_region_cc_chart').getContext('2d');
+var ctx = document.getElementById('app_region_bar_chart').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'horizontalBar',
     data: {
@@ -210,7 +227,5 @@ var myChart = new Chart(ctx, {
     }
 });
 </script>
-
-{% endblock %}
 
 {% endblock content %}
