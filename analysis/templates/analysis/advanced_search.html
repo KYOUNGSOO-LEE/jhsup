@@ -52,6 +52,8 @@ $(document).ready(function(){
 
   $("#id_major_group").change(function () {
     var url_load_univ_major = $("#advanced_form").attr("data-univ-major-url");
+    var url_load_admission1 = $("#advanced_form").attr("data-admission1-url");
+    var url_load_admission2 = $("#advanced_form").attr("data-admission2-url");
     var major_group = $("#id_major_group").val();
     var univ_name = $("#id_univ_name").val();
 
@@ -78,15 +80,38 @@ $(document).ready(function(){
         }
       });
     }
+
+    $.ajax({
+      url: url_load_admission1,
+      data: {
+        'univ_major': 0
+      },
+      success: function (data) {
+        $("#id_admission1").html(data)
+      }
+    });
+
+    $.ajax({
+      url: url_load_admission2,
+      data: {
+        'admission1': 0
+      },
+      success: function (data) {
+        $("#id_admission2").html(data)
+      }
+    });
+
   });
 
   $("#id_univ_region").change(function () {
     var url_load_univ_name = $("#advanced_form").attr("data-univ-name-url");
     var url_load_univ_major = $("#advanced_form").attr("data-univ-major-url");
     var url_load_admission1 = $("#advanced_form").attr("data-admission1-url");
+    var url_load_admission2 = $("#advanced_form").attr("data-admission2-url");
     var univ_region = $(this).val();
     var univ_major = $("#id_univ_major").val();
     var major_group = $("#id_major_group").val();
+    var admission1 = $("#id_admission1").val();
 
     $.ajax({
       url: url_load_univ_name,
@@ -131,11 +156,23 @@ $(document).ready(function(){
         $("#id_admission1").html(data)
       }
     });
+
+    $.ajax({
+      url: url_load_admission2,
+      data: {
+        'admission1': 0
+      },
+      success: function (data) {
+        $("#id_admission2").html(data)
+      }
+    });
+
   });
 
   $("#id_univ_name").change(function () {
     var url_load_univ_major = $("#advanced_form").attr("data-univ-major-url");
     var url_load_admission1 = $("#advanced_form").attr("data-admission1-url");
+    var url_load_admission2 = $("#advanced_form").attr("data-admission2-url");
     var major_group = $("#id_major_group").val();
     var univ_name = $(this).val();
     var univ_major = $("#id_univ_major").val();
@@ -160,14 +197,26 @@ $(document).ready(function(){
         $("#id_admission1").html(data)
       }
     });
+
+    $.ajax({
+      url: url_load_admission2,
+      data: {
+        'admission2': 0,
+      },
+      success: function (data) {
+        $("#id_admission2").html(data)
+      }
+    });
+
   });
 
   $("#id_univ_major").change(function () {
-    var url = $("#advanced_form").attr("data-admission1-url");
+    var url_load_admission1 = $("#advanced_form").attr("data-admission1-url");
+    var url_load_admission2 = $("#advanced_form").attr("data-admission2-url");
     var univ_major = $(this).val();
 
     $.ajax({
-      url: url,
+      url: url_load_admission1,
       data: {
         'univ_major': univ_major
       },
@@ -175,14 +224,25 @@ $(document).ready(function(){
         $("#id_admission1").html(data)
       }
     });
+
+    $.ajax({
+      url: url_load_admission2,
+      data: {
+        'admission1': 0
+      },
+      success: function (data) {
+        $("#id_admission2").html(data)
+      }
+    });
+
   });
 
   $("#id_admission1").change(function () {
-    var url = $("#advanced_form").attr("data-admission2-url");
+    var url_load_admission2 = $("#advanced_form").attr("data-admission2-url");
     var admission1 = $(this).val();
 
     $.ajax({
-      url: url,
+      url: url_load_admission2,
       data: {
         'admission1': admission1
       },
