@@ -292,20 +292,23 @@ def advanced_search(request):
     else:
         qs = qs.order_by('-final_step', 'ko_en_math_soc_100')
 
-    form = AdvancedForm(univ_region_query,
-                        univ_name_query,
-                        univ_major_query,
-                        admission1_query,
-                        initial={'major_group': major_group_query,
-                                 'univ_region': univ_region_query,
-                                 'univ_name': univ_name_query,
-                                 'univ_major': univ_major_query,
-                                 'admission1': admission1_query,
-                                 'admission2': admission2_query,
-                        }
+    # Form
+    form = AdvancedForm(
+        major_group_query,
+        univ_region_query,
+        univ_name_query,
+        univ_major_query,
+        admission1_query,
+        initial={'major_group': major_group_query,
+                 'univ_region': univ_region_query,
+                 'univ_name': univ_name_query,
+                 'univ_major': univ_major_query,
+                 'admission1': admission1_query,
+                 'admission2': admission2_query,
+                 }
     )
 
-    # chart
+    # Chart
     grade_item_list = ['국어', '영어', '수학', '사회', '과학']
     grade_avg_list = []
 
