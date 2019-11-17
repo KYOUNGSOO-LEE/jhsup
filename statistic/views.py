@@ -11,10 +11,8 @@ def app_region(request):
     template = "statistic/app_region.html"
 
     # 지역별 사례수
-    entrance_year_item = ['2019']
+    entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
     entrance_year_query = request.GET.get('entrance_year')
-    if entrance_year_query == '' or entrance_year_query is None:
-        entrance_year_query = entrance_year_item[0]
 
     student_region_freq_qs = Student.objects\
         .filter(entrance_year=entrance_year_query)\
@@ -67,7 +65,8 @@ def app_region(request):
     app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
 
     context = {
-        'entrance_year_item': entrance_year_item,
+        'entrance_year_item': entrance_year_qs,
+        'current_entrance_year': entrance_year_query,
 
         'student_region_list': student_region_list,
         'student_region_freq_list': student_region_freq_list,
@@ -88,10 +87,8 @@ def app_region_tab_dj(request):
     univ_name_qs = UnivName.objects.all()
 
     # 지역별 사례수
-    entrance_year_item = ['2019']
+    entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
     entrance_year_query = request.GET.get('entrance_year')
-    if entrance_year_query == '' or entrance_year_query is None:
-        entrance_year_query = entrance_year_item[0]
 
     student_region_freq_qs = Student.objects \
         .filter(entrance_year=entrance_year_query) \
@@ -145,7 +142,7 @@ def app_region_tab_dj(request):
     app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
 
     context = {
-        'entrance_year_item': entrance_year_item,
+        'entrance_year_item': entrance_year_qs,
         'current_entrance_year': entrance_year_query,
 
         'student_region_list': student_region_list,
@@ -165,10 +162,8 @@ def app_region_tab_sj(request):
     template = "statistic/app_region.html"
 
     # 지역별 사례수
-    entrance_year_item = ['2019']
+    entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
     entrance_year_query = request.GET.get('entrance_year')
-    if entrance_year_query == '' or entrance_year_query is None:
-        entrance_year_query = entrance_year_item[0]
 
     student_region_freq_qs = Student.objects \
         .filter(entrance_year=entrance_year_query) \
@@ -223,7 +218,7 @@ def app_region_tab_sj(request):
     app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
 
     context = {
-        'entrance_year_item': entrance_year_item,
+        'entrance_year_item': entrance_year_qs,
         'current_entrance_year': entrance_year_query,
 
         'student_region_list': student_region_list,
@@ -243,10 +238,8 @@ def app_region_tab_cn(request):
     template = "statistic/app_region.html"
 
     # 지역별 사례수
-    entrance_year_item = ['2019']
+    entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
     entrance_year_query = request.GET.get('entrance_year')
-    if entrance_year_query == '' or entrance_year_query is None:
-        entrance_year_query = entrance_year_item[0]
 
     student_region_freq_qs = Student.objects \
         .filter(entrance_year=entrance_year_query) \
@@ -302,7 +295,7 @@ def app_region_tab_cn(request):
     app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
 
     context = {
-        'entrance_year_item': entrance_year_item,
+        'entrance_year_item': entrance_year_qs,
         'current_entrance_year': entrance_year_query,
 
         'student_region_list': student_region_list,
@@ -322,10 +315,8 @@ def app_region_tab_cb(request):
     template = "statistic/app_region.html"
 
     # 지역별 사례수
-    entrance_year_item = ['2019']
+    entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
     entrance_year_query = request.GET.get('entrance_year')
-    if entrance_year_query == '' or entrance_year_query is None:
-        entrance_year_query = entrance_year_item[0]
 
     student_region_freq_qs = Student.objects \
         .filter(entrance_year=entrance_year_query) \
@@ -381,7 +372,7 @@ def app_region_tab_cb(request):
     app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
 
     context = {
-        'entrance_year_item': entrance_year_item,
+        'entrance_year_item': entrance_year_qs,
         'current_entrance_year': entrance_year_query,
 
         'student_region_list': student_region_list,

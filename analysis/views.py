@@ -240,7 +240,7 @@ def advanced(request):
     grade_item_list = ['국어', '영어', '수학', '사회', '과학']
     grade_avg_list = []
 
-    form = AdvancedForm('', '', '', '')
+    form = AdvancedForm('', '', '', '', '')
 
     context = {
         'form': form,

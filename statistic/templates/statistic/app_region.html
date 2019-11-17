@@ -11,7 +11,7 @@
     <div class="col-md-0.5 my-1">
       <select class="custom-select mr-sm-2" id="entrance_year" name="entrance_year">
         {% for item in entrance_year_item %}
-          <option value="{{item}}" {% if item == current_entrance_year %} selected {% endif %}>{{item}}</option>
+          <option value="{{item.entrance_year}}" {% if item.entrance_year == current_entrance_year %} selected {% endif %}>{{item.entrance_year}}</option>
         {% endfor %}
       </select>
     </div>
@@ -68,20 +68,19 @@ var myChart = new Chart(ctx, {
 <br>
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <input type="hidden" value="2019" id="entrance_year2">
-    <a class="{% if request.resolver_match.url_name == 'app_region' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region' %}" onclick="document.getElementById('tab').submit();">충청도</a>
+    <a class="{% if request.resolver_match.url_name == 'app_region' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region' %}?entrance_year={{ current_entrance_year }}">충청도</a>
   </li>
   <li class="nav-item">
-    <a class="{% if request.resolver_match.url_name == 'app_region_tab_dj' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region_tab_dj' %}">대전</a>
+    <a class="{% if request.resolver_match.url_name == 'app_region_tab_dj' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region_tab_dj' %}?entrance_year={{ current_entrance_year }}">대전</a>
   </li>
   <li class="nav-item">
-    <a class="{% if request.resolver_match.url_name == 'app_region_tab_sj' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region_tab_sj' %}">세종</a>
+    <a class="{% if request.resolver_match.url_name == 'app_region_tab_sj' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region_tab_sj' %}?entrance_year={{ current_entrance_year }}">세종</a>
   </li>
   <li class="nav-item">
-    <a class="{% if request.resolver_match.url_name == 'app_region_tab_cn' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region_tab_cn' %}">충남</a>
+    <a class="{% if request.resolver_match.url_name == 'app_region_tab_cn' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region_tab_cn' %}?entrance_year={{ current_entrance_year }}">충남</a>
   </li>
   <li class="nav-item">
-    <a class="{% if request.resolver_match.url_name == 'app_region_tab_cb' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region_tab_cb' %}">충북</a>
+    <a class="{% if request.resolver_match.url_name == 'app_region_tab_cb' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region_tab_cb' %}?entrance_year={{ current_entrance_year }}">충북</a>
   </li>
 </ul>
 <br>
