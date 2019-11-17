@@ -13,6 +13,8 @@ def app_region(request):
     # 지역별 사례수
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
     entrance_year_query = request.GET.get('entrance_year')
+    if entrance_year_query == '' or entrance_year_query is None:
+        entrance_year_query = entrance_year_qs[0]['entrance_year']
 
     student_region_freq_qs = Student.objects\
         .filter(entrance_year=entrance_year_query)\
