@@ -404,6 +404,8 @@ def app_grade_in(request):
 
     if entrance_year_query == '' or entrance_year_query is None:
         entrance_year_query = entrance_year_qs[0]['entrance_year']
+    if major_group_query == '' or major_group_query is None:
+        major_group_query = 0
     if admission1_query == '' or admission1_query is None:
         admission1_query = admission1_qs[0]['admission1']
 
@@ -413,6 +415,7 @@ def app_grade_in(request):
     student_grade_freq_qs = Student.objects\
         .filter(entrance_year=entrance_year_query)\
         .filter(major_group=major_group_query)\
+        .filter(admission1__admission1__contains=admission1_query)\
         .values_list(Floor('ko_en_math_soc_100'))\
         .annotate(student_grade_count=Count(Floor('ko_en_math_soc_100')))\
         .order_by(Floor('ko_en_math_soc_100'))
@@ -428,7 +431,8 @@ def app_grade_in(request):
 
     app_univ_freq_qs = Student.objects\
                            .filter(entrance_year=entrance_year_query)\
-                           .filter(major_group=major_group_query)\
+                           .filter(major_group=major_group_query) \
+                           .filter(admission1__admission1__contains=admission1_query) \
                            .filter(ko_en_math_soc_100__lt=2)\
                            .values_list('univ_name')\
                            .annotate(univ_count=Count('univ_name'))\
@@ -447,7 +451,8 @@ def app_grade_in(request):
         app_univ_name = univ_name_qs.get(univ_name=univ)
         app_univ_pass_freq_count = Student.objects\
             .filter(entrance_year=entrance_year_query)\
-            .filter(major_group=major_group_query)\
+            .filter(major_group=major_group_query) \
+            .filter(admission1__admission1__contains=admission1_query) \
             .filter(univ_name=app_univ_name.id) \
             .filter(ko_en_math_soc_100__gte=1)\
             .filter(ko_en_math_soc_100__lt=2)\
@@ -456,6 +461,7 @@ def app_grade_in(request):
         app_univ_fail_freq_count = Student.objects \
             .filter(entrance_year=entrance_year_query) \
             .filter(major_group=major_group_query) \
+            .filter(admission1__admission1__contains=admission1_query) \
             .filter(univ_name=app_univ_name.id) \
             .filter(ko_en_math_soc_100__gte=1) \
             .filter(ko_en_math_soc_100__lt=2) \
@@ -473,7 +479,7 @@ def app_grade_in(request):
         'admission1_item': admission1_qs,
 
         'current_entrance_year': entrance_year_query,
-        'current_major_group': major_group_query,
+        'current_major_group': int(major_group_query),
         'current_admission1': admission1_query,
 
         'student_grade_in_list': student_grade_in_list,
@@ -494,7 +500,7 @@ def app_grade_in_tab_2(request):
 
     # 등급별 사례수
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
-    major_group_qs = MajorGroup.objects.values('major_group').order_by('major_group').distinct()
+    major_group_qs = MajorGroup.objects.order_by('major_group').distinct()
     admission1_qs = Admission1.objects.values('admission1').order_by('admission1').distinct()
 
     entrance_year_query = request.GET.get('entrance_year')
@@ -504,13 +510,16 @@ def app_grade_in_tab_2(request):
     if entrance_year_query == '' or entrance_year_query is None:
         entrance_year_query = entrance_year_qs[0]['entrance_year']
     if major_group_query == '' or major_group_query is None:
-        major_group_query = major_group_qs[0]['major_group']
+        major_group_query = 0
     if admission1_query == '' or admission1_query is None:
         admission1_query = admission1_qs[0]['admission1']
 
     student_grade_in_list = []
     student_grade_in_freq_list = []
-    student_grade_freq_qs = Student.objects.filter(major_group=2)\
+    student_grade_freq_qs = Student.objects \
+        .filter(entrance_year=entrance_year_query) \
+        .filter(major_group=major_group_query) \
+        .filter(admission1__admission1__contains=admission1_query) \
         .values_list(Floor('ko_en_math_soc_100'))\
         .annotate(student_grade_count=Count(Floor('ko_en_math_soc_100')))\
         .order_by(Floor('ko_en_math_soc_100'))
@@ -524,12 +533,15 @@ def app_grade_in_tab_2(request):
     app_univ_freq_list = []
     univ_name_qs = UnivName.objects.all()
 
-    app_univ_freq_qs = Student.objects.filter(major_group=2)\
-                                     .filter(ko_en_math_soc_100__gte=2)\
-                                     .filter(ko_en_math_soc_100__lt=3)\
-                                     .values_list('univ_name')\
-                                     .annotate(univ_count=Count('univ_name'))\
-                                     .order_by('-univ_count')[:25]
+    app_univ_freq_qs = Student.objects \
+                           .filter(entrance_year=entrance_year_query) \
+                           .filter(major_group=major_group_query) \
+                           .filter(admission1__admission1__contains=admission1_query) \
+                           .filter(ko_en_math_soc_100__gte=2)\
+                           .filter(ko_en_math_soc_100__lt=3)\
+                           .values_list('univ_name')\
+                           .annotate(univ_count=Count('univ_name'))\
+                           .order_by('-univ_count')[:25]
     for univ in app_univ_freq_qs:
         app_univ_name = univ_name_qs.get(pk=univ[0])
         app_univ_name_list.append(app_univ_name.univ_name)
@@ -541,13 +553,19 @@ def app_grade_in_tab_2(request):
 
     for univ in app_univ_name_list:
         app_univ_name = univ_name_qs.get(univ_name=univ)
-        app_univ_pass_freq_count = Student.objects.filter(major_group=2) \
+        app_univ_pass_freq_count = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(admission1__admission1__contains=admission1_query) \
             .filter(univ_name=app_univ_name.id) \
             .filter(ko_en_math_soc_100__gte=2) \
             .filter(ko_en_math_soc_100__lt=3) \
             .filter(Q(final_step='합격') | Q(final_step='충원합격')) \
             .count()
-        app_univ_fail_freq_count = Student.objects.filter(major_group=2) \
+        app_univ_fail_freq_count = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(admission1__admission1__contains=admission1_query) \
             .filter(univ_name=app_univ_name.id) \
             .filter(ko_en_math_soc_100__gte=2) \
             .filter(ko_en_math_soc_100__lt=3) \
@@ -586,7 +604,7 @@ def app_grade_in_tab_3(request):
 
     # 등급별 사례수
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
-    major_group_qs = MajorGroup.objects.values('major_group').order_by('major_group').distinct()
+    major_group_qs = MajorGroup.objects.order_by('major_group').distinct()
     admission1_qs = Admission1.objects.values('admission1').order_by('admission1').distinct()
 
     entrance_year_query = request.GET.get('entrance_year')
@@ -596,13 +614,16 @@ def app_grade_in_tab_3(request):
     if entrance_year_query == '' or entrance_year_query is None:
         entrance_year_query = entrance_year_qs[0]['entrance_year']
     if major_group_query == '' or major_group_query is None:
-        major_group_query = major_group_qs[0]['major_group']
+        major_group_query = 0
     if admission1_query == '' or admission1_query is None:
         admission1_query = admission1_qs[0]['admission1']
 
     student_grade_in_list = []
     student_grade_in_freq_list = []
-    student_grade_freq_qs = Student.objects.filter(major_group=2) \
+    student_grade_freq_qs = Student.objects \
+        .filter(entrance_year=entrance_year_query) \
+        .filter(major_group=major_group_query) \
+        .filter(admission1__admission1__contains=admission1_query) \
         .values_list(Floor('ko_en_math_soc_100')) \
         .annotate(student_grade_count=Count(Floor('ko_en_math_soc_100'))) \
         .order_by(Floor('ko_en_math_soc_100'))
@@ -616,12 +637,15 @@ def app_grade_in_tab_3(request):
     app_univ_freq_list = []
     univ_name_qs = UnivName.objects.all()
 
-    app_univ_freq_qs = Student.objects.filter(major_group=2)\
-                                     .filter(ko_en_math_soc_100__gte=3)\
-                                     .filter(ko_en_math_soc_100__lt=4)\
-                                     .values_list('univ_name')\
-                                     .annotate(univ_count=Count('univ_name'))\
-                                     .order_by('-univ_count')[:25]
+    app_univ_freq_qs = Student.objects \
+                           .filter(entrance_year=entrance_year_query) \
+                           .filter(major_group=major_group_query) \
+                           .filter(admission1__admission1__contains=admission1_query) \
+                           .filter(ko_en_math_soc_100__gte=3)\
+                           .filter(ko_en_math_soc_100__lt=4)\
+                           .values_list('univ_name')\
+                           .annotate(univ_count=Count('univ_name'))\
+                           .order_by('-univ_count')[:25]
 
     for univ in app_univ_freq_qs:
         app_univ_name = univ_name_qs.get(pk=univ[0])
@@ -634,13 +658,19 @@ def app_grade_in_tab_3(request):
 
     for univ in app_univ_name_list:
         app_univ_name = univ_name_qs.get(univ_name=univ)
-        app_univ_pass_freq_count = Student.objects.filter(major_group=2) \
+        app_univ_pass_freq_count = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(admission1__admission1__contains=admission1_query) \
             .filter(univ_name=app_univ_name.id) \
             .filter(ko_en_math_soc_100__gte=3) \
             .filter(ko_en_math_soc_100__lt=4) \
             .filter(Q(final_step='합격') | Q(final_step='충원합격')) \
             .count()
-        app_univ_fail_freq_count = Student.objects.filter(major_group=2) \
+        app_univ_fail_freq_count = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(admission1__admission1__contains=admission1_query) \
             .filter(univ_name=app_univ_name.id) \
             .filter(ko_en_math_soc_100__gte=3) \
             .filter(ko_en_math_soc_100__lt=4) \
@@ -679,7 +709,7 @@ def app_grade_in_tab_4(request):
 
     # 등급별 사례수
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
-    major_group_qs = MajorGroup.objects.values('major_group').order_by('major_group').distinct()
+    major_group_qs = MajorGroup.objects.order_by('major_group').distinct()
     admission1_qs = Admission1.objects.values('admission1').order_by('admission1').distinct()
 
     entrance_year_query = request.GET.get('entrance_year')
@@ -689,13 +719,16 @@ def app_grade_in_tab_4(request):
     if entrance_year_query == '' or entrance_year_query is None:
         entrance_year_query = entrance_year_qs[0]['entrance_year']
     if major_group_query == '' or major_group_query is None:
-        major_group_query = major_group_qs[0]['major_group']
+        major_group_query = 0
     if admission1_query == '' or admission1_query is None:
         admission1_query = admission1_qs[0]['admission1']
 
     student_grade_in_list = []
     student_grade_in_freq_list = []
-    student_grade_freq_qs = Student.objects.filter(major_group=2) \
+    student_grade_freq_qs = Student.objects \
+        .filter(entrance_year=entrance_year_query) \
+        .filter(major_group=major_group_query) \
+        .filter(admission1__admission1__contains=admission1_query) \
         .values_list(Floor('ko_en_math_soc_100')) \
         .annotate(student_grade_count=Count(Floor('ko_en_math_soc_100'))) \
         .order_by(Floor('ko_en_math_soc_100'))
@@ -709,12 +742,15 @@ def app_grade_in_tab_4(request):
     app_univ_freq_list = []
     univ_name_qs = UnivName.objects.all()
 
-    app_univ_freq_qs = Student.objects.filter(major_group=2)\
-                                     .filter(ko_en_math_soc_100__gte=4)\
-                                     .filter(ko_en_math_soc_100__lt=5)\
-                                     .values_list('univ_name')\
-                                     .annotate(univ_count=Count('univ_name'))\
-                                     .order_by('-univ_count')[:25]
+    app_univ_freq_qs = Student.objects \
+                           .filter(entrance_year=entrance_year_query) \
+                           .filter(major_group=major_group_query) \
+                           .filter(admission1__admission1__contains=admission1_query) \
+                           .filter(ko_en_math_soc_100__gte=4)\
+                           .filter(ko_en_math_soc_100__lt=5)\
+                           .values_list('univ_name')\
+                           .annotate(univ_count=Count('univ_name'))\
+                           .order_by('-univ_count')[:25]
 
     for univ in app_univ_freq_qs:
         app_univ_name = univ_name_qs.get(pk=univ[0])
@@ -727,13 +763,19 @@ def app_grade_in_tab_4(request):
 
     for univ in app_univ_name_list:
         app_univ_name = univ_name_qs.get(univ_name=univ)
-        app_univ_pass_freq_count = Student.objects.filter(major_group=2) \
+        app_univ_pass_freq_count = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(admission1__admission1__contains=admission1_query) \
             .filter(univ_name=app_univ_name.id) \
             .filter(ko_en_math_soc_100__gte=4) \
             .filter(ko_en_math_soc_100__lt=5) \
             .filter(Q(final_step='합격') | Q(final_step='충원합격')) \
             .count()
-        app_univ_fail_freq_count = Student.objects.filter(major_group=2) \
+        app_univ_fail_freq_count = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(admission1__admission1__contains=admission1_query) \
             .filter(univ_name=app_univ_name.id) \
             .filter(ko_en_math_soc_100__gte=4) \
             .filter(ko_en_math_soc_100__lt=5) \
@@ -772,7 +814,7 @@ def app_grade_in_tab_5(request):
 
     # 등급별 사례수
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
-    major_group_qs = MajorGroup.objects.values('major_group').order_by('major_group').distinct()
+    major_group_qs = MajorGroup.objects.order_by('major_group').distinct()
     admission1_qs = Admission1.objects.values('admission1').order_by('admission1').distinct()
 
     entrance_year_query = request.GET.get('entrance_year')
@@ -782,13 +824,16 @@ def app_grade_in_tab_5(request):
     if entrance_year_query == '' or entrance_year_query is None:
         entrance_year_query = entrance_year_qs[0]['entrance_year']
     if major_group_query == '' or major_group_query is None:
-        major_group_query = major_group_qs[0]['major_group']
+        major_group_query = 0
     if admission1_query == '' or admission1_query is None:
         admission1_query = admission1_qs[0]['admission1']
 
     student_grade_in_list = []
     student_grade_in_freq_list = []
-    student_grade_freq_qs = Student.objects.filter(major_group=2) \
+    student_grade_freq_qs = Student.objects \
+        .filter(entrance_year=entrance_year_query) \
+        .filter(major_group=major_group_query) \
+        .filter(admission1__admission1__contains=admission1_query) \
         .values_list(Floor('ko_en_math_soc_100')) \
         .annotate(student_grade_count=Count(Floor('ko_en_math_soc_100'))) \
         .order_by(Floor('ko_en_math_soc_100'))
@@ -802,12 +847,15 @@ def app_grade_in_tab_5(request):
     app_univ_freq_list = []
     univ_name_qs = UnivName.objects.all()
 
-    app_univ_freq_qs = Student.objects.filter(major_group=2)\
-                                     .filter(ko_en_math_soc_100__gte=5)\
-                                     .filter(ko_en_math_soc_100__lt=6)\
-                                     .values_list('univ_name')\
-                                     .annotate(univ_count=Count('univ_name'))\
-                                     .order_by('-univ_count')[:25]
+    app_univ_freq_qs = Student.objects \
+                           .filter(entrance_year=entrance_year_query) \
+                           .filter(major_group=major_group_query) \
+                           .filter(admission1__admission1__contains=admission1_query) \
+                           .filter(ko_en_math_soc_100__gte=5)\
+                           .filter(ko_en_math_soc_100__lt=6)\
+                           .values_list('univ_name')\
+                           .annotate(univ_count=Count('univ_name'))\
+                           .order_by('-univ_count')[:25]
 
     for univ in app_univ_freq_qs:
         app_univ_name = univ_name_qs.get(pk=univ[0])
@@ -820,13 +868,19 @@ def app_grade_in_tab_5(request):
 
     for univ in app_univ_name_list:
         app_univ_name = univ_name_qs.get(univ_name=univ)
-        app_univ_pass_freq_count = Student.objects.filter(major_group=2) \
+        app_univ_pass_freq_count = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(admission1__admission1__contains=admission1_query) \
             .filter(univ_name=app_univ_name.id) \
             .filter(ko_en_math_soc_100__gte=5) \
             .filter(ko_en_math_soc_100__lt=6) \
             .filter(Q(final_step='합격') | Q(final_step='충원합격')) \
             .count()
-        app_univ_fail_freq_count = Student.objects.filter(major_group=2) \
+        app_univ_fail_freq_count = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(admission1__admission1__contains=admission1_query) \
             .filter(univ_name=app_univ_name.id) \
             .filter(ko_en_math_soc_100__gte=5) \
             .filter(ko_en_math_soc_100__lt=6) \
@@ -865,7 +919,7 @@ def app_grade_in_tab_6(request):
 
     # 등급별 사례수
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
-    major_group_qs = MajorGroup.objects.values('major_group').order_by('major_group').distinct()
+    major_group_qs = MajorGroup.objects.order_by('major_group').distinct()
     admission1_qs = Admission1.objects.values('admission1').order_by('admission1').distinct()
 
     entrance_year_query = request.GET.get('entrance_year')
@@ -875,13 +929,16 @@ def app_grade_in_tab_6(request):
     if entrance_year_query == '' or entrance_year_query is None:
         entrance_year_query = entrance_year_qs[0]['entrance_year']
     if major_group_query == '' or major_group_query is None:
-        major_group_query = major_group_qs[0]['major_group']
+        major_group_query = 0
     if admission1_query == '' or admission1_query is None:
         admission1_query = admission1_qs[0]['admission1']
 
     student_grade_in_list = []
     student_grade_in_freq_list = []
-    student_grade_freq_qs = Student.objects.filter(major_group=2) \
+    student_grade_freq_qs = Student.objects \
+        .filter(entrance_year=entrance_year_query) \
+        .filter(major_group=major_group_query) \
+        .filter(admission1__admission1__contains=admission1_query) \
         .values_list(Floor('ko_en_math_soc_100')) \
         .annotate(student_grade_count=Count(Floor('ko_en_math_soc_100'))) \
         .order_by(Floor('ko_en_math_soc_100'))
@@ -895,12 +952,15 @@ def app_grade_in_tab_6(request):
     app_univ_freq_list = []
     univ_name_qs = UnivName.objects.all()
 
-    app_univ_freq_qs = Student.objects.filter(major_group=2)\
-                                     .filter(ko_en_math_soc_100__gte=6)\
-                                     .filter(ko_en_math_soc_100__lt=7)\
-                                     .values_list('univ_name')\
-                                     .annotate(univ_count=Count('univ_name'))\
-                                     .order_by('-univ_count')[:25]
+    app_univ_freq_qs = Student.objects \
+                           .filter(entrance_year=entrance_year_query) \
+                           .filter(major_group=major_group_query) \
+                           .filter(admission1__admission1__contains=admission1_query) \
+                           .filter(ko_en_math_soc_100__gte=6)\
+                           .filter(ko_en_math_soc_100__lt=7)\
+                           .values_list('univ_name')\
+                           .annotate(univ_count=Count('univ_name'))\
+                           .order_by('-univ_count')[:25]
 
     for univ in app_univ_freq_qs:
         app_univ_name = univ_name_qs.get(pk=univ[0])
@@ -913,13 +973,19 @@ def app_grade_in_tab_6(request):
 
     for univ in app_univ_name_list:
         app_univ_name = univ_name_qs.get(univ_name=univ)
-        app_univ_pass_freq_count = Student.objects.filter(major_group=2) \
+        app_univ_pass_freq_count = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(admission1__admission1__contains=admission1_query) \
             .filter(univ_name=app_univ_name.id) \
             .filter(ko_en_math_soc_100__gte=6) \
             .filter(ko_en_math_soc_100__lt=7) \
             .filter(Q(final_step='합격') | Q(final_step='충원합격')) \
             .count()
-        app_univ_fail_freq_count = Student.objects.filter(major_group=2) \
+        app_univ_fail_freq_count = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(admission1__admission1__contains=admission1_query) \
             .filter(univ_name=app_univ_name.id) \
             .filter(ko_en_math_soc_100__gte=6) \
             .filter(ko_en_math_soc_100__lt=7) \
@@ -958,7 +1024,7 @@ def app_grade_in_tab_7(request):
 
     # 등급별 사례수
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
-    major_group_qs = MajorGroup.objects.values('major_group').order_by('major_group').distinct()
+    major_group_qs = MajorGroup.objects.order_by('major_group').distinct()
     admission1_qs = Admission1.objects.values('admission1').order_by('admission1').distinct()
 
     entrance_year_query = request.GET.get('entrance_year')
@@ -968,13 +1034,16 @@ def app_grade_in_tab_7(request):
     if entrance_year_query == '' or entrance_year_query is None:
         entrance_year_query = entrance_year_qs[0]['entrance_year']
     if major_group_query == '' or major_group_query is None:
-        major_group_query = major_group_qs[0]['major_group']
+        major_group_query = 0
     if admission1_query == '' or admission1_query is None:
         admission1_query = admission1_qs[0]['admission1']
 
     student_grade_in_list = []
     student_grade_in_freq_list = []
-    student_grade_freq_qs = Student.objects.filter(major_group=2) \
+    student_grade_freq_qs = Student.objects \
+        .filter(entrance_year=entrance_year_query) \
+        .filter(major_group=major_group_query) \
+        .filter(admission1__admission1__contains=admission1_query) \
         .values_list(Floor('ko_en_math_soc_100')) \
         .annotate(student_grade_count=Count(Floor('ko_en_math_soc_100'))) \
         .order_by(Floor('ko_en_math_soc_100'))
@@ -988,12 +1057,15 @@ def app_grade_in_tab_7(request):
     app_univ_freq_list = []
     univ_name_qs = UnivName.objects.all()
 
-    app_univ_freq_qs = Student.objects.filter(major_group=2)\
-                                     .filter(ko_en_math_soc_100__gte=7)\
-                                     .filter(ko_en_math_soc_100__lt=8)\
-                                     .values_list('univ_name')\
-                                     .annotate(univ_count=Count('univ_name'))\
-                                     .order_by('-univ_count')[:25]
+    app_univ_freq_qs = Student.objects \
+                           .filter(entrance_year=entrance_year_query) \
+                           .filter(major_group=major_group_query) \
+                           .filter(admission1__admission1__contains=admission1_query) \
+                           .filter(ko_en_math_soc_100__gte=7)\
+                           .filter(ko_en_math_soc_100__lt=8)\
+                           .values_list('univ_name')\
+                           .annotate(univ_count=Count('univ_name'))\
+                           .order_by('-univ_count')[:25]
 
     for univ in app_univ_freq_qs:
         app_univ_name = univ_name_qs.get(pk=univ[0])
@@ -1006,13 +1078,19 @@ def app_grade_in_tab_7(request):
 
     for univ in app_univ_name_list:
         app_univ_name = univ_name_qs.get(univ_name=univ)
-        app_univ_pass_freq_count = Student.objects.filter(major_group=2) \
+        app_univ_pass_freq_count = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(admission1__admission1__contains=admission1_query) \
             .filter(univ_name=app_univ_name.id) \
             .filter(ko_en_math_soc_100__gte=7) \
             .filter(ko_en_math_soc_100__lt=8) \
             .filter(Q(final_step='합격') | Q(final_step='충원합격')) \
             .count()
-        app_univ_fail_freq_count = Student.objects.filter(major_group=2) \
+        app_univ_fail_freq_count = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(admission1__admission1__contains=admission1_query) \
             .filter(univ_name=app_univ_name.id) \
             .filter(ko_en_math_soc_100__gte=7) \
             .filter(ko_en_math_soc_100__lt=8) \
@@ -1051,7 +1129,7 @@ def app_grade_in_tab_8(request):
 
     # 등급별 사례수
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
-    major_group_qs = MajorGroup.objects.values('major_group').order_by('major_group').distinct()
+    major_group_qs = MajorGroup.objects.order_by('major_group').distinct()
     admission1_qs = Admission1.objects.values('admission1').order_by('admission1').distinct()
 
     entrance_year_query = request.GET.get('entrance_year')
@@ -1061,13 +1139,16 @@ def app_grade_in_tab_8(request):
     if entrance_year_query == '' or entrance_year_query is None:
         entrance_year_query = entrance_year_qs[0]['entrance_year']
     if major_group_query == '' or major_group_query is None:
-        major_group_query = major_group_qs[0]['major_group']
+        major_group_query = 0
     if admission1_query == '' or admission1_query is None:
         admission1_query = admission1_qs[0]['admission1']
 
     student_grade_in_list = []
     student_grade_in_freq_list = []
-    student_grade_freq_qs = Student.objects.filter(major_group=2) \
+    student_grade_freq_qs = Student.objects \
+        .filter(entrance_year=entrance_year_query) \
+        .filter(major_group=major_group_query) \
+        .filter(admission1__admission1__contains=admission1_query) \
         .values_list(Floor('ko_en_math_soc_100')) \
         .annotate(student_grade_count=Count(Floor('ko_en_math_soc_100'))) \
         .order_by(Floor('ko_en_math_soc_100'))
@@ -1081,12 +1162,15 @@ def app_grade_in_tab_8(request):
     app_univ_freq_list = []
     univ_name_qs = UnivName.objects.all()
 
-    app_univ_freq_qs = Student.objects.filter(major_group=2)\
-                                     .filter(ko_en_math_soc_100__gte=8)\
-                                     .filter(ko_en_math_soc_100__lt=9)\
-                                     .values_list('univ_name')\
-                                     .annotate(univ_count=Count('univ_name'))\
-                                     .order_by('-univ_count')[:25]
+    app_univ_freq_qs = Student.objects \
+                           .filter(entrance_year=entrance_year_query) \
+                           .filter(major_group=major_group_query) \
+                           .filter(admission1__admission1__contains=admission1_query) \
+                           .filter(ko_en_math_soc_100__gte=8)\
+                           .filter(ko_en_math_soc_100__lt=9)\
+                           .values_list('univ_name')\
+                           .annotate(univ_count=Count('univ_name'))\
+                           .order_by('-univ_count')[:25]
 
     for univ in app_univ_freq_qs:
         app_univ_name = univ_name_qs.get(pk=univ[0])
@@ -1099,13 +1183,19 @@ def app_grade_in_tab_8(request):
 
     for univ in app_univ_name_list:
         app_univ_name = univ_name_qs.get(univ_name=univ)
-        app_univ_pass_freq_count = Student.objects.filter(major_group=2) \
+        app_univ_pass_freq_count = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(admission1__admission1__contains=admission1_query) \
             .filter(univ_name=app_univ_name.id) \
             .filter(ko_en_math_soc_100__gte=8) \
             .filter(ko_en_math_soc_100__lt=9) \
             .filter(Q(final_step='합격') | Q(final_step='충원합격')) \
             .count()
-        app_univ_fail_freq_count = Student.objects.filter(major_group=2) \
+        app_univ_fail_freq_count = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(admission1__admission1__contains=admission1_query) \
             .filter(univ_name=app_univ_name.id) \
             .filter(ko_en_math_soc_100__gte=8) \
             .filter(ko_en_math_soc_100__lt=9) \
