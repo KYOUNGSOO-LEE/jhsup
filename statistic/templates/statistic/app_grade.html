@@ -1,11 +1,48 @@
 {% extends "base.html" %}
-{% block title %} 등급별 지원통계(인문) {% endblock %}
+{% block title %} 등급별 지원통계 {% endblock %}
 
 {% block content %}
 
-<h4> 등급별 지원통계(인문) </h4>
-<canvas id="app_grade_in_chart" width="500" height="100"></canvas>
+<h4> 등급별 지원통계 </h4>
 
+<br>
+
+<form method="get" action="{% url request.resolver_match.url_name %}">
+  <div class="form-row align-items-center">
+
+    <div class="col-md-0.5 my-1">
+      <select class="custom-select mr-sm-2" id="entrance_year" name="entrance_year">
+        {% for item in entrance_year_item %}
+          <option value="{{item.entrance_year}}" {% if item.entrance_year == current_entrance_year %} selected {% endif %}>{{item.entrance_year}}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="col-md-0.5 my-1">
+      <select class="custom-select mr-sm-2" id="major_group" name="major_group">
+        {% for item in major_group_item %}
+          <option value="{{item.pk}}" {% if item.pk == current_major_group %} selected {% endif %}>{{item.major_group}}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="col-md-0.5 my-1">
+      <select class="custom-select mr-sm-2" id="admission1" name="admission1">
+        {% for item in admission1_item %}
+          <option value="{{item.admission1}}" {% if item.admission1 == current_admission1 %} selected {% endif %}>{{item.admission1}}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="col-auto my-1">
+      <button type="submit" class="btn btn-warning">검색</button>
+    </div>
+
+  </div>
+</form>
+<hr/>
+<br>
+<canvas id="app_grade_in_chart" width="500" height="100"></canvas>
 <script>
 var ctx = document.getElementById('app_grade_in_chart').getContext('2d');
 var myChart = new Chart(ctx, {
