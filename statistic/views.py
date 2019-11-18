@@ -421,8 +421,8 @@ def app_grade_search(request):
     gte_query = request.GET.get('gte')
     lt_query = request.GET.get('lt')
 
-    student_grade_in_list = []
-    student_grade_in_freq_list = []
+    student_grade_list = []
+    student_grade_freq_list = []
 
     if MajorGroup.objects.get(pk=major_group_query) == '자연':
         student_grade_freq_qs = Student.objects \
@@ -450,8 +450,8 @@ def app_grade_search(request):
             .order_by(Floor('ko_en_math_soc_100'))
 
     for student_grade in student_grade_freq_qs:
-        student_grade_in_list.append(int(student_grade[0]))
-        student_grade_in_freq_list.append(student_grade[1])
+        student_grade_list.append(int(student_grade[0]))
+        student_grade_freq_list.append(student_grade[1])
 
     # 1등급대 학생 지원대학 현황
     app_univ_name_list = []
@@ -579,8 +579,8 @@ def app_grade_search(request):
         'current_admission1': admission1_query,
         'current_gte': int(gte_query),
 
-        'student_grade_in_list': student_grade_in_list,
-        'student_grade_in_freq_list': student_grade_in_freq_list,
+        'student_grade_list': student_grade_list,
+        'student_grade_freq_list': student_grade_freq_list,
 
         'app_univ_name_list': app_univ_name_list,
         'app_univ_freq_list': app_univ_freq_list,

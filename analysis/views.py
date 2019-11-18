@@ -55,11 +55,11 @@ def grade_search(request):
 
     if ko_en_math_soc_or_sci_100_max_query != '' and ko_en_math_soc_or_sci_100_max_query is not None:
         if current_major_group_str == '자연':
-            student_qs = student_qs.filter(ko_en_math_sci_100__lte=ko_en_math_soc_or_sci_100_max_query)
+            student_qs = student_qs.filter(ko_en_math_sci_100__lt=ko_en_math_soc_or_sci_100_max_query)
         elif current_major_group_str == '공통':
-            student_qs = student_qs.filter(ko_en_math_soc_sci_100__lte=ko_en_math_soc_or_sci_100_max_query)
+            student_qs = student_qs.filter(ko_en_math_soc_sci_100__lt=ko_en_math_soc_or_sci_100_max_query)
         else:
-            student_qs = student_qs.filter(ko_en_math_soc_100__lte=ko_en_math_soc_or_sci_100_max_query)
+            student_qs = student_qs.filter(ko_en_math_soc_100__lt=ko_en_math_soc_or_sci_100_max_query)
 
     if current_major_group_str == '자연':
         student_qs = student_qs.order_by('-final_step', 'ko_en_math_sci_100')
@@ -131,11 +131,11 @@ def university_search(request):
 
     if ko_en_math_soc_or_sci_100_max_query != '' and ko_en_math_soc_or_sci_100_max_query is not None:
         if current_major_group_str == '자연':
-            student_qs = student_qs.filter(ko_en_math_sci_100__lte=ko_en_math_soc_or_sci_100_max_query)
+            student_qs = student_qs.filter(ko_en_math_sci_100__lt=ko_en_math_soc_or_sci_100_max_query)
         elif current_major_group_str == '공통':
-            student_qs = student_qs.filter(ko_en_math_soc_sci_100__lte=ko_en_math_soc_or_sci_100_max_query)
+            student_qs = student_qs.filter(ko_en_math_soc_sci_100__lt=ko_en_math_soc_or_sci_100_max_query)
         else:
-            student_qs = student_qs.filter(ko_en_math_soc_100__lte=ko_en_math_soc_or_sci_100_max_query)
+            student_qs = student_qs.filter(ko_en_math_soc_100__lt=ko_en_math_soc_or_sci_100_max_query)
 
     if current_major_group_str == '자연':
         student_qs = student_qs.order_by('-final_step', 'ko_en_math_sci_100')
@@ -206,11 +206,11 @@ def major_search(request):
 
     if ko_en_math_soc_or_sci_100_max_query != '' and ko_en_math_soc_or_sci_100_max_query is not None:
         if current_major_group_str == '자연':
-            student_qs = student_qs.filter(ko_en_math_sci_100__lte=ko_en_math_soc_or_sci_100_max_query)
+            student_qs = student_qs.filter(ko_en_math_sci_100__lt=ko_en_math_soc_or_sci_100_max_query)
         elif current_major_group_str == '공통':
-            student_qs = student_qs.filter(ko_en_math_soc_sci_100__lte=ko_en_math_soc_or_sci_100_max_query)
+            student_qs = student_qs.filter(ko_en_math_soc_sci_100__lt=ko_en_math_soc_or_sci_100_max_query)
         else:
-            student_qs = student_qs.filter(ko_en_math_soc_100__lte=ko_en_math_soc_or_sci_100_max_query)
+            student_qs = student_qs.filter(ko_en_math_soc_100__lt=ko_en_math_soc_or_sci_100_max_query)
 
     if current_major_group_str == '자연':
         student_qs = student_qs.order_by('-final_step', 'ko_en_math_sci_100')

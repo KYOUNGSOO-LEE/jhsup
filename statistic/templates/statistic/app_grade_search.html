@@ -46,16 +46,16 @@
 </form>
 <hr/>
 <br>
-<canvas id="app_grade_in_chart" width="500" height="100"></canvas>
+<canvas id="app_grade_chart" width="500" height="100"></canvas>
 <script>
-var ctx = document.getElementById('app_grade_in_chart').getContext('2d');
+var ctx = document.getElementById('app_grade_chart').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: {{ student_grade_in_list | safe }},
+        labels: {{ student_grade_list | safe }},
         datasets: [{
             label: '등급별 지원 사례 수',
-            data: {{ student_grade_in_freq_list }},
+            data: {{ student_grade_freq_list }},
             backgroundColor: [
                 'rgba(36, 166, 189, 1)',
                 'rgba(36, 166, 189, 1)',
@@ -110,10 +110,9 @@ var myChart = new Chart(ctx, {
   </li>
 </ul>
 <br>
-{% block grade_in_tab_content %}
-<canvas id="app_grade_in_chart_1" width="170" height="100"></canvas>
+<canvas id="app_grade_chart_1" width="170" height="100"></canvas>
 <script>
-var ctx = document.getElementById('app_grade_in_chart_1').getContext('2d');
+var ctx = document.getElementById('app_grade_chart_1').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'horizontalBar',
     data: {
@@ -250,6 +249,5 @@ var myChart = new Chart(ctx, {
     }
 });
 </script>
-{% endblock %}
 
 {% endblock content %}
