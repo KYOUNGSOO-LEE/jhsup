@@ -424,13 +424,30 @@ def app_grade_search(request):
     student_grade_in_list = []
     student_grade_in_freq_list = []
 
-    student_grade_freq_qs = Student.objects\
-        .filter(entrance_year=entrance_year_query)\
-        .filter(major_group=major_group_query)\
-        .filter(admission1__admission1__contains=admission1_query)\
-        .values_list(Floor('ko_en_math_soc_100'))\
-        .annotate(student_grade_count=Count(Floor('ko_en_math_soc_100')))\
-        .order_by(Floor('ko_en_math_soc_100'))
+    if MajorGroup.objects.get(pk=major_group_query) == '자연':
+        student_grade_freq_qs = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(admission1__admission1__contains=admission1_query)\
+            .values_list(Floor('ko_en_math_sci_100'))\
+            .annotate(student_grade_count=Count(Floor('ko_en_math_sci_100')))\
+            .order_by(Floor('ko_en_math_sci_100'))
+    elif MajorGroup.objects.get(pk=major_group_query) == '공통':
+        student_grade_freq_qs = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(admission1__admission1__contains=admission1_query) \
+            .values_list(Floor('ko_en_math_soc_sci_100')) \
+            .annotate(student_grade_count=Count(Floor('ko_en_math_soc_sci_100'))) \
+            .order_by(Floor('ko_en_math_soc_sci_100'))
+    else:
+        student_grade_freq_qs = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(admission1__admission1__contains=admission1_query) \
+            .values_list(Floor('ko_en_math_soc_100')) \
+            .annotate(student_grade_count=Count(Floor('ko_en_math_soc_100'))) \
+            .order_by(Floor('ko_en_math_soc_100'))
 
     for student_grade in student_grade_freq_qs:
         student_grade_in_list.append(int(student_grade[0]))
@@ -441,15 +458,36 @@ def app_grade_search(request):
     app_univ_freq_list = []
     univ_name_qs = UnivName.objects.all()
 
-    app_univ_freq_qs = Student.objects\
-                           .filter(entrance_year=entrance_year_query)\
-                           .filter(major_group=major_group_query) \
-                           .filter(admission1__admission1__contains=admission1_query) \
-                           .filter(ko_en_math_soc_100__gte=gte_query) \
-                           .filter(ko_en_math_soc_100__lt=lt_query)\
-                           .values_list('univ_name')\
-                           .annotate(univ_count=Count('univ_name'))\
-                           .order_by('-univ_count')[:25]
+    if MajorGroup.objects.get(pk=major_group_query) == '자연':
+        app_univ_freq_qs = Student.objects \
+                               .filter(entrance_year=entrance_year_query) \
+                               .filter(major_group=major_group_query) \
+                               .filter(admission1__admission1__contains=admission1_query) \
+                               .filter(ko_en_math_sci_100__gte=gte_query) \
+                               .filter(ko_en_math_sci_100__lt=lt_query)\
+                               .values_list('univ_name')\
+                               .annotate(univ_count=Count('univ_name'))\
+                               .order_by('-univ_count')[:25]
+    elif MajorGroup.objects.get(pk=major_group_query) == '공통':
+        app_univ_freq_qs = Student.objects \
+                               .filter(entrance_year=entrance_year_query) \
+                               .filter(major_group=major_group_query) \
+                               .filter(admission1__admission1__contains=admission1_query) \
+                               .filter(ko_en_math_soc_sci_100__gte=gte_query) \
+                               .filter(ko_en_math_soc_sci_100__lt=lt_query) \
+                               .values_list('univ_name') \
+                               .annotate(univ_count=Count('univ_name')) \
+                               .order_by('-univ_count')[:25]
+    else:
+        app_univ_freq_qs = Student.objects \
+                               .filter(entrance_year=entrance_year_query) \
+                               .filter(major_group=major_group_query) \
+                               .filter(admission1__admission1__contains=admission1_query) \
+                               .filter(ko_en_math_soc_100__gte=gte_query) \
+                               .filter(ko_en_math_soc_100__lt=lt_query) \
+                               .values_list('univ_name') \
+                               .annotate(univ_count=Count('univ_name')) \
+                               .order_by('-univ_count')[:25]
 
     for univ in app_univ_freq_qs:
         app_univ_name = univ_name_qs.get(pk=univ[0])
@@ -462,24 +500,69 @@ def app_grade_search(request):
 
     for univ in app_univ_name_list:
         app_univ_name = univ_name_qs.get(univ_name=univ)
-        app_univ_pass_freq_count = Student.objects\
-            .filter(entrance_year=entrance_year_query)\
-            .filter(major_group=major_group_query) \
-            .filter(admission1__admission1__contains=admission1_query) \
-            .filter(univ_name=app_univ_name.id) \
-            .filter(ko_en_math_soc_100__gte=gte_query)\
-            .filter(ko_en_math_soc_100__lt=lt_query)\
-            .filter(Q(final_step='합격') | Q(final_step='충원합격'))\
-            .count()
-        app_univ_fail_freq_count = Student.objects \
-            .filter(entrance_year=entrance_year_query) \
-            .filter(major_group=major_group_query) \
-            .filter(admission1__admission1__contains=admission1_query) \
-            .filter(univ_name=app_univ_name.id) \
-            .filter(ko_en_math_soc_100__gte=gte_query) \
-            .filter(ko_en_math_soc_100__lt=lt_query) \
-            .filter(final_step='불합격') \
-            .count()
+
+        if MajorGroup.objects.get(pk=major_group_query) == '자연':
+            app_univ_pass_freq_count = Student.objects \
+                .filter(entrance_year=entrance_year_query) \
+                .filter(major_group=major_group_query) \
+                .filter(admission1__admission1__contains=admission1_query) \
+                .filter(univ_name=app_univ_name.id)\
+                .filter(ko_en_math_sci_100__gte=gte_query)\
+                .filter(ko_en_math_sci_100__lt=lt_query)\
+                .filter(Q(final_step='합격') | Q(final_step='충원합격'))\
+                .count()
+        elif MajorGroup.objects.get(pk=major_group_query) == '공통':
+            app_univ_pass_freq_count = Student.objects \
+                .filter(entrance_year=entrance_year_query) \
+                .filter(major_group=major_group_query) \
+                .filter(admission1__admission1__contains=admission1_query) \
+                .filter(univ_name=app_univ_name.id)\
+                .filter(ko_en_math_soc_sci_100__gte=gte_query) \
+                .filter(ko_en_math_soc_sci_100__lt=lt_query) \
+                .filter(Q(final_step='합격') | Q(final_step='충원합격')) \
+                .count()
+        else:
+            app_univ_pass_freq_count = Student.objects \
+                .filter(entrance_year=entrance_year_query) \
+                .filter(major_group=major_group_query) \
+                .filter(admission1__admission1__contains=admission1_query) \
+                .filter(univ_name=app_univ_name.id)\
+                .filter(ko_en_math_soc_100__gte=gte_query) \
+                .filter(ko_en_math_soc_100__lt=lt_query) \
+                .filter(Q(final_step='합격') | Q(final_step='충원합격')) \
+                .count()
+
+        if MajorGroup.objects.get(pk=major_group_query) == '자연':
+            app_univ_fail_freq_count = Student.objects \
+                .filter(entrance_year=entrance_year_query) \
+                .filter(major_group=major_group_query) \
+                .filter(admission1__admission1__contains=admission1_query) \
+                .filter(univ_name=app_univ_name.id)\
+                .filter(ko_en_math_sci_100__gte=gte_query)\
+                .filter(ko_en_math_sci_100__lt=lt_query)\
+                .filter(final_step='불합격') \
+                .count()
+        elif MajorGroup.objects.get(pk=major_group_query) == '공통':
+            app_univ_fail_freq_count = Student.objects \
+                .filter(entrance_year=entrance_year_query) \
+                .filter(major_group=major_group_query) \
+                .filter(admission1__admission1__contains=admission1_query) \
+                .filter(univ_name=app_univ_name.id)\
+                .filter(ko_en_math_soc_sci_100__gte=gte_query) \
+                .filter(ko_en_math_soc_sci_100__lt=lt_query) \
+                .filter(final_step='불합격') \
+                .count()
+        else:
+            app_univ_fail_freq_count = Student.objects \
+                .filter(entrance_year=entrance_year_query) \
+                .filter(major_group=major_group_query) \
+                .filter(admission1__admission1__contains=admission1_query) \
+                .filter(univ_name=app_univ_name.id)\
+                .filter(ko_en_math_soc_100__gte=gte_query) \
+                .filter(ko_en_math_soc_100__lt=lt_query) \
+                .filter(final_step='불합격') \
+                .count()
+
         app_univ_pass_freq_list.append(app_univ_pass_freq_count)
         app_univ_fail_freq_list.append(app_univ_fail_freq_count)
 
