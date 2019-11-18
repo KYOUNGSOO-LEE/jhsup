@@ -10,11 +10,4 @@ urlpatterns = [
 
     url(r'^app-grade$', views.app_grade, name="app_grade"),
     url(r'^app-grade-search$', views.app_grade_search, name="app_grade_search"),
-    url(r'^app-grade-ja/app-grade-search2$', views.app_grade_search2, name="app_grade_search2"),
-    url(r'^app-grade-ja/app-grade-search3$', views.app_grade_search3, name="app_grade_search3"),
-    url(r'^app-grade-ja/app-grade-search4$', views.app_grade_search4, name="app_grade_search4"),
-    url(r'^app-grade-ja/app-grade-search5$', views.app_grade_search5, name="app_grade_search5"),
-    url(r'^app-grade-ja/app-grade-search6$', views.app_grade_search6, name="app_grade_search6"),
-    url(r'^app-grade-ja/app-grade-search7$', views.app_grade_search7, name="app_grade_search7"),
-    url(r'^app-grade-ja/app-grade-search8$', views.app_grade_search8, name="app_grade_search8"),
 ]
