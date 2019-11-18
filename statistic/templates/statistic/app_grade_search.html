@@ -4,8 +4,9 @@
 {% block content %}
 
 <h4> 등급별 지원통계 </h4>
-
-<br>
+<p class="font-weight-bold text-info">
+    &#8251 기준 : 인문, 예체능(국영수사100), 자연(국영수과100), 공통(국영수사과100)<br>
+</p>
 
 <form method="get" action="{% url request.resolver_match.url_name %}">
   <div class="form-row align-items-center">
@@ -33,6 +34,9 @@
         {% endfor %}
       </select>
     </div>
+
+    <input type="hidden" id="gte" name="gte" value="1">
+    <input type="hidden" id="lt" name="lt" value="2">
 
     <div class="col-auto my-1">
       <button type="submit" class="btn btn-warning">검색</button>
