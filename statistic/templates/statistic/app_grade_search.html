@@ -46,9 +46,9 @@
 </form>
 <hr/>
 <br>
-<canvas id="app_grade_chart" width="500" height="100"></canvas>
+<canvas id="app_grade_chart1" width="500" height="100"></canvas>
 <script>
-var ctx = document.getElementById('app_grade_chart').getContext('2d');
+var ctx = document.getElementById('app_grade_chart1').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -110,9 +110,9 @@ var myChart = new Chart(ctx, {
   </li>
 </ul>
 <br>
-<canvas id="app_grade_chart_1" width="170" height="100"></canvas>
+<canvas id="app_grade_chart2" width="{{chart_width}}" height="{{chart_height}}"></canvas>
 <script>
-var ctx = document.getElementById('app_grade_chart_1').getContext('2d');
+var ctx = document.getElementById('app_grade_chart2').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'horizontalBar',
     data: {
@@ -180,6 +180,7 @@ var myChart = new Chart(ctx, {
         {
             label: '불합격 사례 수',
             data: {{ app_univ_fail_freq_list }},
+
             backgroundColor: [
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -238,16 +239,24 @@ var myChart = new Chart(ctx, {
         }]
     },
     options: {
+        responsive: true,
         scales: {
             yAxes: [{
-                stacked: true
+                stacked: true,
+                barThickness: 25,
             }],
             xAxes: [{
-                stacked: true
+                stacked: true,
+                ticks: {
+                        barPercentage: 0.5,
+                        reverse: false,
+                        stepSize: 10
+                      },
             }]
         }
     }
 });
+
 </script>
 
 {% endblock content %}

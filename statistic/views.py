@@ -569,6 +569,20 @@ def app_grade_search(request):
     app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
     app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
 
+    if len(app_univ_freq_list) != 0:
+        if max(app_univ_freq_list) < 5:
+            chart_width = 70
+            chart_height = (len(app_univ_freq_list) + 1) * 3
+        elif max(app_univ_freq_list) < 10:
+            chart_width = 80
+            chart_height = (len(app_univ_freq_list) + 1) * 3
+        else:
+            chart_width = (max(app_univ_freq_list) // 10 + 70)
+            chart_height = (len(app_univ_freq_list) + 1) * 3
+    else:
+        chart_width = 10
+        chart_height = 1
+
     context = {
         'entrance_year_item': entrance_year_qs,
         'major_group_item': major_group_qs,
@@ -584,6 +598,9 @@ def app_grade_search(request):
 
         'app_univ_name_list': app_univ_name_list,
         'app_univ_freq_list': app_univ_freq_list,
+
+        'chart_width': chart_width,
+        'chart_height': chart_height,
 
         'app_univ_pass_freq_list': app_univ_pass_freq_list,
         'app_univ_fail_freq_list': app_univ_fail_freq_list,
