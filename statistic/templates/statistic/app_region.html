@@ -8,17 +8,18 @@
     &#8251 기준 : 인문, 예체능(국영수사100), 자연(국영수과100), 공통(국영수사과100)<br>
 </p>
 
-<form method="get" action="{% url request.resolver_match.url_name %}">
+<form method="get" action="{% url 'app_region_search' %}">
   <div class="form-row align-items-center">
 
     <div class="col-md-0.5 my-1">
       <select class="custom-select mr-sm-2" id="entrance_year" name="entrance_year">
         {% for item in entrance_year_item %}
-          <option value="{{item.entrance_year}}" {% if item.entrance_year == current_entrance_year %} selected {% endif %}>{{item.entrance_year}}</option>
+          <option value="{{item.entrance_year}}">{{item.entrance_year}}</option>
         {% endfor %}
       </select>
     </div>
 
+    <input type="hidden" id="student_region" name="student_region" value="충청도도">
     <div class="col-auto my-1">
       <button type="submit" class="btn btn-warning">검색</button>
     </div>
@@ -26,214 +27,5 @@
   </div>
 </form>
 <hr/>
-<br>
-<div class="container">
-  <div class="row">
-    <div class="col-5">
-      <canvas id="app_region_chart" style="height:80vh; width:100vw"></canvas>
-    </div>
-    <div class="col-3">
-      <ul>
-        <li>{{student_region_list.0}} 사례 수: {{student_region_freq_list.0}} 건</li>
-        <li>{{student_region_list.1}} 사례 수: {{student_region_freq_list.1}} 건</li>
-        <li>{{student_region_list.2}} 사례 수: {{student_region_freq_list.2}} 건</li>
-        <li>{{student_region_list.3}} 사례 수: {{student_region_freq_list.3}} 건</li>
-      </ul>
-    </div>
-  </div>
-</div>
-
-<br>
-
-<script>
-var ctx = document.getElementById('app_region_chart').getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-        labels: {{ student_region_list | safe }},
-        datasets: [{
-            label: '지원 사례 수',
-            data: {{ student_region_freq_list }},
-            backgroundColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        legend: {
-                position: 'right',
-        }
-    }
-});
-</script>
-<br>
-<ul class="nav nav-tabs">
-  <li class="nav-item">
-    <a class="{% if request.resolver_match.url_name == 'app_region' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region' %}?entrance_year={{ current_entrance_year }}">충청도</a>
-  </li>
-  <li class="nav-item">
-    <a class="{% if request.resolver_match.url_name == 'app_region_tab_dj' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region_tab_dj' %}?entrance_year={{ current_entrance_year }}">대전</a>
-  </li>
-  <li class="nav-item">
-    <a class="{% if request.resolver_match.url_name == 'app_region_tab_sj' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region_tab_sj' %}?entrance_year={{ current_entrance_year }}">세종</a>
-  </li>
-  <li class="nav-item">
-    <a class="{% if request.resolver_match.url_name == 'app_region_tab_cn' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region_tab_cn' %}?entrance_year={{ current_entrance_year }}">충남</a>
-  </li>
-  <li class="nav-item">
-    <a class="{% if request.resolver_match.url_name == 'app_region_tab_cb' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region_tab_cb' %}?entrance_year={{ current_entrance_year }}">충북</a>
-  </li>
-</ul>
-<br>
-
-<canvas id="app_region_bar_chart" width="130" height="100"></canvas>
-<script>
-var ctx = document.getElementById('app_region_bar_chart').getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'horizontalBar',
-    data: {
-        labels: {{ app_univ_name_list | safe }},
-        datasets: [{
-            label: '합격 사례 수',
-            data: {{ app_univ_pass_freq_list }},
-
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(255, 99, 132, 0.5)',
-                'rgba(255, 99, 132, 0.5)',
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-            ],
-            borderWidth: 1
-        },
-        {
-            label: '불합격 사례 수',
-            data: {{ app_univ_fail_freq_list }},
-            backgroundColor: [
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-                'rgba(54, 162, 235, 0.5)',
-            ],
-            borderColor: [
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                stacked: true
-            }],
-            xAxes: [{
-                stacked: true
-            }]
-        }
-    }
-});
-</script>
 
 {% endblock content %}

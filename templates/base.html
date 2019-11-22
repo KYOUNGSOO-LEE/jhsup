@@ -43,12 +43,12 @@
             <span>수시 통계분석</span></h6>
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a class="{% if url_name == 'app_region' or url_name == 'app_region_tab_dj' or url_name == 'app_region_tab_sj' or url_name == 'app_region_tab_cn' or url_name == 'app_region_tab_cb' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region' %}">
+              <a class="{% if url_name == 'app_region' or url_name == 'app_region_search' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region' %}">
                 지역별 합불통계
               </a>
             </li>
             <li class="nav-item">
-              <a class="{% if url_name == 'app_grade' or url_name == 'app_grade_search' or url_name == 'app_grade_search2' or url_name == 'app_grade_search3' or url_name == 'app_grade_search4' or url_name == 'app_grade_search5' or url_name == 'app_grade_search6' or url_name == 'app_grade_search7' or url_name == 'app_grade_search8' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_grade' %}">
+              <a class="{% if url_name == 'app_grade' or url_name == 'app_grade_search' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_grade' %}">
                 등급별 합불통계
               </a>
             </li>
