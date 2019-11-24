@@ -51,31 +51,10 @@ def static_student_region_result(request):
                                .values_list('univ_name')\
                                .annotate(univ_count=Count('univ_name'))\
                                .order_by('-univ_count')[:25]
-    elif student_region_query == '대전':
-        app_univ_freq_qs = Student.objects \
-                               .filter(entrance_year=entrance_year_query) \
-                               .filter(student_region='대전') \
-                               .values_list('univ_name') \
-                               .annotate(univ_count=Count('univ_name')) \
-                               .order_by('-univ_count')[:25]
-    elif student_region_query == '세종':
-        app_univ_freq_qs = Student.objects \
-                               .filter(entrance_year=entrance_year_query) \
-                               .filter(student_region='세종') \
-                               .values_list('univ_name') \
-                               .annotate(univ_count=Count('univ_name')) \
-                               .order_by('-univ_count')[:25]
-    elif student_region_query == '충남':
-        app_univ_freq_qs = Student.objects \
-                               .filter(entrance_year=entrance_year_query) \
-                               .filter(student_region='충남') \
-                               .values_list('univ_name') \
-                               .annotate(univ_count=Count('univ_name')) \
-                               .order_by('-univ_count')[:25]
     else:
         app_univ_freq_qs = Student.objects \
                                .filter(entrance_year=entrance_year_query) \
-                               .filter(student_region='충북') \
+                               .filter(student_region=student_region_query) \
                                .values_list('univ_name') \
                                .annotate(univ_count=Count('univ_name')) \
                                .order_by('-univ_count')[:25]
@@ -105,72 +84,18 @@ def static_student_region_result(request):
             app_univ_pass_freq_list.append(app_univ_pass_freq_count)
             app_univ_fail_freq_list.append(app_univ_fail_freq_count)
 
-    elif student_region_query == '대전':
+    else:
         for univ in app_univ_name_list:
             app_univ_name = univ_name_qs.get(univ_name=univ)
             app_univ_pass_freq_count = Student.objects \
                 .filter(entrance_year=entrance_year_query) \
-                .filter(student_region='대전')\
+                .filter(student_region=student_region_query)\
                 .filter(univ_name=app_univ_name.id) \
                 .filter(Q(final_step='합격') | Q(final_step='충원합격')) \
                 .count()
             app_univ_fail_freq_count = Student.objects \
                 .filter(entrance_year=entrance_year_query) \
-                .filter(student_region='대전')\
-                .filter(univ_name=app_univ_name.id) \
-                .filter(final_step='불합격') \
-                .count()
-            app_univ_pass_freq_list.append(app_univ_pass_freq_count)
-            app_univ_fail_freq_list.append(app_univ_fail_freq_count)
-
-    elif student_region_query == '세종':
-        for univ in app_univ_name_list:
-            app_univ_name = univ_name_qs.get(univ_name=univ)
-            app_univ_pass_freq_count = Student.objects \
-                .filter(entrance_year=entrance_year_query) \
-                .filter(student_region='세종')\
-                .filter(univ_name=app_univ_name.id) \
-                .filter(Q(final_step='합격') | Q(final_step='충원합격')) \
-                .count()
-            app_univ_fail_freq_count = Student.objects \
-                .filter(entrance_year=entrance_year_query) \
-                .filter(student_region='세종')\
-                .filter(univ_name=app_univ_name.id) \
-                .filter(final_step='불합격') \
-                .count()
-            app_univ_pass_freq_list.append(app_univ_pass_freq_count)
-            app_univ_fail_freq_list.append(app_univ_fail_freq_count)
-
-    elif student_region_query == '충남':
-        for univ in app_univ_name_list:
-            app_univ_name = univ_name_qs.get(univ_name=univ)
-            app_univ_pass_freq_count = Student.objects \
-                .filter(entrance_year=entrance_year_query) \
-                .filter(student_region='충남')\
-                .filter(univ_name=app_univ_name.id) \
-                .filter(Q(final_step='합격') | Q(final_step='충원합격')) \
-                .count()
-            app_univ_fail_freq_count = Student.objects \
-                .filter(entrance_year=entrance_year_query) \
-                .filter(student_region='충남')\
-                .filter(univ_name=app_univ_name.id) \
-                .filter(final_step='불합격') \
-                .count()
-            app_univ_pass_freq_list.append(app_univ_pass_freq_count)
-            app_univ_fail_freq_list.append(app_univ_fail_freq_count)
-
-    elif student_region_query == '충북':
-        for univ in app_univ_name_list:
-            app_univ_name = univ_name_qs.get(univ_name=univ)
-            app_univ_pass_freq_count = Student.objects \
-                .filter(entrance_year=entrance_year_query) \
-                .filter(student_region='충북')\
-                .filter(univ_name=app_univ_name.id) \
-                .filter(Q(final_step='합격') | Q(final_step='충원합격')) \
-                .count()
-            app_univ_fail_freq_count = Student.objects \
-                .filter(entrance_year=entrance_year_query) \
-                .filter(student_region='충북')\
+                .filter(student_region=student_region_query)\
                 .filter(univ_name=app_univ_name.id) \
                 .filter(final_step='불합격') \
                 .count()
