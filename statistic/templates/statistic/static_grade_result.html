@@ -85,28 +85,77 @@ var myChart = new Chart(ctx, {
 <br>
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="{% if current_gte == 1 %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_grade_search' %}?entrance_year={{ current_entrance_year }}&major_group={{ current_major_group }}&admission1={{ current_admission1 }}&gte=1&lt=2">1등급대</a>
+    <a class="{% if current_gte == 1 %}nav-link active{%else%}nav-link{% endif %}"
+       href="{% url 'static_grade_result' %}
+       ?entrance_year={{ current_entrance_year }}
+       &major_group={{ current_major_group }}
+       &admission1={{ current_admission1 }}
+       &gte=1
+       &lt=2">
+      1등급대</a>
   </li>
   <li class="nav-item">
-    <a class="{% if current_gte == 2 %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_grade_search' %}?entrance_year={{ current_entrance_year }}&major_group={{ current_major_group }}&admission1={{ current_admission1 }}&gte=2&lt=3">2등급대</a>
+    <a class="{% if current_gte == 2 %}nav-link active{%else%}nav-link{% endif %}"
+       href="{% url 'static_grade_result' %}
+       ?entrance_year={{ current_entrance_year }}
+       &major_group={{ current_major_group }}
+       &admission1={{ current_admission1 }}
+       &gte=2
+       &lt=3">2등급대</a>
   </li>
   <li class="nav-item">
-    <a class="{% if current_gte == 3 %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_grade_search' %}?entrance_year={{ current_entrance_year }}&major_group={{ current_major_group }}&admission1={{ current_admission1 }}&gte=3&lt=4">3등급대</a>
+    <a class="{% if current_gte == 3 %}nav-link active{%else%}nav-link{% endif %}"
+       href="{% url 'static_grade_result' %}
+       ?entrance_year={{ current_entrance_year }}
+       &major_group={{ current_major_group }}
+       &admission1={{ current_admission1 }}
+       &gte=3
+       &lt=4">3등급대</a>
   </li>
   <li class="nav-item">
-    <a class="{% if current_gte == 4 %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_grade_search' %}?entrance_year={{ current_entrance_year }}&major_group={{ current_major_group }}&admission1={{ current_admission1 }}&gte=4&lt=5">4등급대</a>
+    <a class="{% if current_gte == 4 %}nav-link active{%else%}nav-link{% endif %}"
+       href="{% url 'static_grade_result' %}
+       ?entrance_year={{ current_entrance_year }}
+       &major_group={{ current_major_group }}
+       &admission1={{ current_admission1 }}
+       &gte=4
+       &lt=5">4등급대</a>
   </li>
   <li class="nav-item">
-    <a class="{% if current_gte == 5 %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_grade_search' %}?entrance_year={{ current_entrance_year }}&major_group={{ current_major_group }}&admission1={{ current_admission1 }}&gte=5&lt=6">5등급대</a>
+    <a class="{% if current_gte == 5 %}nav-link active{%else%}nav-link{% endif %}"
+       href="{% url 'static_grade_result' %}
+       ?entrance_year={{ current_entrance_year }}
+       &major_group={{ current_major_group }}
+       &admission1={{ current_admission1 }}
+       &gte=5
+       &lt=6">5등급대</a>
   </li>
   <li class="nav-item">
-    <a class="{% if current_gte == 6 %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_grade_search' %}?entrance_year={{ current_entrance_year }}&major_group={{ current_major_group }}&admission1={{ current_admission1 }}&gte=6&lt=7">6등급대</a>
+    <a class="{% if current_gte == 6 %}nav-link active{%else%}nav-link{% endif %}"
+       href="{% url 'static_grade_result' %}
+       ?entrance_year={{ current_entrance_year }}
+       &major_group={{ current_major_group }}
+       &admission1={{ current_admission1 }}
+       &gte=6
+       &lt=7">6등급대</a>
   </li>
   <li class="nav-item">
-    <a class="{% if current_gte == 7 %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_grade_search' %}?entrance_year={{ current_entrance_year }}&major_group={{ current_major_group }}&admission1={{ current_admission1 }}&gte=7&lt=8">7등급대</a>
+    <a class="{% if current_gte == 7 %}nav-link active{%else%}nav-link{% endif %}"
+       href="{% url 'static_grade_result' %}
+       ?entrance_year={{ current_entrance_year }}
+       &major_group={{ current_major_group }}
+       &admission1={{ current_admission1 }}
+       &gte=7
+       &lt=8">7등급대</a>
   </li>
   <li class="nav-item">
-    <a class="{% if current_gte == 8 %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_grade_search' %}?entrance_year={{ current_entrance_year }}&major_group={{ current_major_group }}&admission1={{ current_admission1 }}&gte=8&lt=9">8등급대</a>
+    <a class="{% if current_gte == 8 %}nav-link active{%else%}nav-link{% endif %}"
+       href="{% url 'static_grade_result' %}
+       ?entrance_year={{ current_entrance_year }}
+       &major_group={{ current_major_group }}
+       &admission1={{ current_admission1 }}
+       &gte=8
+       &lt=9">8등급대</a>
   </li>
 </ul>
 <br>

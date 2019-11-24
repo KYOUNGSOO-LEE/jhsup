@@ -17,7 +17,8 @@
   <!-- Load d3.js -->
   <script src="https://d3js.org/d3.v4.js"></script>
   <!-- Bootstrap core CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <!-- Custom styles for this template -->
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
   {% block head %}{% endblock %}
@@ -42,38 +43,54 @@
           <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1">
             <span>수시 통계분석</span></h6>
           <ul class="nav flex-column">
+
             <li class="nav-item">
-              <a class="{% if url_name == 'app_region' or url_name == 'app_region_search' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region' %}">
-                지역별 합불통계
+              <a class="{% if url_name == 'static_student_region' or url_name == 'static_student_region_result' %}
+              nav-link active{%else%}nav-link{% endif %}" href="{% url 'static_student_region' %}">
+                출신 지역별 합불 통계
               </a>
             </li>
+
             <li class="nav-item">
-              <a class="{% if url_name == 'app_grade' or url_name == 'app_grade_search' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_grade' %}">
-                등급별 합불통계
+              <a class="{% if url_name == 'static_grade' or url_name == 'static_grade_result' %}nav-link active{%else%}
+              nav-link{% endif %}" href="{% url 'static_grade' %}">
+                등급 구간별 합불 통계
               </a>
             </li>
+
+            <li class="nav-item">
+              <a class="{% if url_name == 'static_grade' or url_name == 'static_grade_result' %}nav-link active{%else%}
+              nav-link{% endif %}" href="{% url 'static_grade' %}">
+                대학 소재별 지원유형 통계
+              </a>
+            </li>
+
           </ul>
 
           <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1">
             <span>수시 사례검색</span></h6>
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a class="{% if url_name == 'grade' or url_name == 'grade_search' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'grade' %}">
+              <a class="{% if url_name == 'grade' or url_name == 'grade_search' %}nav-link active{%else%}nav-link{% endif %}"
+                 href="{% url 'grade' %}">
                 등급기준 사례검색
               </a>
             </li>
             <li class="nav-item">
-              <a class="{% if url_name == 'university' or url_name == 'university_search' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'university' %}">
+              <a class="{% if url_name == 'university' or url_name == 'university_search' %}nav-link active{%else%}nav-link{% endif %}"
+                 href="{% url 'university' %}">
                 학교기준 사례검색
               </a>
             </li>
             <li class="nav-item">
-              <a class="{% if url_name == 'major' or url_name == 'major_search' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'major' %}">
+              <a class="{% if url_name == 'major' or url_name == 'major_search' %}nav-link active{%else%}nav-link{% endif %}"
+                 href="{% url 'major' %}">
                 학과기준 사례검색
               </a>
             </li>
             <li class="nav-item">
-              <a class="{% if url_name == 'advanced' or url_name == 'advanced_search' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'advanced' %}">
+              <a class="{% if url_name == 'advanced' or url_name == 'advanced_search' %}nav-link active{%else%}nav-link{% endif %}"
+                 href="{% url 'advanced' %}">
                 상세기준 사례검색
               </a>
             </li>

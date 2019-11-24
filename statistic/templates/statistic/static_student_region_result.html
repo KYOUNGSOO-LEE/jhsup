@@ -79,19 +79,24 @@ var myChart = new Chart(ctx, {
 <br>
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="{% if current_region == '충청도' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region_search' %}?entrance_year={{ current_entrance_year }}&student_region=충청도">충청도</a>
+    <a class="{% if current_region == '충청도' %}nav-link active{%else%}nav-link{% endif %}"
+       href="{% url 'static_student_region_result' %}?entrance_year={{ current_entrance_year }}&student_region=충청도">충청도</a>
   </li>
   <li class="nav-item">
-    <a class="{% if current_region == '대전' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region_search' %}?entrance_year={{ current_entrance_year }}&student_region=대전">대전</a>
+    <a class="{% if current_region == '대전' %}nav-link active{%else%}nav-link{% endif %}"
+       href="{% url 'static_student_region_result' %}?entrance_year={{ current_entrance_year }}&student_region=대전">대전</a>
   </li>
   <li class="nav-item">
-    <a class="{% if current_region == '세종' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region_search' %}?entrance_year={{ current_entrance_year }}&student_region=세종">세종</a>
+    <a class="{% if current_region == '세종' %}nav-link active{%else%}nav-link{% endif %}"
+       href="{% url 'static_student_region_result' %}?entrance_year={{ current_entrance_year }}&student_region=세종">세종</a>
   </li>
   <li class="nav-item">
-    <a class="{% if current_region == '충남' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region_search' %}?entrance_year={{ current_entrance_year }}&student_region=충남">충남</a>
+    <a class="{% if current_region == '충남' %}nav-link active{%else%}nav-link{% endif %}"
+       href="{% url 'static_student_region_result' %}?entrance_year={{ current_entrance_year }}&student_region=충남">충남</a>
   </li>
   <li class="nav-item">
-    <a class="{% if current_region == '충북' %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'app_region_search' %}?entrance_year={{ current_entrance_year }}&student_region=충북">충북</a>
+    <a class="{% if current_region == '충북' %}nav-link active{%else%}nav-link{% endif %}"
+       href="{% url 'static_student_region_result' %}?entrance_year={{ current_entrance_year }}&student_region=충북">충북</a>
   </li>
 </ul>
 <br>

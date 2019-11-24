@@ -7,8 +7,8 @@ from django.contrib.auth.decorators import login_required
 
 
 @login_required(login_url="login")
-def app_region(request):
-    template = "statistic/app_region.html"
+def static_student_region(request):
+    template = "statistic/static_student_region.html"
 
     # 지역별 사례수
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
@@ -20,8 +20,8 @@ def app_region(request):
 
 
 @login_required(login_url="login")
-def app_region_search(request):
-    template = "statistic/app_region_search.html"
+def static_student_region_result(request):
+    template = "statistic/static_student_region_result.html"
 
     # 지역별 사례수
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
@@ -198,8 +198,8 @@ def app_region_search(request):
 
 
 @login_required(login_url="login")
-def app_grade(request):
-    template = "statistic/app_grade.html"
+def static_grade(request):
+    template = "statistic/static_grade.html"
 
     # 등급별 사례수
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
@@ -215,8 +215,8 @@ def app_grade(request):
 
 
 @login_required(login_url="login")
-def app_grade_search(request):
-    template = "statistic/app_grade_search.html"
+def static_grade_result(request):
+    template = "statistic/static_grade_result.html"
 
     # 등급별 사례수
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
