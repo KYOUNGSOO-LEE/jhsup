@@ -52,15 +52,15 @@
             </li>
 
             <li class="nav-item">
-              <a class="{% if url_name == 'static_grade' or url_name == 'static_grade_result' %}nav-link active{%else%}
-              nav-link{% endif %}" href="{% url 'static_grade' %}">
+              <a class="{% if url_name == 'static_grade' or url_name == 'static_grade_result' %}
+              nav-link active{%else%}nav-link{% endif %}" href="{% url 'static_grade' %}">
                 등급 구간별 합불 통계
               </a>
             </li>
 
             <li class="nav-item">
-              <a class="{% if url_name == 'static_grade' or url_name == 'static_grade_result' %}nav-link active{%else%}
-              nav-link{% endif %}" href="{% url 'static_grade' %}">
+              <a class="{% if url_name == 'static_univ_region' or url_name == 'static_univ_region_result' %}
+              nav-link active{%else%}nav-link{% endif %}" href="{% url 'static_univ_region' %}">
                 대학 소재별 지원유형 통계
               </a>
             </li>

@@ -7,8 +7,8 @@ from django.contrib.auth.decorators import login_required
 
 
 @login_required(login_url="login")
-def static_student_region(request):
-    template = "statistic/static_student_region.html"
+def student_region(request):
+    template = "statistic/student_region.html"
 
     # 지역별 사례수
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
@@ -20,8 +20,8 @@ def static_student_region(request):
 
 
 @login_required(login_url="login")
-def static_student_region_result(request):
-    template = "statistic/static_student_region_result.html"
+def student_region_result(request):
+    template = "statistic/student_region_result.html"
 
     # 지역별 사례수
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
@@ -123,8 +123,8 @@ def static_student_region_result(request):
 
 
 @login_required(login_url="login")
-def static_grade(request):
-    template = "statistic/static_grade.html"
+def grade(request):
+    template = "statistic/grade.html"
 
     # 등급별 사례수
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
@@ -140,8 +140,8 @@ def static_grade(request):
 
 
 @login_required(login_url="login")
-def static_grade_result(request):
-    template = "statistic/static_grade_result.html"
+def grade_result(request):
+    template = "statistic/grade_result.html"
 
     # 등급별 사례수
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
@@ -302,6 +302,7 @@ def static_grade_result(request):
     app_univ_pass_freq_list = app_univ_pass_freq_list[:25]
     app_univ_fail_freq_list = app_univ_fail_freq_list[:25]
 
+    #Chart size
     if len(app_univ_freq_list) != 0:
         if max(app_univ_freq_list) < 5:
             chart_width = 70
@@ -337,6 +338,63 @@ def static_grade_result(request):
 
         'app_univ_pass_freq_list': app_univ_pass_freq_list,
         'app_univ_fail_freq_list': app_univ_fail_freq_list,
+    }
+    return render(request, template, context)
+
+
+@login_required(login_url="login")
+def univ_region(request):
+    template = "statistic/univ_region.html"
+
+    entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
+    major_group_qs = MajorGroup.objects.order_by('major_group').distinct()
+    univ_region_qs = UnivRegion.objects.order_by('univ_region').distinct()
+
+    context = {
+        'entrance_year_item': entrance_year_qs,
+        'major_group_item': major_group_qs,
+        'univ_region_item': univ_region_qs,
+    }
+    return render(request, template, context)
+
+@login_required(login_url="login")
+def univ_region_result(request):
+    template = "statistic/univ_region_result.html"
+
+    entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
+    major_group_qs = MajorGroup.objects.order_by('major_group').distinct()
+    univ_region_qs = UnivRegion.objects.order_by('univ_region').distinct()
+    admission1_qs = Admission1.objects.values('admission1').order_by('admission1').distinct()
+
+    entrance_year_query = request.GET.get('entrance_year')
+    major_group_query = request.GET.get('major_group')
+    univ_region_query = request.GET.get('univ_region')
+
+    admission1_list = []
+    admission1_freq_list = []
+
+    for admission1 in admission1_qs:
+        admission1 = list(admission1.values())[0]
+        admission1_freq = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(univ_region=univ_region_query) \
+            .filter(admission1__admission1__contains=admission1)\
+            .count()
+        admission1_list.append(admission1)
+        admission1_freq_list.append(admission1_freq)
+
+    context = {
+        'entrance_year_item': entrance_year_qs,
+        'major_group_item': major_group_qs,
+        'univ_region_item': univ_region_qs,
+
+        'current_entrance_year': int(entrance_year_query),
+        'current_major_group': int(major_group_query),
+        'current_univ_region': int(univ_region_query),
+
+        'admission1_list': admission1_list,
+        'admission1_freq_list': admission1_freq_list,
     }
     return render(request, template, context)
 
