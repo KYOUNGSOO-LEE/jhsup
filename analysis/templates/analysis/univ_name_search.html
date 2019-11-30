@@ -14,7 +14,7 @@
 
   <div class="form-row align-items-center">
 
-    <div class="col-md-2 my-1">
+    <div class="col-md-1 my-1">
       <select class="custom-select mr-sm-2" id="major_group" name="major_group">
         {% for item in major_group_item %}
           <option value="{{item.pk}}" {% if item.pk == current_major_group %} selected {% endif %}>{{item.major_group}}</option>
@@ -22,22 +22,22 @@
       </select>
     </div>
 
-    <div class="col-md-3 my-2">
+    <div class="col-md-3 my-1">
       <label class="sr-only" for="univ_name">대학명</label>
       <input type="text" class="form-control" id="univ_name" name="univ_name"
              value="{{current_univ_name}}" placeholder="대학명">
     </div>
 
-    <div class="col-md-2 my-2">
-      <label class="sr-only" for="ko_en_math_soc_or_sci_100_min">등급 입력값 이상</label>
+    <div class="col-md-1 my-1">
+      <label class="sr-only" for="ko_en_math_soc_or_sci_100_min">등급 이상</label>
       <input type="number" class="form-control" id="ko_en_math_soc_or_sci_100_min" name="ko_en_math_soc_or_sci_100_min"
-             value="{{current_ko_en_math_soc_or_sci_100_min}}" placeholder="등급 입력값 이상" min="1" max="9" step=".001">
+             value="{{current_ko_en_math_soc_or_sci_100_min}}" placeholder="등급 이상" min="1" max="9" step=".001">
     </div>
 
-    <div class="col-md-2 my-2">
-      <label class="sr-only" for="ko_en_math_soc_or_sci_100_max">등급 입력값 미만</label>
+    <div class="col-md-1 my-1">
+      <label class="sr-only" for="ko_en_math_soc_or_sci_100_max">등급 미만</label>
       <input type="number" class="form-control" id="ko_en_math_soc_or_sci_100_max" name="ko_en_math_soc_or_sci_100_max"
-             value="{{current_ko_en_math_soc_or_sci_100_max}}" placeholder="등급 입력값 미만" min="1" max="9" step=".001">
+             value="{{current_ko_en_math_soc_or_sci_100_max}}" placeholder="등급 미만" min="1" max="9" step=".001">
     </div>
 
     <div class="col-auto my-1">

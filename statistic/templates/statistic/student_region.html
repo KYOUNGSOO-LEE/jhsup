@@ -11,7 +11,7 @@
 <form method="get" action="{% url 'static_student_region_result' %}">
   <div class="form-row align-items-center">
 
-    <div class="col-md-0.5 my-1">
+    <div class="col-md-1 my-1">
       <select class="custom-select mr-sm-2" id="entrance_year" name="entrance_year">
         {% for item in entrance_year_item %}
           <option value="{{item.entrance_year}}">{{item.entrance_year}}</option>

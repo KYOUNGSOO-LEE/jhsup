@@ -11,7 +11,7 @@
 <form method="get" action="{% url request.resolver_match.url_name %}">
   <div class="form-row align-items-center">
 
-    <div class="col-md-0.5 my-1">
+    <div class="col-md-1 my-1">
       <select class="custom-select mr-sm-2" id="entrance_year" name="entrance_year">
         {% for item in entrance_year_item %}
           <option value="{{item.entrance_year}}" {% if item.entrance_year == current_entrance_year %} selected {% endif %}>{{item.entrance_year}}</option>

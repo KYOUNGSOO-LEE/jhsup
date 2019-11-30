@@ -170,11 +170,11 @@ def grade_result(request):
     gte_query = request.GET.get('gte')
     lt_query = request.GET.get('lt')
 
-    student_grade_list = []
-    student_grade_freq_list = []
+    grade_list = []
+    grade_freq_list = []
 
     if MajorGroup.objects.get(pk=major_group_query) == '자연':
-        student_grade_freq_qs = Student.objects \
+        grade_freq_qs = Student.objects\
             .filter(entrance_year=entrance_year_query) \
             .filter(major_group=major_group_query) \
             .filter(admission1__admission1__contains=admission1_query)\
@@ -182,7 +182,7 @@ def grade_result(request):
             .annotate(student_grade_count=Count(Floor('ko_en_math_sci_100')))\
             .order_by(Floor('ko_en_math_sci_100'))
     elif MajorGroup.objects.get(pk=major_group_query) == '공통':
-        student_grade_freq_qs = Student.objects \
+        grade_freq_qs = Student.objects \
             .filter(entrance_year=entrance_year_query) \
             .filter(major_group=major_group_query) \
             .filter(admission1__admission1__contains=admission1_query) \
@@ -190,7 +190,7 @@ def grade_result(request):
             .annotate(student_grade_count=Count(Floor('ko_en_math_soc_sci_100'))) \
             .order_by(Floor('ko_en_math_soc_sci_100'))
     else:
-        student_grade_freq_qs = Student.objects \
+        grade_freq_qs = Student.objects \
             .filter(entrance_year=entrance_year_query) \
             .filter(major_group=major_group_query) \
             .filter(admission1__admission1__contains=admission1_query) \
@@ -198,9 +198,9 @@ def grade_result(request):
             .annotate(student_grade_count=Count(Floor('ko_en_math_soc_100'))) \
             .order_by(Floor('ko_en_math_soc_100'))
 
-    for student_grade in student_grade_freq_qs:
-        student_grade_list.append(int(student_grade[0]))
-        student_grade_freq_list.append(student_grade[1])
+    for grade in grade_freq_qs:
+        grade_list.append(int(grade[0]))
+        grade_freq_list.append(grade[1])
 
     # 등급별 학생 지원대학 현황
     univ_name_list = []
@@ -245,6 +245,7 @@ def grade_result(request):
 
     # 등급별 지원대학 합격/불합격 인원
     univ_pass_freq_list = []
+    univ_supplement_freq_list = []
     univ_fail_freq_list = []
 
     for univ in univ_name_list:
@@ -258,7 +259,25 @@ def grade_result(request):
                 .filter(univ_name=univ_name.id)\
                 .filter(ko_en_math_sci_100__gte=gte_query)\
                 .filter(ko_en_math_sci_100__lt=lt_query)\
-                .filter(Q(final_step='합격') | Q(final_step='충원합격'))\
+                .filter(final_step='합격')\
+                .count()
+            univ_supplement_freq_count = Student.objects \
+                .filter(entrance_year=entrance_year_query) \
+                .filter(major_group=major_group_query) \
+                .filter(admission1__admission1__contains=admission1_query) \
+                .filter(univ_name=univ_name.id) \
+                .filter(ko_en_math_sci_100__gte=gte_query) \
+                .filter(ko_en_math_sci_100__lt=lt_query) \
+                .filter(final_step='충원합격') \
+                .count()
+            univ_fail_freq_count = Student.objects \
+                .filter(entrance_year=entrance_year_query) \
+                .filter(major_group=major_group_query) \
+                .filter(admission1__admission1__contains=admission1_query) \
+                .filter(univ_name=univ_name.id) \
+                .filter(ko_en_math_sci_100__gte=gte_query) \
+                .filter(ko_en_math_sci_100__lt=lt_query) \
+                .filter(final_step='불합격') \
                 .count()
         elif MajorGroup.objects.get(pk=major_group_query) == '공통':
             univ_pass_freq_count = Student.objects \
@@ -268,7 +287,25 @@ def grade_result(request):
                 .filter(univ_name=univ_name.id)\
                 .filter(ko_en_math_soc_sci_100__gte=gte_query) \
                 .filter(ko_en_math_soc_sci_100__lt=lt_query) \
-                .filter(Q(final_step='합격') | Q(final_step='충원합격')) \
+                .filter(final_step='합격') \
+                .count()
+            univ_supplement_freq_count = Student.objects \
+                .filter(entrance_year=entrance_year_query) \
+                .filter(major_group=major_group_query) \
+                .filter(admission1__admission1__contains=admission1_query) \
+                .filter(univ_name=univ_name.id) \
+                .filter(ko_en_math_soc_sci_100__gte=gte_query) \
+                .filter(ko_en_math_soc_sci_100__lt=lt_query) \
+                .filter(final_step='충원합격') \
+                .count()
+            univ_fail_freq_count = Student.objects \
+                .filter(entrance_year=entrance_year_query) \
+                .filter(major_group=major_group_query) \
+                .filter(admission1__admission1__contains=admission1_query) \
+                .filter(univ_name=univ_name.id) \
+                .filter(ko_en_math_soc_sci_100__gte=gte_query) \
+                .filter(ko_en_math_soc_sci_100__lt=lt_query) \
+                .filter(final_step='불합격') \
                 .count()
         else:
             univ_pass_freq_count = Student.objects \
@@ -278,57 +315,46 @@ def grade_result(request):
                 .filter(univ_name=univ_name.id)\
                 .filter(ko_en_math_soc_100__gte=gte_query) \
                 .filter(ko_en_math_soc_100__lt=lt_query) \
-                .filter(Q(final_step='합격') | Q(final_step='충원합격')) \
+                .filter(final_step='합격') \
                 .count()
-
-        if MajorGroup.objects.get(pk=major_group_query) == '자연':
+            univ_supplement_freq_count = Student.objects \
+                .filter(entrance_year=entrance_year_query) \
+                .filter(major_group=major_group_query) \
+                .filter(admission1__admission1__contains=admission1_query) \
+                .filter(univ_name=univ_name.id) \
+                .filter(ko_en_math_soc_100__gte=gte_query) \
+                .filter(ko_en_math_soc_100__lt=lt_query) \
+                .filter(final_step='충원합격') \
+                .count()
             univ_fail_freq_count = Student.objects \
                 .filter(entrance_year=entrance_year_query) \
                 .filter(major_group=major_group_query) \
                 .filter(admission1__admission1__contains=admission1_query) \
-                .filter(univ_name=univ_name.id)\
-                .filter(ko_en_math_sci_100__gte=gte_query)\
-                .filter(ko_en_math_sci_100__lt=lt_query)\
-                .filter(final_step='불합격') \
-                .count()
-        elif MajorGroup.objects.get(pk=major_group_query) == '공통':
-            univ_fail_freq_count = Student.objects \
-                .filter(entrance_year=entrance_year_query) \
-                .filter(major_group=major_group_query) \
-                .filter(admission1__admission1__contains=admission1_query) \
-                .filter(univ_name=univ_name.id)\
-                .filter(ko_en_math_soc_sci_100__gte=gte_query) \
-                .filter(ko_en_math_soc_sci_100__lt=lt_query) \
-                .filter(final_step='불합격') \
-                .count()
-        else:
-            univ_fail_freq_count = Student.objects \
-                .filter(entrance_year=entrance_year_query) \
-                .filter(major_group=major_group_query) \
-                .filter(admission1__admission1__contains=admission1_query) \
-                .filter(univ_name=univ_name.id)\
+                .filter(univ_name=univ_name.id) \
                 .filter(ko_en_math_soc_100__gte=gte_query) \
                 .filter(ko_en_math_soc_100__lt=lt_query) \
                 .filter(final_step='불합격') \
                 .count()
 
         univ_pass_freq_list.append(univ_pass_freq_count)
+        univ_supplement_freq_list.append(univ_supplement_freq_count)
         univ_fail_freq_list.append(univ_fail_freq_count)
 
     univ_pass_freq_list = univ_pass_freq_list[:25]
+    univ_supplement_freq_list = univ_supplement_freq_list[:25]
     univ_fail_freq_list = univ_fail_freq_list[:25]
 
     #Chart size
     if len(univ_freq_list) != 0:
         if max(univ_freq_list) < 5:
             chart_width = 70
-            chart_height = (len(univ_freq_list) + 1) * 3
+            chart_height = (len(univ_freq_list) + 1) * 2.8
         elif max(univ_freq_list) < 10:
             chart_width = 80
-            chart_height = (len(univ_freq_list) + 1) * 3
+            chart_height = (len(univ_freq_list) + 1) * 2.8
         else:
             chart_width = (max(univ_freq_list) // 10 + 70)
-            chart_height = (len(univ_freq_list) + 1) * 3
+            chart_height = (len(univ_freq_list) + 1) * 2.8
     else:
         chart_width = 10
         chart_height = 1
@@ -343,17 +369,18 @@ def grade_result(request):
         'current_admission1': admission1_query,
         'current_gte': int(gte_query),
 
-        'student_grade_list': student_grade_list,
-        'student_grade_freq_list': student_grade_freq_list,
+        'grade_list': grade_list,
+        'grade_freq_list': grade_freq_list,
 
         'univ_name_list': univ_name_list,
         'univ_freq_list': univ_freq_list,
 
+        'univ_pass_freq_list': univ_pass_freq_list,
+        'univ_supplement_freq_list': univ_supplement_freq_list,
+        'univ_fail_freq_list': univ_fail_freq_list,
+
         'chart_width': chart_width,
         'chart_height': chart_height,
-
-        'univ_pass_freq_list': univ_pass_freq_list,
-        'univ_fail_freq_list': univ_fail_freq_list,
     }
     return render(request, template, context)
 

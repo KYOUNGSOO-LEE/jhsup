@@ -11,7 +11,7 @@
 <form method="get" action="{% url 'static_univ_region_result' %}">
   <div class="form-row align-items-center">
 
-    <div class="col-md-0.5 my-1">
+    <div class="col-md-1 my-1">
       <select class="custom-select mr-sm-2" id="entrance_year" name="entrance_year">
         {% for item in entrance_year_item %}
           <option value="{{item.entrance_year}}" {% if item.entrance_year == current_entrance_year %} selected {% endif %}>{{item.entrance_year}}</option>
@@ -19,7 +19,7 @@
       </select>
     </div>
 
-    <div class="col-md-0.5 my-1">
+    <div class="col-md-1 my-1">
       <select class="custom-select mr-sm-2" id="major_group" name="major_group">
         {% for item in major_group_item %}
           <option value="{{item.pk}}" {% if item.pk == current_major_group %} selected {% endif %}>{{item.major_group}}</option>
@@ -27,7 +27,7 @@
       </select>
     </div>
 
-    <div class="col-md-0.5 my-1">
+    <div class="col-md-1 my-1">
       <select class="custom-select mr-sm-2" id="univ_region" name="univ_region">
         {% for item in univ_region_item %}
           <option value="{{item.pk}}" {% if item.pk == current_univ_region %} selected {% endif %}>{{item.univ_region}}</option>

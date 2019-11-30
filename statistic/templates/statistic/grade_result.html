@@ -11,7 +11,7 @@
 <form method="get" action="{% url request.resolver_match.url_name %}">
   <div class="form-row align-items-center">
 
-    <div class="col-md-0.5 my-1">
+    <div class="col-md-1 my-1">
       <select class="custom-select mr-sm-2" id="entrance_year" name="entrance_year">
         {% for item in entrance_year_item %}
           <option value="{{item.entrance_year}}" {% if item.entrance_year == current_entrance_year %} selected {% endif %}>{{item.entrance_year}}</option>
@@ -19,7 +19,7 @@
       </select>
     </div>
 
-    <div class="col-md-0.5 my-1">
+    <div class="col-md-1 my-1">
       <select class="custom-select mr-sm-2" id="major_group" name="major_group">
         {% for item in major_group_item %}
           <option value="{{item.pk}}" {% if item.pk == current_major_group %} selected {% endif %}>{{item.major_group}}</option>
@@ -27,7 +27,7 @@
       </select>
     </div>
 
-    <div class="col-md-0.5 my-1">
+    <div class="col-md-1 my-1">
       <select class="custom-select mr-sm-2" id="admission1" name="admission1">
         {% for item in admission1_item %}
           <option value="{{item.admission1}}" {% if item.admission1 == current_admission1 %} selected {% endif %}>{{item.admission1}}</option>
@@ -52,10 +52,10 @@ var ctx = document.getElementById('grade_chart1').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: {{ student_grade_list | safe }},
+        labels: {{ grade_list | safe }},
         datasets: [{
             label: '등급별 지원 사례 수',
-            data: {{ student_grade_freq_list }},
+            data: {{ grade_freq_list }},
             backgroundColor: [
                 'rgba(36, 166, 189, 1)',
                 'rgba(36, 166, 189, 1)',
@@ -122,31 +122,31 @@ var myChart = new Chart(ctx, {
             data: {{ univ_pass_freq_list }},
 
             backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 99, 132, 1)',
             ],
             borderColor: [
                 'rgba(255, 99, 132, 1)',
@@ -174,6 +174,66 @@ var myChart = new Chart(ctx, {
                 'rgba(255, 99, 132, 1)',
                 'rgba(255, 99, 132, 1)',
                 'rgba(255, 99, 132, 1)',
+            ],
+            borderWidth: 1
+        },
+        {
+            label: '충원합격 사례 수',
+            data: {{ univ_supplement_freq_list }},
+
+            backgroundColor: [
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+            ],
+            borderColor: [
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(75, 192, 192, 1)',
             ],
             borderWidth: 1
         },
@@ -248,7 +308,7 @@ var myChart = new Chart(ctx, {
             xAxes: [{
                 stacked: true,
                 ticks: {
-                        barPercentage: 0.5,
+                        barPercentage: 0.8,
                         reverse: false,
                         stepSize: 10
                       },
