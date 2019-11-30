@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 @login_required(login_url="login")
 def grade(request):
-    template = "analysis/grade_interval_search.html"
+    template = "analysis/grade.html"
 
     major_group_qs = MajorGroup.objects.all().order_by('major_group')
     univ_region_qs = UnivRegion.objects.all().order_by('univ_region')
@@ -22,7 +22,7 @@ def grade(request):
 
 @login_required(login_url="login")
 def grade_search(request):
-    template = "analysis/grade_interval_search.html"
+    template = "analysis/grade.html"
 
     major_group_qs = MajorGroup.objects.all().order_by('major_group')
     univ_region_qs = UnivRegion.objects.all().order_by('univ_region')
@@ -84,7 +84,7 @@ def grade_search(request):
 
 @login_required(login_url="login")
 def university(request):
-    template = "analysis/univ_name_search.html"
+    template = "analysis/university.html"
 
     major_group_qs = MajorGroup.objects.all().order_by('major_group')
 
@@ -96,7 +96,7 @@ def university(request):
 
 @login_required(login_url="login")
 def university_search(request):
-    template = "analysis/univ_name_search.html"
+    template = "analysis/university.html"
 
     major_group_qs = MajorGroup.objects.all().order_by('major_group')
     univ_name_qs = UnivName.objects.all()
@@ -159,7 +159,7 @@ def university_search(request):
 
 @login_required(login_url="login")
 def major(request):
-    template = "analysis/univ_major_search.html"
+    template = "analysis/major.html"
 
     major_group_qs = MajorGroup.objects.all().order_by('major_group')
 
@@ -171,7 +171,7 @@ def major(request):
 
 @login_required(login_url="login")
 def major_search(request):
-    template = "analysis/univ_major_search.html"
+    template = "analysis/major.html"
 
     major_group_qs = MajorGroup.objects.all().order_by('major_group')
     univ_major_qs = UnivMajor.objects.all()
