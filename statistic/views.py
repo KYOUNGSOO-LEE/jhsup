@@ -386,8 +386,8 @@ def grade_result(request):
 
 
 @login_required(login_url="login")
-def univ_region(request):
-    template = "statistic/univ_region.html"
+def admission(request):
+    template = "statistic/admission.html"
 
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
     major_group_qs = MajorGroup.objects.order_by('major_group').distinct()
@@ -402,8 +402,8 @@ def univ_region(request):
 
 
 @login_required(login_url="login")
-def univ_region_result(request):
-    template = "statistic/univ_region_result.html"
+def admission_result(request):
+    template = "statistic/admission_result.html"
 
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
     major_group_qs = MajorGroup.objects.order_by('major_group').distinct()

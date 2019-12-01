@@ -1,14 +1,14 @@
 {% extends "base.html" %}
-{% block title %} 등급별 지원통계 {% endblock %}
+{% block title %} 전형별 합불통계 {% endblock %}
 
 {% block content %}
 
-<h4> 대학 소재별 전형유형 통계 </h4>
+<h4> 전형별 합불통계 </h4>
 <p class="font-weight-bold text-info">
     &#8251 기준 : 인문, 예체능(국영수사100), 자연(국영수과100), 공통(국영수사과100)<br>
 </p>
 
-<form method="get" action="{% url 'static_univ_region_result' %}">
+<form method="get" action="{% url 'static_admission_result' %}">
   <div class="form-row align-items-center">
 
     <div class="col-md-1 my-1">
@@ -42,5 +42,46 @@
   </div>
 </form>
 <hr/>
+
+<canvas id="myChart" width="500" height="100"></canvas>
+<script>
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: {{ admission1_list | safe }},
+        datasets: [{
+            label: '전형유형 통계',
+            data: {{ admission1_freq_list }},
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+</script>
 
 {% endblock content %}
