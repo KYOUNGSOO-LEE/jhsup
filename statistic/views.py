@@ -414,6 +414,7 @@ def admission_result(request):
     major_group_query = request.GET.get('major_group')
     univ_region_query = request.GET.get('univ_region')
 
+    # 전형요소 별 지원 인원
     admission1_list = []
     admission1_freq_list = []
 
@@ -428,6 +429,77 @@ def admission_result(request):
         admission1_list.append(admission1)
         admission1_freq_list.append(admission1_freq)
 
+    # 등급별 학생 지원대학 현황
+    univ_name_list = []
+    univ_freq_list = []
+    univ_name_qs = UnivName.objects.all()
+
+    univ_freq_qs = Student.objects \
+                       .filter(entrance_year=entrance_year_query) \
+                       .filter(major_group=major_group_query) \
+                       .filter(univ_region=univ_region_query) \
+                       .values_list('univ_name') \
+                       .annotate(univ_count=Count('univ_name')) \
+                       .order_by('-univ_count')[:25]
+
+    for univ in univ_freq_qs:
+        univ_name = univ_name_qs.get(pk=univ[0])
+        univ_name_list.append(univ_name.univ_name)
+        univ_freq_list.append(univ[1])
+
+    # 전형별 지원대학 합격/불합격 인원
+    univ_pass_freq_list = []
+    univ_supplement_freq_list = []
+    univ_fail_freq_list = []
+
+    for univ in univ_name_list:
+        univ_name = univ_name_qs.get(univ_name=univ)
+
+        univ_pass_freq_count = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(univ_region=univ_region_query) \
+            .filter(univ_name=univ_name.id) \
+            .filter(final_step='합격') \
+            .count()
+        univ_supplement_freq_count = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(univ_region=univ_region_query) \
+            .filter(univ_name=univ_name.id) \
+            .filter(final_step='충원합격') \
+            .count()
+        univ_fail_freq_count = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(univ_region=univ_region_query) \
+            .filter(univ_name=univ_name.id) \
+            .filter(final_step='불합격') \
+            .count()
+
+        univ_pass_freq_list.append(univ_pass_freq_count)
+        univ_supplement_freq_list.append(univ_supplement_freq_count)
+        univ_fail_freq_list.append(univ_fail_freq_count)
+
+    univ_pass_freq_list = univ_pass_freq_list[:25]
+    univ_supplement_freq_list = univ_supplement_freq_list[:25]
+    univ_fail_freq_list = univ_fail_freq_list[:25]
+
+    # Chart size
+    if len(univ_freq_list) != 0:
+        if max(univ_freq_list) < 5:
+            chart_width = 70
+            chart_height = (len(univ_freq_list) + 1) * 2.8
+        elif max(univ_freq_list) < 10:
+            chart_width = 80
+            chart_height = (len(univ_freq_list) + 1) * 2.8
+        else:
+            chart_width = (max(univ_freq_list) // 10 + 70)
+            chart_height = (len(univ_freq_list) + 1) * 2.8
+    else:
+        chart_width = 10
+        chart_height = 1
+
     context = {
         'entrance_year_item': entrance_year_qs,
         'major_group_item': major_group_qs,
@@ -439,6 +511,16 @@ def admission_result(request):
 
         'admission1_list': admission1_list,
         'admission1_freq_list': admission1_freq_list,
+
+        'univ_name_list': univ_name_list,
+        'univ_freq_list': univ_freq_list,
+
+        'univ_pass_freq_list': univ_pass_freq_list,
+        'univ_supplement_freq_list': univ_supplement_freq_list,
+        'univ_fail_freq_list': univ_fail_freq_list,
+
+        'chart_width': chart_width,
+        'chart_height': chart_height,
     }
     return render(request, template, context)
 
