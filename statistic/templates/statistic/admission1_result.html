@@ -8,7 +8,7 @@
     &#8251 기준 : 인문, 예체능(국영수사100), 자연(국영수과100), 공통(국영수사과100)<br>
 </p>
 
-<form method="get" action="{% url 'static_admission_result' %}">
+<form method="get" action="{% url 'static_admission1_result' %}">
   <div class="form-row align-items-center">
 
     <div class="col-md-1 my-1">
@@ -35,6 +35,7 @@
       </select>
     </div>
 
+    <input type="hidden" id="admission1" name="admission1" value="교과">
     <div class="col-auto my-1">
       <button type="submit" class="btn btn-warning">검색</button>
     </div>
@@ -43,9 +44,9 @@
 </form>
 <hr/>
 
-<canvas id="admission_chart1" width="500" height="100"></canvas>
+<canvas id="admission1_chart1" width="500" height="100"></canvas>
 <script>
-var ctx = document.getElementById('admission_chart1').getContext('2d');
+var ctx = document.getElementById('admission1_chart1').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -54,20 +55,16 @@ var myChart = new Chart(ctx, {
             label: '전형유형 통계',
             data: {{ admission1_freq_list }},
             backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
+                'rgba(36, 166, 189, 1)',
+                'rgba(36, 166, 189, 1)',
+                'rgba(36, 166, 189, 1)',
+                'rgba(36, 166, 189, 1)',
             ],
             borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
+                'rgba(36, 166, 189, 1)',
+                'rgba(36, 166, 189, 1)',
+                'rgba(36, 166, 189, 1)',
+                'rgba(36, 166, 189, 1)',
             ],
             borderWidth: 1
         }]
@@ -86,27 +83,27 @@ var myChart = new Chart(ctx, {
 <br>
 <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="{% if current_admission == '교과' or current_admission == '' %}nav-link active{%else%}nav-link{% endif %}"
-       href="{% url 'static_admission_result' %}?entrance_year={{ current_entrance_year }}&major_group={{ current_major_group }}&univ_region={{ current_univ_region }}&admission=교과">교과</a>
+    <a class="{% if current_admission1 == '교과' %}nav-link active{%else%}nav-link{% endif %}"
+       href="{% url 'static_admission1_result' %}?entrance_year={{ current_entrance_year }}&major_group={{ current_major_group }}&univ_region={{ current_univ_region }}&admission1=교과">교과</a>
   </li>
   <li class="nav-item">
-    <a class="{% if current_admission == '논술' %}nav-link active{%else%}nav-link{% endif %}"
-       href="{% url 'static_admission_result' %}?entrance_year={{ current_entrance_year }}&major_group={{ current_major_group }}&univ_region={{ current_univ_region }}&admission=논술">논술</a>
+    <a class="{% if current_admission1 == '논술' %}nav-link active{%else%}nav-link{% endif %}"
+       href="{% url 'static_admission1_result' %}?entrance_year={{ current_entrance_year }}&major_group={{ current_major_group }}&univ_region={{ current_univ_region }}&admission1=논술">논술</a>
   </li>
   <li class="nav-item">
-    <a class="{% if current_admission == '실기' %}nav-link active{%else%}nav-link{% endif %}"
-       href="{% url 'static_admission_result' %}?entrance_year={{ current_entrance_year }}&major_group={{ current_major_group }}&univ_region={{ current_univ_region }}&admission=실기">실기</a>
+    <a class="{% if current_admission1 == '실기' %}nav-link active{%else%}nav-link{% endif %}"
+       href="{% url 'static_admission1_result' %}?entrance_year={{ current_entrance_year }}&major_group={{ current_major_group }}&univ_region={{ current_univ_region }}&admission1=실기">실기</a>
   </li>
   <li class="nav-item">
-    <a class="{% if current_admission == '종합' %}nav-link active{%else%}nav-link{% endif %}"
-       href="{% url 'static_admission_result' %}?entrance_year={{ current_entrance_year }}&major_group={{ current_major_group }}&univ_region={{ current_univ_region }}&admission=종합">종합</a>
+    <a class="{% if current_admission1 == '종합' %}nav-link active{%else%}nav-link{% endif %}"
+       href="{% url 'static_admission1_result' %}?entrance_year={{ current_entrance_year }}&major_group={{ current_major_group }}&univ_region={{ current_univ_region }}&admission1=종합">종합</a>
   </li>
 </ul>
 <br>
 
-<canvas id="admission_chart2" width="{{chart_width}}" height="{{chart_height}}"></canvas>
+<canvas id="admission1_chart2" width="{{chart_width}}" height="{{chart_height}}"></canvas>
 <script>
-var ctx = document.getElementById('admission_chart2').getContext('2d');
+var ctx = document.getElementById('admission1_chart2').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'horizontalBar',
     data: {

@@ -8,6 +8,6 @@ urlpatterns = [
     url(r'^grade$', views.grade, name="static_grade"),
     url(r'^grade-result$', views.grade_result, name="static_grade_result"),
 
-    url(r'^admission$', views.admission, name="static_admission"),
-    url(r'^admission-result$', views.admission_result, name="static_admission_result"),
+    url(r'^admission1$', views.admission1, name="static_admission1"),
+    url(r'^admission1-result$', views.admission1_result, name="static_admission1_result"),
 ]

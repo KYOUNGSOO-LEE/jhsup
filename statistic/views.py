@@ -348,13 +348,13 @@ def grade_result(request):
     if len(univ_freq_list) != 0:
         if max(univ_freq_list) < 5:
             chart_width = 70
-            chart_height = (len(univ_freq_list) + 1) * 2.8
+            chart_height = (len(univ_freq_list) + 1) * 3
         elif max(univ_freq_list) < 10:
             chart_width = 80
-            chart_height = (len(univ_freq_list) + 1) * 2.8
+            chart_height = (len(univ_freq_list) + 1) * 3
         else:
             chart_width = (max(univ_freq_list) // 10 + 70)
-            chart_height = (len(univ_freq_list) + 1) * 2.8
+            chart_height = (len(univ_freq_list) + 1) * 3
     else:
         chart_width = 10
         chart_height = 1
@@ -386,8 +386,8 @@ def grade_result(request):
 
 
 @login_required(login_url="login")
-def admission(request):
-    template = "statistic/admission.html"
+def admission1(request):
+    template = "statistic/admission1.html"
 
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
     major_group_qs = MajorGroup.objects.order_by('major_group').distinct()
@@ -402,8 +402,8 @@ def admission(request):
 
 
 @login_required(login_url="login")
-def admission_result(request):
-    template = "statistic/admission_result.html"
+def admission1_result(request):
+    template = "statistic/admission1_result.html"
 
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
     major_group_qs = MajorGroup.objects.order_by('major_group').distinct()
@@ -413,6 +413,7 @@ def admission_result(request):
     entrance_year_query = request.GET.get('entrance_year')
     major_group_query = request.GET.get('major_group')
     univ_region_query = request.GET.get('univ_region')
+    admission1_query = request.GET.get('admission1')
 
     # 전형요소 별 지원 인원
     admission1_list = []
@@ -434,13 +435,42 @@ def admission_result(request):
     univ_freq_list = []
     univ_name_qs = UnivName.objects.all()
 
-    univ_freq_qs = Student.objects \
-                       .filter(entrance_year=entrance_year_query) \
-                       .filter(major_group=major_group_query) \
-                       .filter(univ_region=univ_region_query) \
-                       .values_list('univ_name') \
-                       .annotate(univ_count=Count('univ_name')) \
-                       .order_by('-univ_count')[:25]
+    if admission1_query == '교과':
+        univ_freq_qs = Student.objects \
+                           .filter(entrance_year=entrance_year_query) \
+                           .filter(major_group=major_group_query) \
+                           .filter(univ_region=univ_region_query) \
+                           .filter(admission1__admission1__contains=admission1_query) \
+                           .values_list('univ_name') \
+                           .annotate(univ_count=Count('univ_name')) \
+                           .order_by('-univ_count')[:25]
+    elif admission1_query == '종합':
+        univ_freq_qs = Student.objects \
+                           .filter(entrance_year=entrance_year_query) \
+                           .filter(major_group=major_group_query) \
+                           .filter(univ_region=univ_region_query) \
+                           .filter(admission1__admission1__contains=admission1_query) \
+                           .values_list('univ_name') \
+                           .annotate(univ_count=Count('univ_name')) \
+                           .order_by('-univ_count')[:25]
+    elif admission1_query == '논술':
+        univ_freq_qs = Student.objects \
+                           .filter(entrance_year=entrance_year_query) \
+                           .filter(major_group=major_group_query) \
+                           .filter(univ_region=univ_region_query) \
+                           .filter(admission1__admission1__contains=admission1_query) \
+                           .values_list('univ_name') \
+                           .annotate(univ_count=Count('univ_name')) \
+                           .order_by('-univ_count')[:25]
+    else:
+        univ_freq_qs = Student.objects \
+                           .filter(entrance_year=entrance_year_query) \
+                           .filter(major_group=major_group_query) \
+                           .filter(univ_region=univ_region_query) \
+                           .filter(admission1__admission1__contains=admission1_query) \
+                           .values_list('univ_name') \
+                           .annotate(univ_count=Count('univ_name')) \
+                           .order_by('-univ_count')[:25]
 
     for univ in univ_freq_qs:
         univ_name = univ_name_qs.get(pk=univ[0])
@@ -459,6 +489,7 @@ def admission_result(request):
             .filter(entrance_year=entrance_year_query) \
             .filter(major_group=major_group_query) \
             .filter(univ_region=univ_region_query) \
+            .filter(admission1__admission1__contains=admission1_query) \
             .filter(univ_name=univ_name.id) \
             .filter(final_step='합격') \
             .count()
@@ -466,6 +497,7 @@ def admission_result(request):
             .filter(entrance_year=entrance_year_query) \
             .filter(major_group=major_group_query) \
             .filter(univ_region=univ_region_query) \
+            .filter(admission1__admission1__contains=admission1_query) \
             .filter(univ_name=univ_name.id) \
             .filter(final_step='충원합격') \
             .count()
@@ -473,6 +505,7 @@ def admission_result(request):
             .filter(entrance_year=entrance_year_query) \
             .filter(major_group=major_group_query) \
             .filter(univ_region=univ_region_query) \
+            .filter(admission1__admission1__contains=admission1_query) \
             .filter(univ_name=univ_name.id) \
             .filter(final_step='불합격') \
             .count()
@@ -489,13 +522,13 @@ def admission_result(request):
     if len(univ_freq_list) != 0:
         if max(univ_freq_list) < 5:
             chart_width = 70
-            chart_height = (len(univ_freq_list) + 1) * 2.8
+            chart_height = (len(univ_freq_list) + 1) * 3
         elif max(univ_freq_list) < 10:
             chart_width = 80
-            chart_height = (len(univ_freq_list) + 1) * 2.8
+            chart_height = (len(univ_freq_list) + 1) * 3
         else:
             chart_width = (max(univ_freq_list) // 10 + 70)
-            chart_height = (len(univ_freq_list) + 1) * 2.8
+            chart_height = (len(univ_freq_list) + 1) * 3
     else:
         chart_width = 10
         chart_height = 1
@@ -508,6 +541,7 @@ def admission_result(request):
         'current_entrance_year': int(entrance_year_query),
         'current_major_group': int(major_group_query),
         'current_univ_region': int(univ_region_query),
+        'current_admission1': admission1_query,
 
         'admission1_list': admission1_list,
         'admission1_freq_list': admission1_freq_list,
