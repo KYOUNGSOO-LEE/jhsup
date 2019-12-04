@@ -346,18 +346,9 @@ def grade_result(request):
 
     #Chart size
     if len(univ_freq_list) != 0:
-        if max(univ_freq_list) < 5:
-            chart_width = 70
-            chart_height = (len(univ_freq_list) + 1) * 3
-        elif max(univ_freq_list) < 10:
-            chart_width = 80
-            chart_height = (len(univ_freq_list) + 1) * 3
-        else:
-            chart_width = (max(univ_freq_list) // 10 + 70)
-            chart_height = (len(univ_freq_list) + 1) * 3
+        chart_height = (len(univ_freq_list)) * 3 + 6
     else:
-        chart_width = 10
-        chart_height = 1
+        chart_height = 6
 
     context = {
         'entrance_year_item': entrance_year_qs,
@@ -379,7 +370,6 @@ def grade_result(request):
         'univ_supplement_freq_list': univ_supplement_freq_list,
         'univ_fail_freq_list': univ_fail_freq_list,
 
-        'chart_width': chart_width,
         'chart_height': chart_height,
     }
     return render(request, template, context)
@@ -518,20 +508,11 @@ def admission1_result(request):
     univ_supplement_freq_list = univ_supplement_freq_list[:25]
     univ_fail_freq_list = univ_fail_freq_list[:25]
 
-    # Chart size
+    #Chart size
     if len(univ_freq_list) != 0:
-        if max(univ_freq_list) < 5:
-            chart_width = 70
-            chart_height = (len(univ_freq_list) + 1) * 3
-        elif max(univ_freq_list) < 10:
-            chart_width = 80
-            chart_height = (len(univ_freq_list) + 1) * 3
-        else:
-            chart_width = (max(univ_freq_list) // 10 + 70)
-            chart_height = (len(univ_freq_list) + 1) * 3
+        chart_height = (len(univ_freq_list)) * 3 + 6
     else:
-        chart_width = 10
-        chart_height = 1
+        chart_height = 6
 
     context = {
         'entrance_year_item': entrance_year_qs,
@@ -553,7 +534,6 @@ def admission1_result(request):
         'univ_supplement_freq_list': univ_supplement_freq_list,
         'univ_fail_freq_list': univ_fail_freq_list,
 
-        'chart_width': chart_width,
         'chart_height': chart_height,
     }
     return render(request, template, context)

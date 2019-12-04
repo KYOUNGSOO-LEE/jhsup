@@ -110,7 +110,7 @@ var myChart = new Chart(ctx, {
   </li>
 </ul>
 <br>
-<canvas id="grade_chart2" width="{{chart_width}}" height="{{chart_height}}"></canvas>
+<canvas id="grade_chart2" width="150" height="{{chart_height}}"></canvas>
 <script>
 var ctx = document.getElementById('grade_chart2').getContext('2d');
 var myChart = new Chart(ctx, {
@@ -303,12 +303,10 @@ var myChart = new Chart(ctx, {
         scales: {
             yAxes: [{
                 stacked: true,
-                barThickness: 25,
             }],
             xAxes: [{
                 stacked: true,
                 ticks: {
-                        barPercentage: 0.8,
                         reverse: false,
                         stepSize: 10
                       },
