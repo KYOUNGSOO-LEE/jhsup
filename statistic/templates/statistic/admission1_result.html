@@ -44,42 +44,46 @@
 </form>
 <hr/>
 
-<canvas id="admission1_chart1" width="500" height="100"></canvas>
+<div class="container">
+  <div class="row">
+    <div class="col-5">
+      <canvas id="admission1_chart" style="height:80vh; width:100vw"></canvas>
+    </div>
+  </div>
+</div>
+
 <script>
-var ctx = document.getElementById('admission1_chart1').getContext('2d');
+var ctx = document.getElementById('admission1_chart').getContext('2d');
 var myChart = new Chart(ctx, {
-    type: 'bar',
+    type: 'doughnut',
     data: {
         labels: {{ admission1_list | safe }},
         datasets: [{
-            label: '전형유형 통계',
+            label: '전형별 지원 수',
             data: {{ admission1_freq_list }},
             backgroundColor: [
-                'rgba(36, 166, 189, 1)',
-                'rgba(36, 166, 189, 1)',
-                'rgba(36, 166, 189, 1)',
-                'rgba(36, 166, 189, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
             ],
             borderColor: [
-                'rgba(36, 166, 189, 1)',
-                'rgba(36, 166, 189, 1)',
-                'rgba(36, 166, 189, 1)',
-                'rgba(36, 166, 189, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
             ],
             borderWidth: 1
         }]
     },
     options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
+        legend: {
+                position: 'right',
         }
     }
 });
 </script>
+
 <br>
 <ul class="nav nav-tabs">
   <li class="nav-item">
