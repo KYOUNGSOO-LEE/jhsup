@@ -80,6 +80,14 @@ var myChart = new Chart(ctx, {
         }]
     }
 });
+
+var grade = {{current_gte}}
+var dataset = myChart.data.datasets[0];
+
+dataset.backgroundColor[grade - 1] = 'rgba(255, 128, 0, 1)';
+dataset.borderColor[grade - 1] = 'rgba(255, 128, 0, 1)';
+
+myChart.update();
 </script>
 
 <br>

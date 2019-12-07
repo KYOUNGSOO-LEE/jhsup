@@ -346,7 +346,7 @@ def grade_result(request):
 
     #Chart size
     if len(univ_freq_list) != 0:
-        chart_height = (len(univ_freq_list)) * 3 + 6
+        chart_height = (len(univ_freq_list)) * 5 + 10
     else:
         chart_height = 6
 
