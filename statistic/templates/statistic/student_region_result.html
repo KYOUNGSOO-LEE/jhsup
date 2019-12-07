@@ -27,23 +27,26 @@
 </form>
 <hr/>
 <br>
+
 <div class="container">
   <div class="row">
-    <div class="col-5">
-      <canvas id="app_region_chart" style="height:80vh; width:100vw"></canvas>
+    <div class="col-6">
+      <div class="shadow p-3 mb-5 bg-white rounded">
+        <canvas id="app_region_chart" style="height:80vh; width:100vw"></canvas>
+        <br>
+        <ul>
+          <li>{{student_region_list.0}} 사례 수: {{student_region_freq_list.0}} 건</li>
+          <li>{{student_region_list.1}} 사례 수: {{student_region_freq_list.1}} 건</li>
+          <li>{{student_region_list.2}} 사례 수: {{student_region_freq_list.2}} 건</li>
+          <li>{{student_region_list.3}} 사례 수: {{student_region_freq_list.3}} 건</li>
+        </ul>
+      </div>
     </div>
-    <div class="col-3">
-      <ul>
-        <li>{{student_region_list.0}} 사례 수: {{student_region_freq_list.0}} 건</li>
-        <li>{{student_region_list.1}} 사례 수: {{student_region_freq_list.1}} 건</li>
-        <li>{{student_region_list.2}} 사례 수: {{student_region_freq_list.2}} 건</li>
-        <li>{{student_region_list.3}} 사례 수: {{student_region_freq_list.3}} 건</li>
-      </ul>
+    <div class="col-6">
+      개발중
     </div>
   </div>
 </div>
-
-<br>
 
 <script>
 var ctx = document.getElementById('app_region_chart').getContext('2d');

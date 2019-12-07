@@ -244,7 +244,20 @@ $(document).ready(function(){
 });
 </script>
 <hr/>
-<canvas id="advanced_search_chart" style="height:25vh; width:49vw"></canvas>
+
+<div class="container">
+  <div class="row">
+    <div class="col-6">
+      <div class="shadow p-3 mb-5 bg-white rounded">
+        <canvas id="advanced_search_chart" style="height:100vh; width:100vw"></canvas>
+      </div>
+    </div>
+    <div class="col-6">
+      개발중
+    </div>
+  </div>
+</div>
+
 <script>
 var ctx = document.getElementById("advanced_search_chart");
 var data = {
@@ -256,8 +269,8 @@ var data = {
     borderWidth: 1.5,
     pointBackgroundColor: "rgba(0, 90, 0, 1)",
     pointBorderColor:"rgba(0, 90, 0, 1)",
-    pointRadius: 3,
-    pointHoverBorderWidth: 4,
+    pointRadius: 2,
+    pointHoverBorderWidth: 3,
     data: {{grade_avg_list}}
   }]
 };
@@ -289,8 +302,6 @@ var radarChart = new Chart(ctx, {
   }
 });
 </script>
-
-<hr/>
 
 <div class="table-responsive">
   <table class="table table-hover table-bordered">

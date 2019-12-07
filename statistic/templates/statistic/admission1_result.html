@@ -46,8 +46,13 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-5">
-      <canvas id="admission1_chart" style="height:80vh; width:100vw"></canvas>
+    <div class="col-6">
+      <div class="shadow p-3 mb-5 bg-white rounded">
+        <canvas id="admission1_chart" style="height:80vh; width:100vw"></canvas>
+      </div>
+    </div>
+    <div class="col-6">
+      개발중
     </div>
   </div>
 </div>
@@ -84,7 +89,6 @@ var myChart = new Chart(ctx, {
 });
 </script>
 
-<br>
 <ul class="nav nav-tabs">
   <li class="nav-item">
     <a class="{% if current_admission1 == '교과' %}nav-link active{%else%}nav-link{% endif %}"

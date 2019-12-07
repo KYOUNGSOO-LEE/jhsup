@@ -46,7 +46,20 @@
 </form>
 <hr/>
 <br>
-<canvas id="grade_chart1" width="500" height="100"></canvas>
+
+<div class="container">
+  <div class="row">
+    <div class="col-6">
+      <div class="shadow p-3 mb-5 bg-white rounded">
+        <canvas id="grade_chart1" width="200" height="100"></canvas>
+      </div>
+    </div>
+    <div class="col-6">
+      개발중
+    </div>
+  </div>
+</div>
+
 <script>
 var ctx = document.getElementById('grade_chart1').getContext('2d');
 var myChart = new Chart(ctx, {
@@ -90,7 +103,6 @@ dataset.borderColor[grade - 1] = 'rgba(255, 128, 0, 1)';
 myChart.update();
 </script>
 
-<br>
 <ul class="nav nav-tabs">
   <li class="nav-item">
     <a class="{% if current_gte == 1 %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'static_grade_result' %}?entrance_year={{ current_entrance_year }}&major_group={{ current_major_group }}&admission1={{ current_admission1 }}&gte=1&lt=2">1등급대</a>

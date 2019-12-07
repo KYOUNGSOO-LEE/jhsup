@@ -348,7 +348,7 @@ def grade_result(request):
     if len(univ_freq_list) != 0:
         chart_height = (len(univ_freq_list)) * 5 + 10
     else:
-        chart_height = 6
+        chart_height = 10
 
     context = {
         'entrance_year_item': entrance_year_qs,
@@ -508,11 +508,11 @@ def admission1_result(request):
     univ_supplement_freq_list = univ_supplement_freq_list[:25]
     univ_fail_freq_list = univ_fail_freq_list[:25]
 
-    #Chart size
+    # Chart size
     if len(univ_freq_list) != 0:
-        chart_height = (len(univ_freq_list)) * 3 + 6
+        chart_height = (len(univ_freq_list)) * 5 + 10
     else:
-        chart_height = 6
+        chart_height = 10
 
     context = {
         'entrance_year_item': entrance_year_qs,
