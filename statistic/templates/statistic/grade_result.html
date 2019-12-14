@@ -44,6 +44,7 @@
 
   </div>
 </form>
+
 <hr/>
 <br>
 
@@ -129,7 +130,7 @@ myChart.update();
     <a class="{% if current_gte == 8 %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'static_grade_result' %}?entrance_year={{ current_entrance_year }}&major_group={{ current_major_group }}&admission1={{ current_admission1 }}&gte=8&lt=9">8등급대</a>
   </li>
 </ul>
-<br>
+
 <canvas id="grade_chart2" width="150" height="{{chart_height}}"></canvas>
 <script>
 var ctx = document.getElementById('grade_chart2').getContext('2d');
