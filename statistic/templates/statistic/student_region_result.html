@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% block title %} 지역별 합불통계 {% endblock %}
+{% block title %} 지역별 통계 {% endblock %}
 
 {% block content %}
 
-<h4> 지역별 합불통계 </h4>
+<h4> 지역별 통계 </h4>
 <p class="font-weight-bold text-info">
     &#8251 기준 : 인문, 예체능(국영수사100), 자연(국영수과100), 공통(국영수사과100)<br>
 </p>
@@ -32,18 +32,40 @@
   <div class="row">
     <div class="col-6">
       <div class="shadow p-3 mb-5 bg-white rounded">
-        <canvas id="app_region_chart" style="height:80vh; width:100vw"></canvas>
+        <p>지역별 사례 수</p>
+        <canvas id="app_region_chart" style="height:100vh; width:100vw"></canvas>
         <br>
-        <ul>
-          <li>{{student_region_list.0}} 사례 수: {{student_region_freq_list.0}} 건</li>
-          <li>{{student_region_list.1}} 사례 수: {{student_region_freq_list.1}} 건</li>
-          <li>{{student_region_list.2}} 사례 수: {{student_region_freq_list.2}} 건</li>
-          <li>{{student_region_list.3}} 사례 수: {{student_region_freq_list.3}} 건</li>
-        </ul>
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              {% for el1 in student_region_list %}
+              <th scope="row">
+                {{el1}}
+              </th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              {% for el2 in student_region_freq_list %}
+              <td>
+                {{el2}}
+              </td>
+              {% endfor %}
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
     <div class="col-6">
-      개발중
+      <div class="row">
+        <div class="col-3">.</div>
+        <div class="col-3">.</div>
+      </div>
+      <div class="row">
+        <div class="col-3">.</div>
+        <div class="col-3">.</div>
+      </div>
     </div>
   </div>
 </div>
@@ -74,7 +96,7 @@ var myChart = new Chart(ctx, {
     },
     options: {
         legend: {
-                position: 'right',
+                position: 'left',
         }
     }
 });
