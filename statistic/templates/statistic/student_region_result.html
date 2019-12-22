@@ -32,7 +32,6 @@
   <div class="row">
     <div class="col-6">
       <div class="shadow p-3 mb-5 bg-white rounded">
-        <p>지역별 사례 수</p>
         <canvas id="app_region_chart" style="height:100vh; width:100vw"></canvas>
         <br>
         <table class="table table-sm">
@@ -95,6 +94,12 @@ var myChart = new Chart(ctx, {
         }]
     },
     options: {
+        title: {
+            display: true,
+            text: '지역별 사례 수',
+            fontStyle: 'bold',
+            fontSize: 15,
+        },
         legend: {
                 position: 'left',
         }
