@@ -60,7 +60,7 @@
 <script>
 var ctx = document.getElementById('admission1_chart').getContext('2d');
 var myChart = new Chart(ctx, {
-    type: 'doughnut',
+    type: 'pie',
     data: {
         labels: {{ admission1_list | safe }},
         datasets: [{
@@ -82,6 +82,12 @@ var myChart = new Chart(ctx, {
         }]
     },
     options: {
+        title: {
+            display: true,
+            text: '전형별 사례 수',
+            fontStyle: 'bold',
+            fontSize: 15,
+        },
         legend: {
                 position: 'right',
         }
