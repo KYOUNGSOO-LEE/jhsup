@@ -25,7 +25,7 @@
 
         // Set chart options
         var options = {'title':'지역별 사례 수',
-                       'width':400,
+                       'width':500,
                        'height':300};
 
         // Instantiate and draw our chart, passing in some options.
@@ -64,68 +64,16 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-6">
+    <div class="col">
       <div class="shadow p-3 mb-5 bg-white rounded">
         <div id="chart_div"></div>
       </div>
     </div>
-    <div class="col-6">
-      <div class="row">
-        <div class="col-3">.</div>
-        <div class="col-3">.</div>
-      </div>
-      <div class="row">
-        <div class="col-3">.</div>
-        <div class="col-3">.</div>
-      </div>
+    <div class="col">
     </div>
   </div>
 </div>
 
-<script>
-var ctx = document.getElementById('app_region_chart').getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'pie',
-    data: {
-        labels: {{ student_region_list | safe }},
-        datasets: [{
-            label: '지원 사례 수',
-            data: {{ student_region_freq_list }},
-            backgroundColor: [
-                'rgba(255, 167, 167, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(177, 219, 78, 1)',
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-
-
-        title: {
-            display: true,
-            text: '지역별 사례 수',
-            fontStyle: 'bold',
-            fontSize: 15,
-        },
-
-        legend: {
-                position: 'left',
-        }
-    }
-});
-</script>
-
-<div id="piechart" style="width: 900px; height: 500px;"></div>
-
-<br>
 <ul class="nav nav-tabs">
   <li class="nav-item">
     <a class="{% if current_region == '충청도' %}nav-link active{%else%}nav-link{% endif %}"
