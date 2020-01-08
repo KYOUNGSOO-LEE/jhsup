@@ -40,6 +40,10 @@ def student_region_result(request):
         student_region_list.append(student_region[0])
         student_region_freq_list.append(student_region[1])
 
+    region_data_list = []
+    for i in range(0,len(student_region_list)):
+        region_data_list.append([student_region_list[i], student_region_freq_list[i]])
+
     # 지역별 지원대학 현황
     univ_name_list = []
     univ_freq_list = []
@@ -126,6 +130,7 @@ def student_region_result(request):
 
         'student_region_list': student_region_list,
         'student_region_freq_list': student_region_freq_list,
+        'region_data_list': region_data_list,
         'current_region': student_region_query,
 
         'univ_name_list': univ_name_list,
