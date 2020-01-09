@@ -308,7 +308,7 @@ def advanced_search(request):
                  }
     )
 
-    # Chart
+    # Radar_Chart
     grade_item_list = ['국어', '영어', '수학', '사회', '과학']
     grade_avg_list = []
 
@@ -322,7 +322,7 @@ def advanced_search(request):
         avg_math=Avg('mathematics'),
         avg_soc=Avg('society'),
         avg_sci=Avg('science'),
-    )
+        )
 
     if qs_avg['avg_ko'] != '' and qs_avg['avg_ko'] != None:
         grade_avg_list.append(round(float(qs_avg['avg_ko']),3))
@@ -333,6 +333,57 @@ def advanced_search(request):
     else:
         grade_avg_list = []
 
+    # Candle_Chart
+    pass_list = ['합격']
+    supplement_list = ['충원합격']
+    fail_list = ['불합격']
+    candle_data_list = []
+
+    if current_major_group_str == '자연':
+        qs_pass = qs.filter(final_step='합격')
+        for score in qs_pass:
+            pass_list.append(float(score.ko_en_math_sci_100))
+
+        qs_supplement = qs.filter(final_step='충원합격')
+        for score in qs_supplement:
+            supplement_list.append(float(score.ko_en_math_sci_100))
+
+        qs_fail = qs.filter(final_step='불합격')
+        for score in qs_fail:
+            fail_list.append(float(score.ko_en_math_sci_100))
+
+    elif current_major_group_str == '공통':
+        qs_pass = qs.filter(final_step='합격')
+        for score in qs_pass:
+            pass_list.append(float(score.ko_en_math_soc_sci_100))
+
+        qs_supplement = qs.filter(final_step='충원합격')
+        for score in qs_supplement:
+            supplement_list.append(float(score.ko_en_math_soc_sci_100))
+
+        qs_fail = qs.filter(final_step='불합격')
+        for score in qs_fail:
+            fail_list.append(float(score.ko_en_math_soc_sci_100))
+
+    else:
+        qs_pass = qs.filter(final_step='합격')
+        for score in qs_pass:
+            pass_list.append(float(score.ko_en_math_soc_100))
+
+        qs_supplement = qs.filter(final_step='충원합격')
+        for score in qs_supplement:
+            supplement_list.append(float(score.ko_en_math_soc_100))
+
+        qs_fail = qs.filter(final_step='불합격')
+        for score in qs_fail:
+            fail_list.append(float(score.ko_en_math_soc_100))
+
+    candle_data_list.append(pass_list)
+    candle_data_list.append(supplement_list)
+    candle_data_list.append(fail_list)
+
+    print(candle_data_list)
+
     context = {
         'form': form,
         'queryset': qs,
@@ -341,6 +392,8 @@ def advanced_search(request):
         'current_major_group_str': current_major_group_str,
 
         'grade_item_list': grade_item_list,
-        'grade_avg_list': grade_avg_list
+        'grade_avg_list': grade_avg_list,
+
+        'candle_data_list': candle_data_list
     }
     return render(request, template, context)

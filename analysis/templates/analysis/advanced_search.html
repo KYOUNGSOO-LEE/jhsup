@@ -4,7 +4,29 @@
 
 {% block title %} 진학숲 - 상세조건 사례검색 {% endblock %}
 
-{% block head %}{% endblock %}
+{% block head %}
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable(
+          {{candle_data_list | safe}}
+        , true);
+
+        var options = {
+          legend:'none'
+        };
+
+        var chart = new google.visualization.CandlestickChart(document.getElementById('chart_div'));
+
+        chart.draw(data, options);
+      }
+    </script>
+
+{% endblock %}
 
 {% block content %}
 
@@ -249,11 +271,13 @@ $(document).ready(function(){
   <div class="row">
     <div class="col-6">
       <div class="shadow p-3 mb-5 bg-white rounded">
-        <canvas id="advanced_search_chart" style="height:100vh; width:100vw"></canvas>
+        <canvas id="advanced_search_chart" style="width: 600px; height: 320px;"></canvas>
       </div>
     </div>
     <div class="col-6">
-      개발중
+      <div class="shadow p-3 mb-5 bg-white rounded">
+        <div id="chart_div" style="width: 550px; height: 270px;"></div>
+      </div>
     </div>
   </div>
 </div>
