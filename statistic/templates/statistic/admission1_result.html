@@ -1,6 +1,39 @@
 {% extends "base.html" %}
 {% block title %} 전형별 합불통계 {% endblock %}
 
+{% block head %}
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      // Load the Visualization API and the corechart package.
+      google.charts.load('current', {'packages':['corechart']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.charts.setOnLoadCallback(drawChart);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawChart() {
+
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'admission1');
+        data.addColumn('number', 'admission1_freq');
+        data.addRows({{admission1_data_list | safe}});
+
+        // Set chart options
+        var options = {'title':'전별 사례 수',
+                       'width':500,
+                       'height':300};
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.PieChart(document.getElementById('admission1_chart1'));
+        chart.draw(data, options);
+      }
+    </script>
+{% endblock %}
+
 {% block content %}
 
 <h4> 전형별 합불통계 </h4>
@@ -46,54 +79,15 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-6">
+    <div class="col">
       <div class="shadow p-3 mb-5 bg-white rounded">
-        <canvas id="admission1_chart" style="height:100vh; width:100vw"></canvas>
+        <div id="admission1_chart1"></div>
       </div>
     </div>
-    <div class="col-6">
-      개발중
+    <div class="col">
     </div>
   </div>
 </div>
-
-<script>
-var ctx = document.getElementById('admission1_chart').getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'pie',
-    data: {
-        labels: {{ admission1_list | safe }},
-        datasets: [{
-            label: '전형별 지원 수',
-            data: {{ admission1_freq_list }},
-            backgroundColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        title: {
-            display: true,
-            text: '전형별 사례 수',
-            fontStyle: 'bold',
-            fontSize: 15,
-        },
-        legend: {
-                position: 'right',
-        }
-    }
-});
-</script>
 
 <ul class="nav nav-tabs">
   <li class="nav-item">

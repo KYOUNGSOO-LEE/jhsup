@@ -423,6 +423,10 @@ def admission1_result(request):
         admission1_list.append(admission1)
         admission1_freq_list.append(admission1_freq)
 
+    admission1_data_list = []
+    for i in range(0, len(admission1_list)):
+        admission1_data_list.append([admission1_list[i], admission1_freq_list[i]])
+
     # 등급별 학생 지원대학 현황
     univ_name_list = []
     univ_freq_list = []
@@ -527,8 +531,7 @@ def admission1_result(request):
         'current_univ_region': int(univ_region_query),
         'current_admission1': admission1_query,
 
-        'admission1_list': admission1_list,
-        'admission1_freq_list': admission1_freq_list,
+        'admission1_data_list': admission1_data_list,
 
         'univ_name_list': univ_name_list,
         'univ_freq_list': univ_freq_list,
