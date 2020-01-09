@@ -5,7 +5,6 @@
     <!--Load the AJAX API-->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-
       // Load the Visualization API and the corechart package.
       google.charts.load('current', {'packages':['corechart']});
 
@@ -19,9 +18,9 @@
 
         // Create the data table.
         var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Region');
-        data.addColumn('number', 'Region_number');
-        data.addRows({{region_data_list | safe}});
+        data.addColumn('string', 'student_region');
+        data.addColumn('number', 'student_region_freq');
+        data.addRows({{student_region_data_list | safe}});
 
         // Set chart options
         var options = {'title':'지역별 사례 수',
@@ -29,7 +28,7 @@
                        'height':300};
 
         // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        var chart = new google.visualization.PieChart(document.getElementById('student_region_chart1'));
         chart.draw(data, options);
       }
     </script>
@@ -66,7 +65,7 @@
   <div class="row">
     <div class="col">
       <div class="shadow p-3 mb-5 bg-white rounded">
-        <div id="chart_div"></div>
+        <div id="student_region_chart1"></div>
       </div>
     </div>
     <div class="col">
@@ -98,9 +97,9 @@
 </ul>
 <br>
 
-<canvas id="student_region_chart" width="130" height="100"></canvas>
+<canvas id="student_region_chart2" width="130" height="100"></canvas>
 <script>
-var ctx = document.getElementById('student_region_chart').getContext('2d');
+var ctx = document.getElementById('student_region_chart2').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'horizontalBar',
     data: {
