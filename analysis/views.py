@@ -4,6 +4,7 @@ from django.db.models import Avg
 from django.db.models import Q
 from .forms import AdvancedForm
 from django.contrib.auth.decorators import login_required
+import numpy as np
 
 
 @login_required(login_url="login")
@@ -334,10 +335,12 @@ def advanced_search(request):
         grade_avg_list = []
 
     # Candle_Chart
-    pass_list = ['합격']
-    supplement_list = ['충원합격']
-    fail_list = ['불합격']
-    candle_data_list = []
+    pass_list = []
+    pass_percentile = ['합격']
+    supplement_list = []
+    supplement_percentile = ['충원합격']
+    fail_list = []
+    fail_percentile = ['불합격']
 
     if current_major_group_str == '자연':
         qs_pass = qs.filter(final_step='합격')
@@ -378,11 +381,20 @@ def advanced_search(request):
         for score in qs_fail:
             fail_list.append(float(score.ko_en_math_soc_100))
 
-    candle_data_list.append(pass_list)
-    candle_data_list.append(supplement_list)
-    candle_data_list.append(fail_list)
-
-    print(candle_data_list)
+    for p in [0, 25, 75, 100]:
+        if pass_list == []:
+            pass_percentile.append(0)
+        else:
+            pass_percentile.append(np.percentile(pass_list, p))
+        if supplement_list == []:
+            supplement_percentile.append(0)
+        else:
+            supplement_percentile.append(np.percentile(supplement_list, p))
+    for p in [100, 75, 25, 0]:
+        if fail_list == []:
+            fail_percentile.append(0)
+        else:
+            fail_percentile.append(np.percentile(fail_list, p))
 
     context = {
         'form': form,
@@ -394,6 +406,8 @@ def advanced_search(request):
         'grade_item_list': grade_item_list,
         'grade_avg_list': grade_avg_list,
 
-        'candle_data_list': candle_data_list
+        'pass_percentile': pass_percentile,
+        'supplement_percentile': supplement_percentile,
+        'fail_percentile': fail_percentile
     }
     return render(request, template, context)
