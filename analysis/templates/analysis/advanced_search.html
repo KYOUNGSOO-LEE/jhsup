@@ -20,10 +20,7 @@
 
     var options = {
       legend:'none',
-      candlestick: {
-            fallingColor: { strokeWidth: 0, fill: '#0000FF' },
-            risingColor: { strokeWidth: 0, fill: '#FF0000' },
-          },
+
       vAxis: {
         title: '등급',
         direction: '-1',
@@ -35,8 +32,11 @@
     };
 
     var chart = new google.visualization.CandlestickChart(document.getElementById('chart_div'));
-
     chart.draw(data, options);
+
+    window.addEventListener('resize', function() {
+        chart.draw(data, options);
+    }, false);
   }
 </script>
 
@@ -280,22 +280,18 @@ $(document).ready(function(){
 });
 </script>
 <hr/>
-
+<br>
 <div class="container">
   <div class="row">
-    <div class="col-6">
-      <div class="shadow p-3 mb-5 bg-white rounded">
-        <canvas id="advanced_search_chart" style="width: 600px; height: 370px;"></canvas>
-      </div>
+    <div class="col">
+      <canvas id="advanced_search_chart" style="width: 55%; height: 100%;"></canvas>
     </div>
-    <div class="col-6">
-      <div class="shadow p-3 mb-5 bg-white rounded">
-        <div id="chart_div" style="width: 400px; height: 270px;"></div>
-      </div>
+    <div class="col">
+      <div id="chart_div" style="width: 70%; height: 100%;"></div>
     </div>
   </div>
 </div>
-
+<br>
 <script>
 var ctx = document.getElementById("advanced_search_chart");
 var data = {
