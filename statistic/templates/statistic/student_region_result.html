@@ -32,6 +32,31 @@
         chart.draw(data, options);
       }
     </script>
+
+    <script>
+      google.charts.load('current', {packages: ['corechart', 'bar']});
+      google.charts.setOnLoadCallback(drawStacked);
+
+      function drawStacked() {
+            var data = google.visualization.arrayToDataTable({{univ_psf_list|safe}});
+
+            var options = {
+              title: 'Population of Largest U.S. Cities',
+              chartArea: {width: '50%'},
+              isStacked: true,
+              hAxis: {
+                title: '인원',
+                minValue: 0,
+              },
+              vAxis: {
+                title: '대학명'
+              }
+            };
+            var chart = new google.visualization.BarChart(document.getElementById('student_region_chart2'));
+            chart.draw(data, options);
+          }
+    </script>
+
 {% endblock %}
 
 {% block content %}
@@ -95,203 +120,7 @@
 </ul>
 <br>
 
-<canvas id="student_region_chart2" width="130" height="100"></canvas>
-<script>
-var ctx = document.getElementById('student_region_chart2').getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'horizontalBar',
-    data: {
-        labels: {{ univ_name_list | safe }},
-        datasets: [{
-            label: '합격 사례 수',
-            data: {{ univ_pass_freq_list }},
-
-            backgroundColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-                'rgba(255, 99, 132, 1)',
-            ],
-            borderWidth: 1
-        },
-        {
-            label: '충원합격 사례 수',
-            data: {{ univ_supplement_freq_list }},
-            backgroundColor: [
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-            ],
-            borderColor: [
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(75, 192, 192, 1)',
-            ],
-            borderWidth: 1
-        },
-        {
-            label: '불합격 사례 수',
-            data: {{ univ_fail_freq_list }},
-            backgroundColor: [
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-            ],
-            borderColor: [
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(54, 162, 235, 1)',
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                stacked: true
-            }],
-            xAxes: [{
-                stacked: true
-            }]
-        }
-    }
-});
-</script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<div id="student_region_chart2"></div>
 
 {% endblock content %}
