@@ -41,8 +41,8 @@
       function drawTable() {
         var data = new google.visualization.DataTable();
         data.addColumn('string', '지역');
-        data.addColumn('number', '인원');
-        data.addColumn('number', '백분율');
+        data.addColumn('number', '인원(명)');
+        data.addColumn('number', '비율(%)');
         data.addRows({{student_region_data2 | safe}});
 
         var table = new google.visualization.Table(document.getElementById('student_region_table'));
@@ -62,8 +62,8 @@
               title: '지원대학 사례순위',
               chartArea: {width: '70%', height: '90%'},
               isStacked: true,
-              bar: { groupWidth: "80%" },
-              colors:['#FF0000', '#0B7903', '#5CD1E5'],
+              bar: { groupWidth: "80%"},
+              colors:['#F15F5F', '#3DB7CC', '#FAF4C0'],
               hAxis: {
                 minValue: 0,
               },

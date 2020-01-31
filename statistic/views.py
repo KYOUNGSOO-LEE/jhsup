@@ -82,7 +82,7 @@ def student_region_result(request):
     univ_pass_freq_list = []
     univ_supplement_freq_list = []
     univ_fail_freq_list = []
-    univ_psf_list = [['대학명', '합격', '충원합격', '불합격']]
+    univ_psf_list = [['대학명', '합격', {'role': 'style'} , '충원합격', {'role': 'style'}, '불합격', {'role': 'style'}]]
 
     if student_region_query == '충청도':
         for univ in univ_name_list:
@@ -139,8 +139,11 @@ def student_region_result(request):
         univ_psf_list.append([
             univ_name_list[i],
             univ_pass_freq_list[i],
+            'stroke-color: #000000; stroke-width: 0.5; opacity: 0.8',
             univ_supplement_freq_list[i],
-            univ_fail_freq_list[i]
+            'stroke-color: #000000; stroke-width: 0.5; opacity: 0.8',
+            univ_fail_freq_list[i],
+            'stroke-color: #000000; stroke-width: 1; opacity: 0.5',
         ])
 
     context = {
