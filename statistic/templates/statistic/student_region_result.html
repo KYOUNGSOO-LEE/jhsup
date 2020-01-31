@@ -20,7 +20,7 @@
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'student_region');
         data.addColumn('number', 'student_region_freq');
-        data.addRows({{student_region_data_list | safe}});
+        data.addRows({{student_region_data1 | safe}});
 
         // Set chart options
         var options = {'title':'지역별 사례 수',
@@ -28,8 +28,26 @@
                        'height':300};
 
         // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.PieChart(document.getElementById('student_region_chart1'));
+        var chart = new google.visualization.PieChart(document.getElementById('student_region_pie'));
         chart.draw(data, options);
+      }
+    </script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['table']});
+      google.charts.setOnLoadCallback(drawTable);
+
+      function drawTable() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', '지역');
+        data.addColumn('number', '인원');
+        data.addColumn('number', '백분율');
+        data.addRows({{student_region_data2 | safe}});
+
+        var table = new google.visualization.Table(document.getElementById('student_region_table'));
+
+        table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
       }
     </script>
 
@@ -41,18 +59,18 @@
             var data = google.visualization.arrayToDataTable({{univ_psf_list|safe}});
 
             var options = {
-              title: 'Population of Largest U.S. Cities',
-              chartArea: {width: '50%'},
+              title: '지원대학 사례순위',
+              chartArea: {width: '70%', height: '90%'},
               isStacked: true,
+              bar: { groupWidth: "80%" },
+              colors:['#FF0000', '#0B7903', '#5CD1E5'],
               hAxis: {
-                title: '인원',
                 minValue: 0,
               },
               vAxis: {
-                title: '대학명'
               }
             };
-            var chart = new google.visualization.BarChart(document.getElementById('student_region_chart2'));
+            var chart = new google.visualization.BarChart(document.getElementById('student_region_bar'));
             chart.draw(data, options);
           }
     </script>
@@ -77,6 +95,7 @@
       </select>
     </div>
 
+    <input type="hidden" id="student_region" name="student_region" value="충청도">
     <div class="col-auto my-1">
       <button type="submit" class="btn btn-warning">검색</button>
     </div>
@@ -89,9 +108,10 @@
 <div class="container">
   <div class="row">
     <div class="col">
-      <div id="student_region_chart1"></div>
+      <div id="student_region_pie"></div>
     </div>
-    <div class="col" style="width: 70%; height: 100%;">
+    <div class="col" style="width: 100%; height: 100%;">
+      <div id="student_region_table"></div>
     </div>
   </div>
 </div>
@@ -121,6 +141,6 @@
 <br>
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<div id="student_region_chart2"></div>
+<div id="student_region_bar" style="width: 100%; height: 150%;"></div>
 
 {% endblock content %}

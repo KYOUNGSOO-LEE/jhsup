@@ -40,9 +40,19 @@ def student_region_result(request):
         student_region_list.append(student_region[0])
         student_region_freq_list.append(student_region[1])
 
-    student_region_data_list = []
+    student_region_data1 = []
+    student_region_data2 = []
+    n = sum(student_region_freq_list)
     for i in range(0,len(student_region_list)):
-        student_region_data_list.append([student_region_list[i], student_region_freq_list[i]])
+        student_region_data1.append([
+            student_region_list[i],
+            student_region_freq_list[i]
+        ])
+        student_region_data2.append([
+            student_region_list[i],
+            student_region_freq_list[i],
+            round((student_region_freq_list[i]/n) * 100, 1)
+        ])
 
     # 지역별 지원대학 현황
     univ_name_list = []
@@ -68,7 +78,6 @@ def student_region_result(request):
         univ_name_list.append(univ_name.univ_name)
         univ_freq_list.append(univ[1])
 
-    print(univ_name_list)
     # 지역별 지원대학 합격/불합격 인원
     univ_pass_freq_list = []
     univ_supplement_freq_list = []
@@ -127,16 +136,19 @@ def student_region_result(request):
     univ_fail_freq_list = univ_fail_freq_list[:25]
 
     for i in range(0, len(univ_name_list)):
-        univ_psf_list.append(univ_name_list[i])
-        univ_psf_list.append(univ_pass_freq_list[i])
-        univ_psf_list.append(univ_supplement_freq_list[i])
-        univ_psf_list.append(univ_fail_freq_list[i])
+        univ_psf_list.append([
+            univ_name_list[i],
+            univ_pass_freq_list[i],
+            univ_supplement_freq_list[i],
+            univ_fail_freq_list[i]
+        ])
 
     context = {
         'entrance_year_item': entrance_year_qs,
         'current_entrance_year': entrance_year_query,
 
-        'student_region_data_list': student_region_data_list,
+        'student_region_data1': student_region_data1,
+        'student_region_data2': student_region_data2,
         'current_region': student_region_query,
 
         'univ_name_list': univ_name_list,
