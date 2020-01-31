@@ -31,7 +31,7 @@
       backgroundColor: '#EAEAEA'
     };
 
-    var chart = new google.visualization.CandlestickChart(document.getElementById('chart_div'));
+    var chart = new google.visualization.CandlestickChart(document.getElementById('advanced_search_candle'));
     chart.draw(data, options);
 
     window.addEventListener('resize', function() {
@@ -287,7 +287,7 @@ $(document).ready(function(){
       <canvas id="advanced_search_chart" style="width: 55%; height: 100%;"></canvas>
     </div>
     <div class="col">
-      <div id="chart_div" style="width: 70%; height: 100%;"></div>
+      <div id="advanced_search_candle" style="width: 70%; height: 100%;"></div>
     </div>
   </div>
 </div>

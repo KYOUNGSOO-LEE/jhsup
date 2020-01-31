@@ -24,8 +24,8 @@
 
         // Set chart options
         var options = {'title':'지역별 사례 수',
-                       'width':500,
-                       'height':300};
+        'height': '250'
+        };
 
         // Instantiate and draw our chart, passing in some options.
         var chart = new google.visualization.PieChart(document.getElementById('student_region_pie'));
@@ -47,7 +47,7 @@
 
         var table = new google.visualization.Table(document.getElementById('student_region_table'));
 
-        table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
+        table.draw(data, {showRowNumber: true, width: '50%', height: '100%'});
       }
     </script>
 
@@ -62,7 +62,7 @@
               title: '지원대학 사례순위',
               chartArea: {width: '70%', height: '90%'},
               isStacked: true,
-              bar: { groupWidth: "80%"},
+              bar: { groupWidth: "80%" },
               colors:['#F15F5F', '#3DB7CC', '#FAF4C0'],
               hAxis: {
                 minValue: 0,
@@ -72,7 +72,11 @@
             };
             var chart = new google.visualization.BarChart(document.getElementById('student_region_bar'));
             chart.draw(data, options);
-          }
+
+            window.addEventListener('resize', function() {
+                chart.draw(data, options);
+            }, false);
+      }
     </script>
 
 {% endblock %}
@@ -108,7 +112,7 @@
 <div class="container">
   <div class="row">
     <div class="col">
-      <div id="student_region_pie"></div>
+      <div id="student_region_pie" style="width: 100%; height: 100%;"></div>
     </div>
     <div class="col" style="width: 100%; height: 100%;">
       <div id="student_region_table"></div>
