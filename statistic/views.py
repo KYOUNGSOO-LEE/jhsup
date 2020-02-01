@@ -159,9 +159,6 @@ def student_region_result(request):
         'student_region_data2': student_region_data2,
         'current_region': student_region_query,
 
-        'univ_name_list': univ_name_list,
-        'univ_freq_list': univ_freq_list,
-
         'univ_psf_list': univ_psf_list
     }
     return render(request, template, context)
@@ -201,6 +198,7 @@ def grade_result(request):
 
     grade_list = []
     grade_freq_list = []
+    grade_data_list = [['등급', '사례수', {'role': 'style'}]]
 
     if MajorGroup.objects.get(pk=major_group_query) == '자연':
         grade_freq_qs = Student.objects\
@@ -230,6 +228,13 @@ def grade_result(request):
     for grade in grade_freq_qs:
         grade_list.append(int(grade[0]))
         grade_freq_list.append(grade[1])
+
+    for i in range(0, len(grade_list)):
+        grade_data_list.append([
+            grade_list[i],
+            grade_freq_list[i],
+            'stroke-color: #000000; stroke-width: 0.5; opacity: 0.8',
+        ])
 
     # 등급별 학생 지원대학 현황
     univ_name_list = []
@@ -395,11 +400,7 @@ def grade_result(request):
         'current_admission1': admission1_query,
         'current_gte': int(gte_query),
 
-        'grade_list': grade_list,
-        'grade_freq_list': grade_freq_list,
-
-        'univ_name_list': univ_name_list,
-        'univ_freq_list': univ_freq_list,
+        'grade_data_list': grade_data_list,
 
         'univ_psf_list': univ_psf_list,
     }
@@ -566,9 +567,6 @@ def admission1_result(request):
         'current_admission1': admission1_query,
 
         'admission1_data_list': admission1_data_list,
-
-        'univ_name_list': univ_name_list,
-        'univ_freq_list': univ_freq_list,
 
         'univ_psf_list': univ_psf_list,
     }

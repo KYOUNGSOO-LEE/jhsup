@@ -5,6 +5,27 @@
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
+      google.charts.load("current", {packages:['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable({{grade_data_list|safe}});
+
+        var view = new google.visualization.DataView(data);
+
+        var options = {
+          title: "등급별 사례 분포",
+          width: 800,
+          height: 400,
+          bar: {groupWidth: "80%"},
+          legend: { position: "none" },
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById("grade_column"));
+        chart.draw(view, options);
+    }
+    </script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
       google.charts.load('current', {packages: ['corechart', 'bar']});
       google.charts.setOnLoadCallback(drawStacked);
 
@@ -88,63 +109,8 @@
 </form>
 
 <hr/>
-<br>
 
-<div class="container">
-  <div class="row">
-    <div class="col-6">
-      <div class="shadow p-3 mb-5 bg-white rounded">
-        <canvas id="grade_chart1" style="height:100vh; width:100vw"></canvas>
-      </div>
-    </div>
-    <div class="col-6">
-      개발중
-    </div>
-  </div>
-</div>
-
-<script>
-var ctx = document.getElementById('grade_chart1').getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: {{ grade_list | safe }},
-        datasets: [{
-            label: '등급별 지원 사례 수',
-            data: {{ grade_freq_list }},
-            backgroundColor: [
-                'rgba(36, 166, 189, 1)',
-                'rgba(36, 166, 189, 1)',
-                'rgba(36, 166, 189, 1)',
-                'rgba(36, 166, 189, 1)',
-                'rgba(36, 166, 189, 1)',
-                'rgba(36, 166, 189, 1)',
-                'rgba(36, 166, 189, 1)',
-                'rgba(36, 166, 189, 1)',
-            ],
-            borderColor: [
-                'rgba(36, 166, 189, 1)',
-                'rgba(36, 166, 189, 1)',
-                'rgba(36, 166, 189, 1)',
-                'rgba(36, 166, 189, 1)',
-                'rgba(36, 166, 189, 1)',
-                'rgba(36, 166, 189, 1)',
-                'rgba(36, 166, 189, 1)',
-                'rgba(36, 166, 189, 1)',
-            ],
-            borderWidth: 1
-        }]
-    }
-});
-
-var grade = {{current_gte}}
-var dataset = myChart.data.datasets[0];
-
-dataset.backgroundColor[grade - 1] = 'rgba(255, 128, 0, 1)';
-dataset.borderColor[grade - 1] = 'rgba(255, 128, 0, 1)';
-
-myChart.update();
-</script>
+<div id="grade_column"></div>
 
 <ul class="nav nav-tabs">
   <li class="nav-item">
