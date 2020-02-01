@@ -24,7 +24,6 @@
 
         // Set chart options
         var options = {
-            'title':'지역별 사례 수',
             'height': '250'
         };
 
@@ -73,10 +72,9 @@
             // set inner height to 30 pixels per row
             var chartAreaHeight = data.getNumberOfRows() * 30;
             // add padding to outer height to accomodate title, axis labels, etc
-            var chartHeight = chartAreaHeight + 100;
+            var chartHeight = chartAreaHeight + 50;
 
             var options = {
-              title: '지원대학 사례',
               height: chartHeight,
               chartArea: {
                   height: chartAreaHeight
@@ -127,8 +125,9 @@
   </div>
 </form>
 <hr/>
-<br>
 
+<h6>지역별 사례 수 및 비율</h6>
+<br>
 <div class="container">
   <div class="row">
     <div class="col">
@@ -140,6 +139,9 @@
   </div>
 </div>
 
+<hr/>
+<h6>지역별 지원대학</h6>
+<br>
 <ul class="nav nav-tabs">
   <li class="nav-item">
     <a class="{% if current_region == '충청도' %}nav-link active{%else%}nav-link{% endif %}"

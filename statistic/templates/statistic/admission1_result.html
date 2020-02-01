@@ -24,7 +24,6 @@
 
         // Set chart options
         var options = {
-          'title':'전형별 사례 수',
           'height':250
         };
 
@@ -45,10 +44,9 @@
             // set inner height to 30 pixels per row
             var chartAreaHeight = data.getNumberOfRows() * 30;
             // add padding to outer height to accomodate title, axis labels, etc
-            var chartHeight = chartAreaHeight + 100;
+            var chartHeight = chartAreaHeight + 50;
 
             var options = {
-              title: '지원대학 사례',
               height: chartHeight,
               chartArea: {
                   height: chartAreaHeight
@@ -116,7 +114,7 @@
   </div>
 </form>
 <hr/>
-
+<h6> 전형별 사례 수 및 비율</h6>
 <div class="container">
   <div class="row">
     <div class="col">
@@ -127,6 +125,9 @@
   </div>
 </div>
 
+<hr/>
+<h6> 전형별 지원대학</h6>
+<br>
 <ul class="nav nav-tabs">
   <li class="nav-item">
     <a class="{% if current_admission1 == '교과' %}nav-link active{%else%}nav-link{% endif %}"
@@ -145,7 +146,6 @@
        href="{% url 'static_admission1_result' %}?entrance_year={{ current_entrance_year }}&major_group={{ current_major_group }}&univ_region={{ current_univ_region }}&admission1=종합">종합</a>
   </li>
 </ul>
-<br>
 
 <div id="admission1_bar"></div>
 

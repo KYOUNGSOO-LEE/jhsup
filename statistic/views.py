@@ -144,9 +144,9 @@ def student_region_result(request):
         univ_psf_list.append([
             univ_name_list[i],
             univ_pass_freq_list[i],
-            'stroke-color: #000000; stroke-width: 0.5; opacity: 0.8',
+            'stroke-color: #000000; stroke-width: 1; opacity: 0.5',
             univ_supplement_freq_list[i],
-            'stroke-color: #000000; stroke-width: 0.5; opacity: 0.8',
+            'stroke-color: #000000; stroke-width: 1; opacity: 0.5',
             univ_fail_freq_list[i],
             'stroke-color: #000000; stroke-width: 1; opacity: 0.5',
         ])
@@ -230,11 +230,18 @@ def grade_result(request):
         grade_freq_list.append(grade[1])
 
     for i in range(0, len(grade_list)):
-        grade_data_list.append([
-            grade_list[i],
-            grade_freq_list[i],
-            'stroke-color: #000000; stroke-width: 0.5; opacity: 0.8',
-        ])
+        if int(gte_query) == i + 1:
+            grade_data_list.append([
+                grade_list[i],
+                grade_freq_list[i],
+                'color: #FFBB00; stroke-color: #000000; stroke-width: 2; opacity: 0.8',
+            ])
+        else:
+            grade_data_list.append([
+                grade_list[i],
+                grade_freq_list[i],
+                'color: #3162C7; stroke-color: #000000; stroke-width: 2; opacity: 0.8',
+            ])
 
     # 등급별 학생 지원대학 현황
     univ_name_list = []

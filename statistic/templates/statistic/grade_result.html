@@ -13,8 +13,7 @@
         var view = new google.visualization.DataView(data);
 
         var options = {
-          title: "등급별 사례 분포",
-          width: 800,
+          width: 1000,
           height: 400,
           bar: {groupWidth: "80%"},
           legend: { position: "none" },
@@ -35,10 +34,9 @@
             // set inner height to 30 pixels per row
             var chartAreaHeight = data.getNumberOfRows() * 30;
             // add padding to outer height to accomodate title, axis labels, etc
-            var chartHeight = chartAreaHeight + 100;
+            var chartHeight = chartAreaHeight + 50;
 
             var options = {
-              title: '지원대학 사례',
               height: chartHeight,
               chartArea: {
                   height: chartAreaHeight
@@ -109,9 +107,12 @@
 </form>
 
 <hr/>
-
+<h6>등급별 사례분포</h6>
 <div id="grade_column"></div>
 
+<hr/>
+<h6>등급별 지원대학</h6>
+<br>
 <ul class="nav nav-tabs">
   <li class="nav-item">
     <a class="{% if current_gte == 1 %}nav-link active{%else%}nav-link{% endif %}" href="{% url 'static_grade_result' %}?entrance_year={{ current_entrance_year }}&major_group={{ current_major_group }}&admission1={{ current_admission1 }}&gte=1&lt=2">1등급대</a>
