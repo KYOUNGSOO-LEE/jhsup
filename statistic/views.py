@@ -506,6 +506,7 @@ def admission1_result(request):
     univ_pass_freq_list = []
     univ_supplement_freq_list = []
     univ_fail_freq_list = []
+    univ_psf_list = [['대학명', '합격', {'role': 'style'}, '충원합격', {'role': 'style'}, '불합격', {'role': 'style'}]]
 
     for univ in univ_name_list:
         univ_name = univ_name_qs.get(univ_name=univ)
@@ -543,11 +544,16 @@ def admission1_result(request):
     univ_supplement_freq_list = univ_supplement_freq_list[:25]
     univ_fail_freq_list = univ_fail_freq_list[:25]
 
-    # Chart size
-    if len(univ_freq_list) != 0:
-        chart_height = (len(univ_freq_list)) * 5 + 10
-    else:
-        chart_height = 10
+    for i in range(0, len(univ_name_list)):
+        univ_psf_list.append([
+            univ_name_list[i],
+            univ_pass_freq_list[i],
+            'stroke-color: #000000; stroke-width: 0.5; opacity: 0.8',
+            univ_supplement_freq_list[i],
+            'stroke-color: #000000; stroke-width: 0.5; opacity: 0.8',
+            univ_fail_freq_list[i],
+            'stroke-color: #000000; stroke-width: 1; opacity: 0.5',
+        ])
 
     context = {
         'entrance_year_item': entrance_year_qs,
@@ -564,11 +570,7 @@ def admission1_result(request):
         'univ_name_list': univ_name_list,
         'univ_freq_list': univ_freq_list,
 
-        'univ_pass_freq_list': univ_pass_freq_list,
-        'univ_supplement_freq_list': univ_supplement_freq_list,
-        'univ_fail_freq_list': univ_fail_freq_list,
-
-        'chart_height': chart_height,
+        'univ_psf_list': univ_psf_list,
     }
     return render(request, template, context)
 

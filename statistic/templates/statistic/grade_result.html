@@ -14,10 +14,10 @@
             // set inner height to 30 pixels per row
             var chartAreaHeight = data.getNumberOfRows() * 30;
             // add padding to outer height to accomodate title, axis labels, etc
-            var chartHeight = chartAreaHeight + 80;
+            var chartHeight = chartAreaHeight + 100;
 
             var options = {
-              title: '지원대학 사례순위',
+              title: '지원대학 사례',
               height: chartHeight,
               chartArea: {
                   height: chartAreaHeight
@@ -173,6 +173,6 @@ myChart.update();
   </li>
 </ul>
 
-<div id="grade_bar" style="width: 100%; height: {{chart_height}};"></div>
+<div id="grade_bar"></div>
 
 {% endblock content %}

@@ -69,9 +69,17 @@
       function drawStacked() {
             var data = google.visualization.arrayToDataTable({{univ_psf_list|safe}});
 
+            // set inner height to 30 pixels per row
+            var chartAreaHeight = data.getNumberOfRows() * 30;
+            // add padding to outer height to accomodate title, axis labels, etc
+            var chartHeight = chartAreaHeight + 100;
+
             var options = {
-              title: '지원대학 사례순위',
-              chartArea: {width: '70%', height: '90%'},
+              title: '지원대학 사례',
+              height: chartHeight,
+              chartArea: {
+                  height: chartAreaHeight
+              },
               isStacked: true,
               bar: { groupWidth: "80%" },
               colors:['#F15F5F', '#3DB7CC', '#FAF4C0'],
@@ -155,6 +163,6 @@
 </ul>
 <br>
 
-<div id="student_region_bar" style="width: 100%; height: 150%;"></div>
+<div id="student_region_bar"></div>
 
 {% endblock content %}
