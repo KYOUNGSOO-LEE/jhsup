@@ -53,6 +53,11 @@ def student_region_result(request):
             student_region_freq_list[i],
             round((student_region_freq_list[i]/n) * 100, 1)
         ])
+    student_region_data2.append([
+        '총합',
+        sum(student_region_freq_list),
+        (sum(student_region_freq_list) / n) * 100
+    ])
 
     # 지역별 지원대학 현황
     univ_name_list = []

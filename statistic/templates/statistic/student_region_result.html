@@ -41,15 +41,26 @@
       function drawTable() {
         var data = new google.visualization.DataTable();
         data.addColumn('string', '지역');
-        data.addColumn('number', '인원(명)');
+        data.addColumn('number', '사례(건)');
         data.addColumn('number', '비율(%)');
         data.addRows({{student_region_data2 | safe}});
 
-        var table = new google.visualization.Table(document.getElementById('student_region_table'));
+        var options = {
+            showRowNumber: true,
+            allowHtml: true,
+            width: '50%', height: '100%',
+        };
 
-        table.draw(data, {showRowNumber: true, width: '50%', height: '100%'});
+        var table = new google.visualization.Table(document.getElementById('student_region_table'));
+        table.draw(data, options);
       }
     </script>
+
+    <style>
+        .google-visualization-table-td {
+            text-align: center !important;
+        }
+    </style>
 
     <script>
       google.charts.load('current', {packages: ['corechart', 'bar']});
