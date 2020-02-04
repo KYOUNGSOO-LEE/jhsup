@@ -232,7 +232,7 @@ def grade_result(request):
 
     admission1_list = []
     grade_column1_table = []
-    for i in range(1, 10):
+    for i in range(1, 9):
         grade_column1_table.append([i, 0, 0, 0, 0])
 
     for idx, admission1 in enumerate(admission1_qs):
