@@ -233,7 +233,7 @@ def grade_result(request):
     admission1_list = []
     grade_column1_table = []
     for i in range(1, 9):
-        grade_column1_table.append([i, 0, 0, 0, 0])
+        grade_column1_table.append([i, 0, 0, 0, 0, 0])
 
     for idx, admission1 in enumerate(admission1_qs):
         if str(MajorGroup.objects.get(pk=major_group_query)) == '자연':
@@ -262,6 +262,9 @@ def grade_result(request):
             grade_column1_table[int(data[0] - 1)][idx + 1] = data[1]
 
         admission1_list.append(admission1['admission1'])
+
+    for row in grade_column1_table:
+        row[5] = sum(row[1:5])
 
     grade_list = []
     grade_freq_list = []

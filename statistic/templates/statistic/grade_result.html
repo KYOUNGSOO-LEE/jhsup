@@ -35,6 +35,8 @@
         data.addColumn('number', '{{admission1_list.1|safe}}');
         data.addColumn('number', '{{admission1_list.2|safe}}');
         data.addColumn('number', '{{admission1_list.3|safe}}');
+        data.addColumn('number', '합');
+
         data.addRows({{grade_column1_table|safe}});
 
         var options = {
