@@ -40,20 +40,20 @@ def student_region_result(request):
         student_region_list.append(student_region[0])
         student_region_freq_list.append(student_region[1])
 
-    student_region_data1 = []
-    student_region_data2 = []
+    student_region_pie = []
+    student_region_table = []
     n = sum(student_region_freq_list)
     for i in range(0,len(student_region_list)):
-        student_region_data1.append([
+        student_region_pie.append([
             student_region_list[i],
             student_region_freq_list[i]
         ])
-        student_region_data2.append([
+        student_region_table.append([
             student_region_list[i],
             student_region_freq_list[i],
             round((student_region_freq_list[i]/n) * 100, 1)
         ])
-    student_region_data2.append([
+    student_region_table.append([
         '총합',
         sum(student_region_freq_list),
         (sum(student_region_freq_list) / n) * 100
@@ -87,7 +87,7 @@ def student_region_result(request):
     univ_pass_freq_list = []
     univ_supplement_freq_list = []
     univ_fail_freq_list = []
-    univ_psf_list = [['대학명', '합격', {'role': 'style'} , '충원합격', {'role': 'style'}, '불합격', {'role': 'style'}]]
+    univ_psf_bar = [['대학명', '합격', {'role': 'style'} , '충원합격', {'role': 'style'}, '불합격', {'role': 'style'}]]
 
     if student_region_query == '충청도':
         for univ in univ_name_list:
@@ -141,7 +141,7 @@ def student_region_result(request):
     univ_fail_freq_list = univ_fail_freq_list[:25]
 
     for i in range(0, len(univ_name_list)):
-        univ_psf_list.append([
+        univ_psf_bar.append([
             univ_name_list[i],
             univ_pass_freq_list[i],
             'stroke-color: #000000; stroke-width: 1; opacity: 0.5',
@@ -154,12 +154,12 @@ def student_region_result(request):
     context = {
         'entrance_year_item': entrance_year_qs,
         'current_entrance_year': entrance_year_query,
-
-        'student_region_data1': student_region_data1,
-        'student_region_data2': student_region_data2,
         'current_region': student_region_query,
 
-        'univ_psf_list': univ_psf_list
+        'student_region_pie': student_region_pie,
+        'student_region_table': student_region_table,
+
+        'univ_psf_bar': univ_psf_bar
     }
     return render(request, template, context)
 
@@ -198,7 +198,44 @@ def grade_result(request):
 
     grade_list = []
     grade_freq_list = []
-    grade_data_list = [['등급', '사례수', {'role': 'style'}]]
+    grade_column1 = [['등급', '사례수', {'role': 'style'}]]
+
+    if MajorGroup.objects.get(pk=major_group_query) == '자연':
+        grade_freq_qs = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .values_list(Floor('ko_en_math_sci_100')) \
+            .annotate(student_grade_count=Count(Floor('ko_en_math_sci_100'))) \
+            .order_by(Floor('ko_en_math_sci_100'))
+    elif MajorGroup.objects.get(pk=major_group_query) == '공통':
+        grade_freq_qs = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .values_list(Floor('ko_en_math_soc_sci_100')) \
+            .annotate(student_grade_count=Count(Floor('ko_en_math_soc_sci_100'))) \
+            .order_by(Floor('ko_en_math_soc_sci_100'))
+    else:
+        grade_freq_qs = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .values_list(Floor('ko_en_math_soc_100')) \
+            .annotate(student_grade_count=Count(Floor('ko_en_math_soc_100'))) \
+            .order_by(Floor('ko_en_math_soc_100'))
+
+    for grade in grade_freq_qs:
+        grade_list.append(int(grade[0]))
+        grade_freq_list.append(grade[1])
+
+    for i in range(0, len(grade_list)):
+        grade_column1.append([
+            grade_list[i],
+            grade_freq_list[i],
+            'stroke-color: #000000; stroke-width: 2; opacity: 0.8',
+        ])
+
+    grade_list = []
+    grade_freq_list = []
+    grade_column2 = [['등급', '사례수', {'role': 'style'}]]
 
     if MajorGroup.objects.get(pk=major_group_query) == '자연':
         grade_freq_qs = Student.objects\
@@ -231,13 +268,13 @@ def grade_result(request):
 
     for i in range(0, len(grade_list)):
         if int(gte_query) == i + 1:
-            grade_data_list.append([
+            grade_column2.append([
                 grade_list[i],
                 grade_freq_list[i],
                 'color: #FFBB00; stroke-color: #000000; stroke-width: 2; opacity: 0.8',
             ])
         else:
-            grade_data_list.append([
+            grade_column2.append([
                 grade_list[i],
                 grade_freq_list[i],
                 'color: #3162C7; stroke-color: #000000; stroke-width: 2; opacity: 0.8',
@@ -288,7 +325,7 @@ def grade_result(request):
     univ_pass_freq_list = []
     univ_supplement_freq_list = []
     univ_fail_freq_list = []
-    univ_psf_list = [['대학명', '합격', {'role': 'style'} , '충원합격', {'role': 'style'}, '불합격', {'role': 'style'}]]
+    univ_psf_bar = [['대학명', '합격', {'role': 'style'} , '충원합격', {'role': 'style'}, '불합격', {'role': 'style'}]]
 
     for univ in univ_name_list:
         univ_name = univ_name_qs.get(univ_name=univ)
@@ -387,12 +424,12 @@ def grade_result(request):
     univ_fail_freq_list = univ_fail_freq_list[:25]
 
     for i in range(0, len(univ_name_list)):
-        univ_psf_list.append([
+        univ_psf_bar.append([
             univ_name_list[i],
             univ_pass_freq_list[i],
-            'stroke-color: #000000; stroke-width: 0.5; opacity: 0.8',
+            'stroke-color: #000000; stroke-width: 1; opacity: 0.5',
             univ_supplement_freq_list[i],
-            'stroke-color: #000000; stroke-width: 0.5; opacity: 0.8',
+            'stroke-color: #000000; stroke-width: 1; opacity: 0.5',
             univ_fail_freq_list[i],
             'stroke-color: #000000; stroke-width: 1; opacity: 0.5',
         ])
@@ -404,12 +441,14 @@ def grade_result(request):
 
         'current_entrance_year': entrance_year_query,
         'current_major_group': int(major_group_query),
+        'current_major_group_str': str(MajorGroup.objects.get(pk=major_group_query)),
         'current_admission1': admission1_query,
         'current_gte': int(gte_query),
 
-        'grade_data_list': grade_data_list,
+        'grade_column1': grade_column1,
+        'grade_column2': grade_column2,
 
-        'univ_psf_list': univ_psf_list,
+        'univ_psf_bar': univ_psf_bar,
     }
     return render(request, template, context)
 
@@ -459,9 +498,9 @@ def admission1_result(request):
         admission1_list.append(admission1)
         admission1_freq_list.append(admission1_freq)
 
-    admission1_data_list = []
+    admission1_pie = []
     for i in range(0, len(admission1_list)):
-        admission1_data_list.append([admission1_list[i], admission1_freq_list[i]])
+        admission1_pie.append([admission1_list[i], admission1_freq_list[i]])
 
     # 등급별 학생 지원대학 현황
     univ_name_list = []
@@ -514,7 +553,7 @@ def admission1_result(request):
     univ_pass_freq_list = []
     univ_supplement_freq_list = []
     univ_fail_freq_list = []
-    univ_psf_list = [['대학명', '합격', {'role': 'style'}, '충원합격', {'role': 'style'}, '불합격', {'role': 'style'}]]
+    univ_psf_bar = [['대학명', '합격', {'role': 'style'}, '충원합격', {'role': 'style'}, '불합격', {'role': 'style'}]]
 
     for univ in univ_name_list:
         univ_name = univ_name_qs.get(univ_name=univ)
@@ -553,12 +592,12 @@ def admission1_result(request):
     univ_fail_freq_list = univ_fail_freq_list[:25]
 
     for i in range(0, len(univ_name_list)):
-        univ_psf_list.append([
+        univ_psf_bar.append([
             univ_name_list[i],
             univ_pass_freq_list[i],
-            'stroke-color: #000000; stroke-width: 0.5; opacity: 0.8',
+            'stroke-color: #000000; stroke-width: 1; opacity: 0.5',
             univ_supplement_freq_list[i],
-            'stroke-color: #000000; stroke-width: 0.5; opacity: 0.8',
+            'stroke-color: #000000; stroke-width: 1; opacity: 0.5',
             univ_fail_freq_list[i],
             'stroke-color: #000000; stroke-width: 1; opacity: 0.5',
         ])
@@ -573,9 +612,9 @@ def admission1_result(request):
         'current_univ_region': int(univ_region_query),
         'current_admission1': admission1_query,
 
-        'admission1_data_list': admission1_data_list,
+        'admission1_pie': admission1_pie,
 
-        'univ_psf_list': univ_psf_list,
+        'univ_psf_bar': univ_psf_bar,
     }
     return render(request, template, context)
 

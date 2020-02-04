@@ -20,7 +20,7 @@
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'student_region');
         data.addColumn('number', 'student_region_freq');
-        data.addRows({{student_region_data1 | safe}});
+        data.addRows({{student_region_pie | safe}});
 
         // Set chart options
         var options = {
@@ -43,7 +43,7 @@
         data.addColumn('string', '지역');
         data.addColumn('number', '사례(건)');
         data.addColumn('number', '비율(%)');
-        data.addRows({{student_region_data2 | safe}});
+        data.addRows({{student_region_table | safe}});
 
         var options = {
             showRowNumber: true,
@@ -67,7 +67,7 @@
       google.charts.setOnLoadCallback(drawStacked);
 
       function drawStacked() {
-            var data = google.visualization.arrayToDataTable({{univ_psf_list|safe}});
+            var data = google.visualization.arrayToDataTable({{univ_psf_bar|safe}});
 
             // set inner height to 30 pixels per row
             var chartAreaHeight = data.getNumberOfRows() * 30;
@@ -88,7 +88,7 @@
               vAxis: {
               }
             };
-            var chart = new google.visualization.BarChart(document.getElementById('student_region_bar'));
+            var chart = new google.visualization.BarChart(document.getElementById('univ_psf_bar'));
             chart.draw(data, options);
 
             window.addEventListener('resize', function() {
@@ -166,6 +166,6 @@
 </ul>
 <br>
 
-<div id="student_region_bar"></div>
+<div id="univ_psf_bar"></div>
 
 {% endblock content %}

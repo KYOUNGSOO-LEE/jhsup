@@ -20,7 +20,7 @@
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'admission1');
         data.addColumn('number', 'admission1_freq');
-        data.addRows({{admission1_data_list | safe}});
+        data.addRows({{admission1_pie | safe}});
 
         // Set chart options
         var options = {
@@ -39,7 +39,7 @@
       google.charts.setOnLoadCallback(drawStacked);
 
       function drawStacked() {
-            var data = google.visualization.arrayToDataTable({{univ_psf_list|safe}});
+            var data = google.visualization.arrayToDataTable({{univ_psf_bar|safe}});
 
             // set inner height to 30 pixels per row
             var chartAreaHeight = data.getNumberOfRows() * 30;
@@ -61,7 +61,7 @@
               }
             };
 
-            var chart = new google.visualization.BarChart(document.getElementById('admission1_bar'));
+            var chart = new google.visualization.BarChart(document.getElementById('univ_psf_bar'));
             chart.draw(data, options);
 
             window.addEventListener('resize', function() {
@@ -147,6 +147,6 @@
   </li>
 </ul>
 
-<div id="admission1_bar"></div>
+<div id="univ_psf_bar"></div>
 
 {% endblock content %}

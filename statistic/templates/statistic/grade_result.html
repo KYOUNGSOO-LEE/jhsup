@@ -8,17 +8,63 @@
       google.charts.load("current", {packages:['corechart']});
       google.charts.setOnLoadCallback(drawChart);
       function drawChart() {
-        var data = google.visualization.arrayToDataTable({{grade_data_list|safe}});
+        var data = google.visualization.arrayToDataTable({{grade_column1|safe}});
 
         var view = new google.visualization.DataView(data);
 
         var options = {
-          width: 1000,
+          width: 600,
           height: 400,
           bar: {groupWidth: "80%"},
           legend: { position: "none" },
         };
-        var chart = new google.visualization.ColumnChart(document.getElementById("grade_column"));
+        var chart = new google.visualization.ColumnChart(document.getElementById("grade_column1"));
+        chart.draw(view, options);
+    }
+    </script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['table']});
+      google.charts.setOnLoadCallback(drawTable);
+
+      function drawTable() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('number', '등급');
+        data.addColumn('number', '교과(건)');
+        data.addColumn('number', '논술(건)');
+        data.addColumn('number', '실기(건)');
+        data.addColumn('number', '종합(건)');
+        data.addColumn('number', '총합');
+        data.addRows({{grade_data | safe}});
+
+        var options = {
+            showRowNumber: false,
+            allowHtml: true,
+            width: '50%', height: '100%',
+        };
+
+        var table = new google.visualization.Table(document.getElementById('grade_column1_table'));
+        table.draw(data, options);
+      }
+    </script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load("current", {packages:['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable({{grade_column2|safe}});
+
+        var view = new google.visualization.DataView(data);
+
+        var options = {
+          width: 600,
+          height: 400,
+          bar: {groupWidth: "80%"},
+          legend: { position: "none" },
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById("grade_column2"));
         chart.draw(view, options);
     }
     </script>
@@ -29,7 +75,7 @@
       google.charts.setOnLoadCallback(drawStacked);
 
       function drawStacked() {
-            var data = google.visualization.arrayToDataTable({{univ_psf_list|safe}});
+            var data = google.visualization.arrayToDataTable({{univ_psf_bar|safe}});
 
             // set inner height to 30 pixels per row
             var chartAreaHeight = data.getNumberOfRows() * 30;
@@ -51,7 +97,7 @@
               }
             };
 
-            var chart = new google.visualization.BarChart(document.getElementById('grade_bar'));
+            var chart = new google.visualization.BarChart(document.getElementById('univ_psf_bar'));
             chart.draw(data, options);
 
             window.addEventListener('resize', function() {
@@ -107,11 +153,15 @@
 </form>
 
 <hr/>
-<h6>등급별 사례분포</h6>
-<div id="grade_column"></div>
+<h6>등급별 사례분포({{current_major_group_str}})</h6>
+<div id="grade_column1"></div>
+<div id="grade_column1_table"></div>
+<hr/>
+<h6>등급별 사례분포({{current_major_group_str}}, {{current_admission1}})</h6>
+<div id="grade_column2"></div>
 
 <hr/>
-<h6>등급별 지원대학</h6>
+<h6>등급별 지원대학({{current_major_group_str}}, {{current_admission1}})</h6>
 <br>
 <ul class="nav nav-tabs">
   <li class="nav-item">
@@ -140,6 +190,6 @@
   </li>
 </ul>
 
-<div id="grade_bar"></div>
+<div id="univ_psf_bar"></div>
 
 {% endblock content %}
