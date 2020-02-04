@@ -8,8 +8,8 @@ import numpy as np
 
 
 @login_required(login_url="login")
-def grade(request):
-    template = "analysis/grade.html"
+def region(request):
+    template = "analysis/region.html"
 
     major_group_qs = MajorGroup.objects.all().order_by('major_group')
     univ_region_qs = UnivRegion.objects.all().order_by('univ_region')
@@ -22,8 +22,8 @@ def grade(request):
 
 
 @login_required(login_url="login")
-def grade_search(request):
-    template = "analysis/grade.html"
+def region_search(request):
+    template = "analysis/region.html"
 
     major_group_qs = MajorGroup.objects.all().order_by('major_group')
     univ_region_qs = UnivRegion.objects.all().order_by('univ_region')

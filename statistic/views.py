@@ -166,7 +166,7 @@ def student_region_result(request):
 
 @login_required(login_url="login")
 def grade(request):
-    template = "statistic/grade.html"
+    template = "statistic/region.html"
 
     # 등급별 사례수
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()

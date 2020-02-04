@@ -3,8 +3,8 @@ from . import views
 
 
 urlpatterns = [
-    url(r'^grade$', views.grade, name="grade"),
-    url(r'^grade_search$', views.grade_search, name="grade_search"),
+    url(r'^region$', views.region, name="region"),
+    url(r'^region_search$', views.region_search, name="region_search"),
     url(r'^major$', views.major, name="major"),
     url(r'^major_search$', views.major_search, name="major_search"),
     url(r'^advanced$', views.advanced, name="advanced"),
