@@ -166,7 +166,7 @@ def student_region_result(request):
 
 @login_required(login_url="login")
 def grade(request):
-    template = "statistic/region.html"
+    template = "statistic/grade.html"
 
     # 등급별 사례수
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
@@ -205,22 +205,19 @@ def grade_result(request):
             .filter(entrance_year=entrance_year_query) \
             .filter(major_group=major_group_query) \
             .values_list(Floor('ko_en_math_sci_100')) \
-            .annotate(student_grade_count=Count(Floor('ko_en_math_sci_100'))) \
-            .order_by(Floor('ko_en_math_sci_100'))
+            .annotate(student_grade_count=Count(Floor('ko_en_math_sci_100')))
     elif MajorGroup.objects.get(pk=major_group_query) == '공통':
         grade_freq_qs = Student.objects \
             .filter(entrance_year=entrance_year_query) \
             .filter(major_group=major_group_query) \
             .values_list(Floor('ko_en_math_soc_sci_100')) \
-            .annotate(student_grade_count=Count(Floor('ko_en_math_soc_sci_100'))) \
-            .order_by(Floor('ko_en_math_soc_sci_100'))
+            .annotate(student_grade_count=Count(Floor('ko_en_math_soc_sci_100')))
     else:
         grade_freq_qs = Student.objects \
             .filter(entrance_year=entrance_year_query) \
             .filter(major_group=major_group_query) \
             .values_list(Floor('ko_en_math_soc_100')) \
-            .annotate(student_grade_count=Count(Floor('ko_en_math_soc_100'))) \
-            .order_by(Floor('ko_en_math_soc_100'))
+            .annotate(student_grade_count=Count(Floor('ko_en_math_soc_100')))
 
     for grade in grade_freq_qs:
         grade_list.append(int(grade[0]))
@@ -243,24 +240,21 @@ def grade_result(request):
             .filter(major_group=major_group_query) \
             .filter(admission1__admission1__contains=admission1_query)\
             .values_list(Floor('ko_en_math_sci_100'))\
-            .annotate(student_grade_count=Count(Floor('ko_en_math_sci_100')))\
-            .order_by(Floor('ko_en_math_sci_100'))
+            .annotate(student_grade_count=Count(Floor('ko_en_math_sci_100')))
     elif MajorGroup.objects.get(pk=major_group_query) == '공통':
         grade_freq_qs = Student.objects \
             .filter(entrance_year=entrance_year_query) \
             .filter(major_group=major_group_query) \
             .filter(admission1__admission1__contains=admission1_query) \
             .values_list(Floor('ko_en_math_soc_sci_100')) \
-            .annotate(student_grade_count=Count(Floor('ko_en_math_soc_sci_100'))) \
-            .order_by(Floor('ko_en_math_soc_sci_100'))
+            .annotate(student_grade_count=Count(Floor('ko_en_math_soc_sci_100')))
     else:
         grade_freq_qs = Student.objects \
             .filter(entrance_year=entrance_year_query) \
             .filter(major_group=major_group_query) \
             .filter(admission1__admission1__contains=admission1_query) \
             .values_list(Floor('ko_en_math_soc_100')) \
-            .annotate(student_grade_count=Count(Floor('ko_en_math_soc_100'))) \
-            .order_by(Floor('ko_en_math_soc_100'))
+            .annotate(student_grade_count=Count(Floor('ko_en_math_soc_100')))
 
     for grade in grade_freq_qs:
         grade_list.append(int(grade[0]))
