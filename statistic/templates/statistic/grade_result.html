@@ -13,8 +13,8 @@
         var view = new google.visualization.DataView(data);
 
         var options = {
-          width: 600,
-          height: 400,
+          width: 550,
+          height: 300,
           bar: {groupWidth: "80%"},
           legend: { position: "none" },
         };
@@ -31,17 +31,17 @@
       function drawTable() {
         var data = new google.visualization.DataTable();
         data.addColumn('number', '등급');
-        data.addColumn('number', '교과(건)');
-        data.addColumn('number', '논술(건)');
-        data.addColumn('number', '실기(건)');
-        data.addColumn('number', '종합(건)');
-        data.addColumn('number', '총합');
-        data.addRows({{grade_data | safe}});
+        data.addColumn('number', '{{admission1_list.0|safe}}');
+        data.addColumn('number', '{{admission1_list.1|safe}}');
+        data.addColumn('number', '{{admission1_list.2|safe}}');
+        data.addColumn('number', '{{admission1_list.3|safe}}');
+        data.addRows({{grade_column1_table|safe}});
 
         var options = {
+            width: 350,
+            height: 300,
             showRowNumber: false,
             allowHtml: true,
-            width: '50%', height: '100%',
         };
 
         var table = new google.visualization.Table(document.getElementById('grade_column1_table'));
@@ -154,8 +154,18 @@
 
 <hr/>
 <h6>등급별 사례분포({{current_major_group_str}})</h6>
-<div id="grade_column1"></div>
-<div id="grade_column1_table"></div>
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div id="grade_column1"></div>
+    </div>
+    <div class="col">
+      <div id="grade_column1_table"></div>
+    </div>
+  </div>
+</div>
+
 <hr/>
 <h6>등급별 사례분포({{current_major_group_str}}, {{current_admission1}})</h6>
 <div id="grade_column2"></div>
