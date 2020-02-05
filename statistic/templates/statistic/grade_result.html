@@ -61,14 +61,40 @@
         var view = new google.visualization.DataView(data);
 
         var options = {
-          width: 600,
-          height: 400,
+          width: 550,
+          height: 300,
           bar: {groupWidth: "80%"},
           legend: { position: "none" },
         };
         var chart = new google.visualization.ColumnChart(document.getElementById("grade_column2"));
         chart.draw(view, options);
     }
+    </script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['table']});
+      google.charts.setOnLoadCallback(drawTable);
+
+      function drawTable() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', '등급');
+        data.addColumn('number', '{{current_major_group_str|safe}}');
+        data.addColumn('number', '{{current_admission1|safe}}');
+        data.addColumn('number', '비율(%)');
+
+        data.addRows({{grade_column2_table|safe}});
+
+        var options = {
+            width: 350,
+            height: 300,
+            showRowNumber: false,
+            allowHtml: true,
+        };
+
+        var table = new google.visualization.Table(document.getElementById('grade_column2_table'));
+        table.draw(data, options);
+      }
     </script>
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -170,7 +196,17 @@
 
 <hr/>
 <h6>등급별 사례분포({{current_major_group_str}}, {{current_admission1}})</h6>
-<div id="grade_column2"></div>
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div id="grade_column2"></div>
+    </div>
+    <div class="col">
+      <div id="grade_column2_table"></div>
+    </div>
+  </div>
+</div>
 
 <hr/>
 <h6>등급별 지원대학({{current_major_group_str}}, {{current_admission1}})</h6>

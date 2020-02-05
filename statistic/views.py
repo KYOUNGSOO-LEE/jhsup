@@ -233,6 +233,7 @@ def grade_result(request):
     grade_column1_table = []
     admission1_list = []
     sum_list = ['합', 0, 0, 0, 0, 0]
+
     for i in range(1, 9):
         grade_column1_table.append([str(i), 0, 0, 0, 0, 0])
 
@@ -273,6 +274,10 @@ def grade_result(request):
     grade_list = []
     grade_freq_list = []
     grade_column2 = [['등급', '사례수', {'role': 'style'}]]
+    grade_column2_table = []
+
+    for i in range(0, 8):
+        grade_column2_table.append([str(i + 1), grade_column1_table[i][5], 0, 0])
 
     if str(MajorGroup.objects.get(pk=major_group_query)) == '자연':
         grade_freq_qs = Student.objects\
@@ -313,6 +318,12 @@ def grade_result(request):
                 grade_freq_list[i],
                 'color: #3162C7; stroke-color: #000000; stroke-width: 2; opacity: 0.8',
             ])
+
+    for row in grade_column2[1:]:
+        grade_column2_table[int(row[0]) - 1][2] = row[1]
+
+    for i in range(0, 8):
+        grade_column2_table[i][3] = round((grade_column2_table[i][2] / grade_column2_table[i][1])*100, 1)
 
     # 등급별 학생 지원대학 현황
     univ_name_list = []
@@ -483,6 +494,7 @@ def grade_result(request):
         'grade_column1': grade_column1,
         'grade_column1_table': grade_column1_table,
         'grade_column2': grade_column2,
+        'grade_column2_table': grade_column2_table,
 
         'univ_psf_bar': univ_psf_bar,
     }
