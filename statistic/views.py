@@ -54,7 +54,7 @@ def student_region_result(request):
             round((student_region_freq_list[i]/n) * 100, 1)
         ])
     student_region_table.append([
-        '총합',
+        '합',
         sum(student_region_freq_list),
         (sum(student_region_freq_list) / n) * 100
     ])
@@ -230,10 +230,11 @@ def grade_result(request):
             'stroke-color: #000000; stroke-width: 2; opacity: 0.8',
         ])
 
-    admission1_list = []
     grade_column1_table = []
+    admission1_list = []
+    sum_list = ['합', 0, 0, 0, 0, 0]
     for i in range(1, 9):
-        grade_column1_table.append([i, 0, 0, 0, 0, 0])
+        grade_column1_table.append([str(i), 0, 0, 0, 0, 0])
 
     for idx, admission1 in enumerate(admission1_qs):
         if str(MajorGroup.objects.get(pk=major_group_query)) == '자연':
@@ -265,6 +266,9 @@ def grade_result(request):
 
     for row in grade_column1_table:
         row[5] = sum(row[1:5])
+        for i in range(1, 6):
+            sum_list[i] += row[i]
+    grade_column1_table.append(sum_list)
 
     grade_list = []
     grade_freq_list = []
