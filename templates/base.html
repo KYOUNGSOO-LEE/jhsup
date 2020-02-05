@@ -47,7 +47,7 @@
             <li class="nav-item">
               <a class="{% if url_name == 'static_student_region' or url_name == 'static_student_region_result' %}
               nav-link active{%else%}nav-link{% endif %}" href="{% url 'static_student_region' %}">
-                출신 지역기준 통계
+                출신지역기준 통계
               </a>
             </li>
 
@@ -73,19 +73,19 @@
             <li class="nav-item">
               <a class="{% if url_name == 'region' or url_name == 'region_search' %}nav-link active{%else%}nav-link{% endif %}"
                  href="{% url 'region' %}">
-                지역기준 사례검색
+                계열/대학소재지/등급
               </a>
             </li>
             <li class="nav-item">
               <a class="{% if url_name == 'university' or url_name == 'university_search' %}nav-link active{%else%}nav-link{% endif %}"
                  href="{% url 'university' %}">
-                학교기준 사례검색
+                계열/대학명/등급
               </a>
             </li>
             <li class="nav-item">
               <a class="{% if url_name == 'major' or url_name == 'major_search' %}nav-link active{%else%}nav-link{% endif %}"
                  href="{% url 'major' %}">
-                학과기준 사례검색
+                계열/학과명/등급
               </a>
             </li>
             <li class="nav-item">
