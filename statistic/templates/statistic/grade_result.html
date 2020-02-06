@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %} 등급기준 통계 {% endblock %}
+{% block title %} 지원전형기준 {% endblock %}
 
 {% block head %}
 
@@ -168,7 +168,7 @@
 
 {% block content %}
 
-<h4> 등급기준 통계 </h4>
+<h4> 지원전형기준 </h4>
 <p class="font-weight-bold text-info">
     &#8251 기준 : 인문, 예체능(국영수사100), 자연(국영수과100), 공통(국영수사과100)<br>
 </p>
@@ -211,11 +211,11 @@
 </form>
 
 <hr/>
-<h6>계열별 전형사례 비율({{current_major_group_str}})</h6>
+<h6>{{current_entrance_year}} {{current_major_group_str}}계열 사례 전형비율</h6>
 <div id="admission1_pie"></div>
 
 <hr/>
-<h6>등급별 사례분포({{current_major_group_str}})</h6>
+<h6>{{current_entrance_year}} {{current_major_group_str}}계열 사례 등급분포</h6>
 <div class="container">
   <div class="row">
     <div class="col">
@@ -228,7 +228,7 @@
 </div>
 
 <hr/>
-<h6>등급별 사례분포({{current_major_group_str}}, {{current_admission1}})</h6>
+<h6>{{current_entrance_year}} {{current_major_group_str}}계열 {{current_admission1}} 전형 사례 등급분포</h6>
 
 <div class="container">
   <div class="row">
