@@ -79,7 +79,7 @@
     &#8251 기준 : 인문, 예체능(국영수사100), 자연(국영수과100), 공통(국영수사과100)<br>
 </p>
 
-<form method="get" action="{% url 'static_admission1_result' %}">
+<form method="get" action="{% url 'static_univ_region_result' %}">
   <div class="form-row align-items-center">
 
     <div class="col-md-1 my-1">
@@ -131,19 +131,19 @@
 <ul class="nav nav-tabs">
   <li class="nav-item">
     <a class="{% if current_admission1 == '교과' %}nav-link active{%else%}nav-link{% endif %}"
-       href="{% url 'static_admission1_result' %}?entrance_year={{ current_entrance_year }}&major_group={{ current_major_group }}&univ_region={{ current_univ_region }}&admission1=교과">교과</a>
+       href="{% url 'static_univ_region_result' %}?entrance_year={{ current_entrance_year }}&major_group={{ current_major_group }}&univ_region={{ current_univ_region }}&admission1=교과">교과</a>
   </li>
   <li class="nav-item">
     <a class="{% if current_admission1 == '논술' %}nav-link active{%else%}nav-link{% endif %}"
-       href="{% url 'static_admission1_result' %}?entrance_year={{ current_entrance_year }}&major_group={{ current_major_group }}&univ_region={{ current_univ_region }}&admission1=논술">논술</a>
+       href="{% url 'static_univ_region_result' %}?entrance_year={{ current_entrance_year }}&major_group={{ current_major_group }}&univ_region={{ current_univ_region }}&admission1=논술">논술</a>
   </li>
   <li class="nav-item">
     <a class="{% if current_admission1 == '실기' %}nav-link active{%else%}nav-link{% endif %}"
-       href="{% url 'static_admission1_result' %}?entrance_year={{ current_entrance_year }}&major_group={{ current_major_group }}&univ_region={{ current_univ_region }}&admission1=실기">실기</a>
+       href="{% url 'static_univ_region_result' %}?entrance_year={{ current_entrance_year }}&major_group={{ current_major_group }}&univ_region={{ current_univ_region }}&admission1=실기">실기</a>
   </li>
   <li class="nav-item">
     <a class="{% if current_admission1 == '종합' %}nav-link active{%else%}nav-link{% endif %}"
-       href="{% url 'static_admission1_result' %}?entrance_year={{ current_entrance_year }}&major_group={{ current_major_group }}&univ_region={{ current_univ_region }}&admission1=종합">종합</a>
+       href="{% url 'static_univ_region_result' %}?entrance_year={{ current_entrance_year }}&major_group={{ current_major_group }}&univ_region={{ current_univ_region }}&admission1=종합">종합</a>
   </li>
 </ul>
 
