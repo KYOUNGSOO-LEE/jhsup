@@ -196,6 +196,25 @@ def grade_result(request):
     gte_query = request.GET.get('gte')
     lt_query = request.GET.get('lt')
 
+    # 계열별 전형사례 비율
+    admission1_list = []
+    admission1_freq_list = []
+
+    for admission1 in admission1_qs:
+        admission1 = list(admission1.values())[0]
+        admission1_freq = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(admission1__admission1__contains=admission1)\
+            .count()
+        admission1_list.append(admission1)
+        admission1_freq_list.append(admission1_freq)
+
+    admission1_pie = []
+    for i in range(0, len(admission1_list)):
+        admission1_pie.append([admission1_list[i], admission1_freq_list[i]])
+
+    # 전형별 사례등급 분포
     grade_list = []
     grade_freq_list = []
     grade_column1 = [['등급', '사례수', {'role': 'style'}]]
@@ -323,7 +342,10 @@ def grade_result(request):
         grade_column2_table[int(row[0]) - 1][2] = row[1]
 
     for i in range(0, 8):
-        grade_column2_table[i][3] = round((grade_column2_table[i][2] / grade_column2_table[i][1])*100, 1)
+        if grade_column2_table[i][1] == 0:
+            grade_column2_table[i][3] = 0
+        else:
+            grade_column2_table[i][3] = round((grade_column2_table[i][2] / grade_column2_table[i][1])*100, 1)
 
     # 등급별 학생 지원대학 현황
     univ_name_list = []
@@ -491,6 +513,7 @@ def grade_result(request):
         'current_admission1': admission1_query,
         'current_gte': int(gte_query),
 
+        'admission1_pie': admission1_pie,
         'grade_column1': grade_column1,
         'grade_column1_table': grade_column1_table,
         'grade_column2': grade_column2,
