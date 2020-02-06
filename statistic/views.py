@@ -158,15 +158,14 @@ def student_region_result(request):
 
         'student_region_pie': student_region_pie,
         'student_region_table': student_region_table,
-
         'univ_psf_bar': univ_psf_bar
     }
     return render(request, template, context)
 
 
 @login_required(login_url="login")
-def grade(request):
-    template = "statistic/grade.html"
+def admission1(request):
+    template = "statistic/admission1.html"
 
     # 등급별 사례수
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
@@ -182,10 +181,9 @@ def grade(request):
 
 
 @login_required(login_url="login")
-def grade_result(request):
-    template = "statistic/grade_result.html"
+def admission1_result(request):
+    template = "statistic/admission1_result.html"
 
-    # 등급별 사례수
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
     major_group_qs = MajorGroup.objects.order_by('major_group').distinct()
     admission1_qs = Admission1.objects.values('admission1').order_by('admission1').distinct()
@@ -196,7 +194,7 @@ def grade_result(request):
     gte_query = request.GET.get('gte')
     lt_query = request.GET.get('lt')
 
-    # 계열별 전형사례 비율
+    # 계열별 전형비율
     admission1_list = []
     admission1_freq_list = []
 
@@ -214,7 +212,7 @@ def grade_result(request):
     for i in range(0, len(admission1_list)):
         admission1_pie.append([admission1_list[i], admission1_freq_list[i]])
 
-    # 전형별 사례등급 분포
+    # 계열기준 등급분포(column chart)
     grade_list = []
     grade_freq_list = []
     grade_column1 = [['등급', '사례수', {'role': 'style'}]]
@@ -249,6 +247,7 @@ def grade_result(request):
             'stroke-color: #000000; stroke-width: 2; opacity: 0.8',
         ])
 
+    # 계열기준 등급분포(table chart)
     grade_column1_table = []
     admission1_list = []
     sum_list = ['합', 0, 0, 0, 0, 0]
@@ -290,13 +289,10 @@ def grade_result(request):
             sum_list[i] += row[i]
     grade_column1_table.append(sum_list)
 
+    #계열, 전형기준 등급분포(column chart)
     grade_list = []
     grade_freq_list = []
     grade_column2 = [['등급', '사례수', {'role': 'style'}]]
-    grade_column2_table = []
-
-    for i in range(0, 8):
-        grade_column2_table.append([str(i + 1), grade_column1_table[i][5], 0, 0])
 
     if str(MajorGroup.objects.get(pk=major_group_query)) == '자연':
         grade_freq_qs = Student.objects\
@@ -338,6 +334,11 @@ def grade_result(request):
                 'color: #3162C7; stroke-color: #000000; stroke-width: 2; opacity: 0.8',
             ])
 
+    #계열, 전형기준 등급분포(table chart)
+    grade_column2_table = []
+    for i in range(0, 8):
+        grade_column2_table.append([str(i + 1), grade_column1_table[i][5], 0, 0])
+
     for row in grade_column2[1:]:
         grade_column2_table[int(row[0]) - 1][2] = row[1]
 
@@ -347,7 +348,7 @@ def grade_result(request):
         else:
             grade_column2_table[i][3] = round((grade_column2_table[i][2] / grade_column2_table[i][1])*100, 1)
 
-    # 등급별 학생 지원대학 현황
+    #계열, 전형, 등급기준 지원대학 현황(bar chart) - 지원대학 사례 순위
     univ_name_list = []
     univ_freq_list = []
     univ_name_qs = UnivName.objects.all()
@@ -388,7 +389,7 @@ def grade_result(request):
         univ_name_list.append(univ_name.univ_name)
         univ_freq_list.append(univ[1])
 
-    # 등급별 지원대학 합격/불합격 인원
+    #계열, 전형, 등급기준 지원대학 현황(bar chart) - 지원 대학 합격/충원합격/불합격 현황
     univ_pass_freq_list = []
     univ_supplement_freq_list = []
     univ_fail_freq_list = []
@@ -518,7 +519,6 @@ def grade_result(request):
         'grade_column1_table': grade_column1_table,
         'grade_column2': grade_column2,
         'grade_column2_table': grade_column2_table,
-
         'univ_psf_bar': univ_psf_bar,
     }
     return render(request, template, context)
@@ -684,7 +684,6 @@ def univ_region_result(request):
         'current_admission1': admission1_query,
 
         'admission1_pie': admission1_pie,
-
         'univ_psf_bar': univ_psf_bar,
     }
     return render(request, template, context)
