@@ -194,7 +194,7 @@ def admission1_result(request):
     gte_query = request.GET.get('gte')
     lt_query = request.GET.get('lt')
 
-    # 계열별 전형비율
+    # 계열별 전형비율(pie chart)
     admission1_list = []
     admission1_freq_list = []
 
@@ -554,24 +554,23 @@ def univ_region_result(request):
     univ_region_query = request.GET.get('univ_region')
     admission1_query = request.GET.get('admission1')
 
-    # 전형요소 별 지원 인원
-    admission1_list = []
-    admission1_freq_list = []
+    # 대학소재 기준 지원비율
+    univ_region_list = []
+    univ_region_freq_list = []
 
-    for admission1 in admission1_qs:
-        admission1 = list(admission1.values())[0]
-        admission1_freq = Student.objects \
+    for univ_region in univ_region_qs:
+        univ_region = univ_region.univ_region
+        univ_region_freq = Student.objects \
             .filter(entrance_year=entrance_year_query) \
             .filter(major_group=major_group_query) \
-            .filter(univ_region=univ_region_query) \
-            .filter(admission1__admission1__contains=admission1)\
+            .filter(univ_region__univ_region__contains=univ_region)\
             .count()
-        admission1_list.append(admission1)
-        admission1_freq_list.append(admission1_freq)
+        univ_region_list.append(univ_region)
+        univ_region_freq_list.append(univ_region_freq)
 
-    admission1_pie = []
-    for i in range(0, len(admission1_list)):
-        admission1_pie.append([admission1_list[i], admission1_freq_list[i]])
+    univ_region_pie = []
+    for i in range(0, len(univ_region_list)):
+        univ_region_pie.append([univ_region_list[i], univ_region_freq_list[i]])
 
     # 등급별 학생 지원대학 현황
     univ_name_list = []
@@ -680,10 +679,11 @@ def univ_region_result(request):
 
         'current_entrance_year': int(entrance_year_query),
         'current_major_group': int(major_group_query),
+        'current_major_group_str': str(MajorGroup.objects.get(pk=major_group_query)),
         'current_univ_region': int(univ_region_query),
         'current_admission1': admission1_query,
 
-        'admission1_pie': admission1_pie,
+        'univ_region_pie': univ_region_pie,
         'univ_psf_bar': univ_psf_bar,
     }
     return render(request, template, context)
