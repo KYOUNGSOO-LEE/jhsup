@@ -571,6 +571,7 @@ def univ_region_result(request):
     univ_region_pie = []
     for i in range(0, len(univ_region_list)):
         univ_region_pie.append([univ_region_list[i], univ_region_freq_list[i]])
+    univ_region_pie.sort(key=lambda x: x[1])
 
     # 등급별 학생 지원대학 현황
     univ_name_list = []
@@ -681,6 +682,7 @@ def univ_region_result(request):
         'current_major_group': int(major_group_query),
         'current_major_group_str': str(MajorGroup.objects.get(pk=major_group_query)),
         'current_univ_region': int(univ_region_query),
+        'current_univ_region_str': str(UnivRegion.objects.get(pk=univ_region_query)),
         'current_admission1': admission1_query,
 
         'univ_region_pie': univ_region_pie,
