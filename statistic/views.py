@@ -164,35 +164,32 @@ def student_region_result(request):
 
 
 @login_required(login_url="login")
-def admission1(request):
-    template = "statistic/admission1.html"
+def major_group(request):
+    template = "statistic/major_group.html"
 
-    # 등급별 사례수
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
     major_group_qs = MajorGroup.objects.order_by('major_group').distinct()
-    admission1_qs = Admission1.objects.values('admission1').order_by('admission1').distinct()
 
     context = {
         'entrance_year_item': entrance_year_qs,
         'major_group_item': major_group_qs,
-        'admission1_item': admission1_qs,
     }
     return render(request, template, context)
 
 
 @login_required(login_url="login")
-def admission1_result(request):
-    template = "statistic/admission1_result.html"
+def major_group_result(request):
+    template = "statistic/major_group_result.html"
 
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
     major_group_qs = MajorGroup.objects.order_by('major_group').distinct()
+    univ_region_qs = UnivRegion.objects.order_by('univ_region').distinct()
     admission1_qs = Admission1.objects.values('admission1').order_by('admission1').distinct()
 
     entrance_year_query = request.GET.get('entrance_year')
     major_group_query = request.GET.get('major_group')
+    univ_region_query = request.GET.get('univ_region')
     admission1_query = request.GET.get('admission1')
-    gte_query = request.GET.get('gte')
-    lt_query = request.GET.get('lt')
 
     # 계열별 전형비율(pie chart)
     admission1_list = []
@@ -203,7 +200,7 @@ def admission1_result(request):
         admission1_freq = Student.objects \
             .filter(entrance_year=entrance_year_query) \
             .filter(major_group=major_group_query) \
-            .filter(admission1__admission1__contains=admission1)\
+            .filter(admission1__admission1__contains=admission1) \
             .count()
         admission1_list.append(admission1)
         admission1_freq_list.append(admission1_freq)
@@ -289,6 +286,74 @@ def admission1_result(request):
             sum_list[i] += row[i]
     grade_column1_table.append(sum_list)
 
+    # 계열기준 대학소재 비율(pie chart)
+    univ_region_list = []
+    univ_region_freq_list = []
+
+    for univ_region in univ_region_qs:
+        univ_region = univ_region.univ_region
+        univ_region_freq = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(univ_region__univ_region__contains=univ_region) \
+            .count()
+        univ_region_list.append(univ_region)
+        univ_region_freq_list.append(univ_region_freq)
+
+    univ_region_pie = []
+    for i in range(0, len(univ_region_list)):
+        univ_region_pie.append([univ_region_list[i], univ_region_freq_list[i]])
+    univ_region_pie.sort(key=lambda x: x[1])
+
+    context = {
+        'entrance_year_item': entrance_year_qs,
+        'major_group_item': major_group_qs,
+
+        'current_entrance_year': entrance_year_query,
+        'current_major_group': int(major_group_query),
+        'current_major_group_str': str(MajorGroup.objects.get(pk=major_group_query)),
+
+        'admission1_list': admission1_list,
+
+        'admission1_pie': admission1_pie,
+        'grade_column1': grade_column1,
+        'grade_column1_table': grade_column1_table,
+        'univ_region_pie': univ_region_pie,
+    }
+    return render(request, template, context)
+
+
+@login_required(login_url="login")
+def admission1(request):
+    template = "statistic/admission1.html"
+
+    # 등급별 사례수
+    entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
+    major_group_qs = MajorGroup.objects.order_by('major_group').distinct()
+    admission1_qs = Admission1.objects.values('admission1').order_by('admission1').distinct()
+
+    context = {
+        'entrance_year_item': entrance_year_qs,
+        'major_group_item': major_group_qs,
+        'admission1_item': admission1_qs,
+    }
+    return render(request, template, context)
+
+
+@login_required(login_url="login")
+def admission1_result(request):
+    template = "statistic/admission1_result.html"
+
+    entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
+    major_group_qs = MajorGroup.objects.order_by('major_group').distinct()
+    admission1_qs = Admission1.objects.values('admission1').order_by('admission1').distinct()
+
+    entrance_year_query = request.GET.get('entrance_year')
+    major_group_query = request.GET.get('major_group')
+    admission1_query = request.GET.get('admission1')
+    gte_query = request.GET.get('gte')
+    lt_query = request.GET.get('lt')
+
     #계열, 전형기준 등급분포(column chart)
     grade_list = []
     grade_freq_list = []
@@ -334,7 +399,49 @@ def admission1_result(request):
                 'color: #3162C7; stroke-color: #000000; stroke-width: 2; opacity: 0.8',
             ])
 
-    #계열, 전형기준 등급분포(table chart)
+    #계열, 전형기준 등급분포(table chart)1
+    grade_column1_table = []
+    admission1_list = []
+    sum_list = ['합', 0, 0, 0, 0, 0]
+
+    for i in range(1, 9):
+        grade_column1_table.append([str(i), 0, 0, 0, 0, 0])
+
+    for idx, admission1 in enumerate(admission1_qs):
+        if str(MajorGroup.objects.get(pk=major_group_query)) == '자연':
+            grade_freq_qs = Student.objects \
+                .filter(entrance_year=entrance_year_query) \
+                .filter(major_group=major_group_query) \
+                .filter(admission1__admission1__contains=admission1['admission1']) \
+                .values_list(Floor('ko_en_math_sci_100')) \
+                .annotate(student_grade_count=Count(Floor('ko_en_math_sci_100')))
+        elif str(MajorGroup.objects.get(pk=major_group_query)) == '공통':
+            grade_freq_qs = Student.objects \
+                .filter(entrance_year=entrance_year_query) \
+                .filter(major_group=major_group_query) \
+                .filter(admission1__admission1__contains=admission1['admission1']) \
+                .values_list(Floor('ko_en_math_soc_sci_100')) \
+                .annotate(student_grade_count=Count(Floor('ko_en_math_soc_sci_100')))
+        else:
+            grade_freq_qs = Student.objects \
+                .filter(entrance_year=entrance_year_query) \
+                .filter(major_group=major_group_query) \
+                .filter(admission1__admission1__contains=admission1['admission1']) \
+                .values_list(Floor('ko_en_math_soc_100')) \
+                .annotate(student_grade_count=Count(Floor('ko_en_math_soc_100')))
+
+        for data in grade_freq_qs:
+            grade_column1_table[int(data[0] - 1)][idx + 1] = data[1]
+
+        admission1_list.append(admission1['admission1'])
+
+    for row in grade_column1_table:
+        row[5] = sum(row[1:5])
+        for i in range(1, 6):
+            sum_list[i] += row[i]
+    grade_column1_table.append(sum_list)
+
+    # 계열, 전형기준 등급분포(table chart)2
     grade_column2_table = []
     for i in range(0, 8):
         grade_column2_table.append([str(i + 1), grade_column1_table[i][5], 0, 0])
@@ -506,7 +613,6 @@ def admission1_result(request):
         'entrance_year_item': entrance_year_qs,
         'major_group_item': major_group_qs,
         'admission1_item': admission1_qs,
-        'admission1_list': admission1_list,
 
         'current_entrance_year': entrance_year_query,
         'current_major_group': int(major_group_query),
@@ -514,9 +620,6 @@ def admission1_result(request):
         'current_admission1': admission1_query,
         'current_gte': int(gte_query),
 
-        'admission1_pie': admission1_pie,
-        'grade_column1': grade_column1,
-        'grade_column1_table': grade_column1_table,
         'grade_column2': grade_column2,
         'grade_column2_table': grade_column2_table,
         'univ_psf_bar': univ_psf_bar,
@@ -547,31 +650,11 @@ def univ_region_result(request):
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
     major_group_qs = MajorGroup.objects.order_by('major_group').distinct()
     univ_region_qs = UnivRegion.objects.order_by('univ_region').distinct()
-    admission1_qs = Admission1.objects.values('admission1').order_by('admission1').distinct()
 
     entrance_year_query = request.GET.get('entrance_year')
     major_group_query = request.GET.get('major_group')
     univ_region_query = request.GET.get('univ_region')
     admission1_query = request.GET.get('admission1')
-
-    # 대학소재 기준 지원비율
-    univ_region_list = []
-    univ_region_freq_list = []
-
-    for univ_region in univ_region_qs:
-        univ_region = univ_region.univ_region
-        univ_region_freq = Student.objects \
-            .filter(entrance_year=entrance_year_query) \
-            .filter(major_group=major_group_query) \
-            .filter(univ_region__univ_region__contains=univ_region)\
-            .count()
-        univ_region_list.append(univ_region)
-        univ_region_freq_list.append(univ_region_freq)
-
-    univ_region_pie = []
-    for i in range(0, len(univ_region_list)):
-        univ_region_pie.append([univ_region_list[i], univ_region_freq_list[i]])
-    univ_region_pie.sort(key=lambda x: x[1])
 
     # 등급별 학생 지원대학 현황
     univ_name_list = []
@@ -685,7 +768,6 @@ def univ_region_result(request):
         'current_univ_region_str': str(UnivRegion.objects.get(pk=univ_region_query)),
         'current_admission1': admission1_query,
 
-        'univ_region_pie': univ_region_pie,
         'univ_psf_bar': univ_psf_bar,
     }
     return render(request, template, context)

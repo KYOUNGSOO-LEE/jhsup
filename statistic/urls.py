@@ -10,4 +10,7 @@ urlpatterns = [
 
     url(r'^univ-region$', views.univ_region, name="static_univ_region"),
     url(r'^univ-region-result$', views.univ_region_result, name="static_univ_region_result"),
+
+    url(r'^major-group$', views.major_group, name="major_group"),
+    url(r'^major-group-result$', views.major_group_result, name="major_group_result"),
 ]

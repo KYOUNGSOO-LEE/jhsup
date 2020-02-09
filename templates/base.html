@@ -52,16 +52,23 @@
             </li>
 
             <li class="nav-item">
+              <a class="{% if url_name == 'major_group' or url_name == 'major_group_result' %}
+              nav-link active{%else%}nav-link{% endif %}" href="{% url 'major_group' %}">
+                계열기준
+              </a>
+            </li>
+
+            <li class="nav-item">
               <a class="{% if url_name == 'static_univ_region' or url_name == 'static_univ_region_result' %}
               nav-link active{%else%}nav-link{% endif %}" href="{% url 'static_univ_region' %}">
-                지원지역기준
+                대학지역기준
               </a>
             </li>
 
             <li class="nav-item">
               <a class="{% if url_name == 'static_admission1' or url_name == 'static_admission1_result' %}
               nav-link active{%else%}nav-link{% endif %}" href="{% url 'static_admission1' %}">
-                지원전형기준
+                전형기준
               </a>
             </li>
 
@@ -73,19 +80,19 @@
             <li class="nav-item">
               <a class="{% if url_name == 'region' or url_name == 'region_search' %}nav-link active{%else%}nav-link{% endif %}"
                  href="{% url 'region' %}">
-                계열/대학소재지/등급
+                대학지역 기준
               </a>
             </li>
             <li class="nav-item">
               <a class="{% if url_name == 'university' or url_name == 'university_search' %}nav-link active{%else%}nav-link{% endif %}"
                  href="{% url 'university' %}">
-                계열/대학명/등급
+                대학명 기준
               </a>
             </li>
             <li class="nav-item">
               <a class="{% if url_name == 'major' or url_name == 'major_search' %}nav-link active{%else%}nav-link{% endif %}"
                  href="{% url 'major' %}">
-                계열/학과명/등급
+                학과명 기준
               </a>
             </li>
             <li class="nav-item">
