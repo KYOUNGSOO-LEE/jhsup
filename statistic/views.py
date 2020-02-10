@@ -10,7 +10,6 @@ from django.contrib.auth.decorators import login_required
 def student_region(request):
     template = "statistic/student_region.html"
 
-    # 지역별 사례수
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
 
     context = {
@@ -40,6 +39,7 @@ def student_region_result(request):
         student_region_list.append(student_region[0])
         student_region_freq_list.append(student_region[1])
 
+    # 출신지역 비율(pie chart, table chart)
     student_region_pie = []
     student_region_table = []
     n = sum(student_region_freq_list)
@@ -59,7 +59,7 @@ def student_region_result(request):
         (sum(student_region_freq_list) / n) * 100
     ])
 
-    # 지역별 지원대학 현황
+    # 출신지역기준 지원대학
     univ_name_list = []
     univ_freq_list = []
     univ_name_qs = UnivName.objects.all()
@@ -83,7 +83,7 @@ def student_region_result(request):
         univ_name_list.append(univ_name.univ_name)
         univ_freq_list.append(univ[1])
 
-    # 지역별 지원대학 합격/불합격 인원
+    # 출신지역기준 지원대학 합격/불합격(bar chart)
     univ_pass_freq_list = []
     univ_supplement_freq_list = []
     univ_fail_freq_list = []
@@ -188,10 +188,8 @@ def major_group_result(request):
 
     entrance_year_query = request.GET.get('entrance_year')
     major_group_query = request.GET.get('major_group')
-    univ_region_query = request.GET.get('univ_region')
-    admission1_query = request.GET.get('admission1')
 
-    # 계열별 전형비율(pie chart)
+    # 계열기준 전형비율(pie chart)
     admission1_list = []
     admission1_freq_list = []
 
