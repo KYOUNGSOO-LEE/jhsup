@@ -654,6 +654,44 @@ def univ_region_result(request):
     univ_region_query = request.GET.get('univ_region')
     admission1_query = request.GET.get('admission1')
 
+    # 계열, 대학지역기준 등급분포(column chart)
+    grade_list = []
+    grade_freq_list = []
+    grade_column2 = [['등급', '사례수', {'role': 'style'}]]
+
+    if str(MajorGroup.objects.get(pk=major_group_query)) == '자연':
+        grade_freq_qs = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(univ_region=univ_region_query) \
+            .values_list(Floor('ko_en_math_sci_100')) \
+            .annotate(student_grade_count=Count(Floor('ko_en_math_sci_100')))
+    elif str(MajorGroup.objects.get(pk=major_group_query)) == '공통':
+        grade_freq_qs = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(univ_region=univ_region_query) \
+            .values_list(Floor('ko_en_math_soc_sci_100')) \
+            .annotate(student_grade_count=Count(Floor('ko_en_math_soc_sci_100')))
+    else:
+        grade_freq_qs = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(univ_region=univ_region_query) \
+            .values_list(Floor('ko_en_math_soc_100')) \
+            .annotate(student_grade_count=Count(Floor('ko_en_math_soc_100')))
+
+    for grade in grade_freq_qs:
+        grade_list.append(int(grade[0]))
+        grade_freq_list.append(grade[1])
+
+    for i in range(0, len(grade_list)):
+        grade_column2.append([
+            grade_list[i],
+            grade_freq_list[i],
+            'color: #3162C7; stroke-color: #000000; stroke-width: 2; opacity: 0.8',
+        ])
+
     # 등급별 학생 지원대학 현황
     univ_name_list = []
     univ_freq_list = []
@@ -766,6 +804,7 @@ def univ_region_result(request):
         'current_univ_region_str': str(UnivRegion.objects.get(pk=univ_region_query)),
         'current_admission1': admission1_query,
 
+        'grade_column2': grade_column2,
         'univ_psf_bar': univ_psf_bar,
     }
     return render(request, template, context)

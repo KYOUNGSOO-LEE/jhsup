@@ -4,6 +4,26 @@
 {% block head %}
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
+      google.charts.load("current", {packages:['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable({{grade_column2|safe}});
+
+        var view = new google.visualization.DataView(data);
+
+        var options = {
+          width: 550,
+          height: 300,
+          bar: {groupWidth: "80%"},
+          legend: { position: "none" },
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById("grade_column2"));
+        chart.draw(view, options);
+    }
+    </script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
       google.charts.load('current', {packages: ['corechart', 'bar']});
       google.charts.setOnLoadCallback(drawStacked);
 
@@ -84,6 +104,10 @@
 
   </div>
 </form>
+
+<hr/>
+<h6>{{current_entrance_year}} {{current_major_group_str}}계열 {{current_univ_region_str}}지역 등급분포</h6>
+<div id="grade_column2"></div>
 
 <hr/>
 <h6>{{current_entrance_year}} {{current_major_group_str}}계열 {{current_univ_region_str}}지역 지원대학</h6>
