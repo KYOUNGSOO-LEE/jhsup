@@ -24,6 +24,32 @@
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
+      google.charts.load('current', {'packages':['table']});
+      google.charts.setOnLoadCallback(drawTable);
+
+      function drawTable() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', '등급');
+        data.addColumn('number', '{{current_major_group_str|safe}}');
+        data.addColumn('number', '{{current_univ_region_str|safe}}');
+        data.addColumn('number', '비율(%)');
+
+        data.addRows({{grade_column2_table|safe}});
+
+        var options = {
+            width: 350,
+            height: 300,
+            showRowNumber: false,
+            allowHtml: true,
+        };
+
+        var table = new google.visualization.Table(document.getElementById('grade_column2_table'));
+        table.draw(data, options);
+      }
+    </script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
       google.charts.load('current', {packages: ['corechart', 'bar']});
       google.charts.setOnLoadCallback(drawStacked);
 
@@ -108,6 +134,7 @@
 <hr/>
 <h6>{{current_entrance_year}} {{current_major_group_str}}계열 {{current_univ_region_str}}지역 등급분포</h6>
 <div id="grade_column2"></div>
+<div id="grade_column2_table"></div>
 
 <hr/>
 <h6>{{current_entrance_year}} {{current_major_group_str}}계열 {{current_univ_region_str}}지역 지원대학</h6>

@@ -654,7 +654,7 @@ def univ_region_result(request):
     univ_region_query = request.GET.get('univ_region')
     admission1_query = request.GET.get('admission1')
 
-    # 계열, 대학지역기준 등급분포(column chart)
+    #계열, 대학지역기준 등급분포(column chart)
     grade_list = []
     grade_freq_list = []
     grade_column2 = [['등급', '사례수', {'role': 'style'}]]
@@ -692,7 +692,50 @@ def univ_region_result(request):
             'color: #3162C7; stroke-color: #000000; stroke-width: 2; opacity: 0.8',
         ])
 
-    # 등급별 학생 지원대학 현황
+    # 계열, 대학지역 기준 등급분포(table chart)1
+    grade_column2_table = []
+    univ_region_list = []
+    sum_list = ['합', 0, 0, 0, 0, 0]
+
+    for i in range(1, 9):
+        grade_column2_table.append([str(i), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+
+    for idx, univ_region in enumerate(univ_region_qs):
+        if str(MajorGroup.objects.get(pk=major_group_query)) == '자연':
+            grade_freq_qs = Student.objects \
+                .filter(entrance_year=entrance_year_query) \
+                .filter(major_group=major_group_query) \
+                .filter(univ_region=univ_region.pk) \
+                .values_list(Floor('ko_en_math_sci_100')) \
+                .annotate(student_grade_count=Count(Floor('ko_en_math_sci_100')))
+        elif str(MajorGroup.objects.get(pk=major_group_query)) == '공통':
+            grade_freq_qs = Student.objects \
+                .filter(entrance_year=entrance_year_query) \
+                .filter(major_group=major_group_query) \
+                .filter(univ_region=univ_region.pk) \
+                .values_list(Floor('ko_en_math_soc_sci_100')) \
+                .annotate(student_grade_count=Count(Floor('ko_en_math_soc_sci_100')))
+        else:
+            grade_freq_qs = Student.objects \
+                .filter(entrance_year=entrance_year_query) \
+                .filter(major_group=major_group_query) \
+                .filter(univ_region=univ_region.pk) \
+                .values_list(Floor('ko_en_math_soc_100')) \
+                .annotate(student_grade_count=Count(Floor('ko_en_math_soc_100')))
+
+        for data in grade_freq_qs:
+            grade_column2_table[int(data[0] - 1)][idx + 1] = data[1]
+
+        univ_region_list.append(univ_region.univ_region)
+
+    for row in grade_column2_table:
+        row[5] = sum(row[1:5])
+        for i in range(1, 6):
+            sum_list[i] += row[i]
+    grade_column2_table.append(sum_list)
+
+
+    #계열, 대학지역 기준 지원대학 현황(bar chart) - 지원대학 사례 순위
     univ_name_list = []
     univ_freq_list = []
     univ_name_qs = UnivName.objects.all()
@@ -739,7 +782,7 @@ def univ_region_result(request):
         univ_name_list.append(univ_name.univ_name)
         univ_freq_list.append(univ[1])
 
-    # 전형별 지원대학 합격/불합격 인원
+    #계열, 전형, 등급기준 지원대학 현황(bar chart) - 지원 대학 합격/충원합격/불합격 현황
     univ_pass_freq_list = []
     univ_supplement_freq_list = []
     univ_fail_freq_list = []
@@ -805,6 +848,7 @@ def univ_region_result(request):
         'current_admission1': admission1_query,
 
         'grade_column2': grade_column2,
+        'grade_column2_table': grade_column2_table,
         'univ_psf_bar': univ_psf_bar,
     }
     return render(request, template, context)
