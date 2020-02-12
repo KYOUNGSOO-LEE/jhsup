@@ -390,6 +390,7 @@ def admission1_result(request):
             'color: #3162C7; stroke-color: #000000; stroke-width: 2; opacity: 0.8',
         ])
 
+
     #계열, 전형기준 등급분포(table chart)1
     grade_column1_table = []
     admission1_list = []
@@ -434,13 +435,19 @@ def admission1_result(request):
 
     #계열, 전형기준 등급분포(table chart)2
     grade_column2_table = []
+    sum_list = ['합', 0, 0, 0]
     for i in range(0, 8):
         grade_column2_table.append([str(i + 1), grade_column1_table[i][5], 0, 0])
 
     for row in grade_column2[1:]:
         grade_column2_table[int(row[0]) - 1][2] = row[1]
 
-    for i in range(0, 8):
+    for row in grade_column2_table:
+        for i in range(1, 4):
+            sum_list[i] += row[i]
+    grade_column2_table.append(sum_list)
+
+    for i in range(0, 9):
         if grade_column2_table[i][1] != 0:
             grade_column2_table[i][3] = round((grade_column2_table[i][2] / grade_column2_table[i][1])*100, 1)
 
