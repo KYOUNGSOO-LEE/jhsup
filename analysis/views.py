@@ -148,11 +148,13 @@ def university_search(request):
     context = {
         'queryset': student_qs,
         'major_group_item': major_group_qs,
+
         'current_major_group': int(major_group_query),
         'current_univ_name': univ_name_query,
         'current_major_group_str': current_major_group_str,
         'current_ko_en_math_soc_or_sci_100_min': ko_en_math_soc_or_sci_100_min_query,
         'current_ko_en_math_soc_or_sci_100_max': ko_en_math_soc_or_sci_100_max_query,
+
         'final_step': final_step
     }
     return render(request, template, context)
@@ -163,8 +165,10 @@ def major(request):
     template = "analysis/major.html"
 
     major_group_qs = MajorGroup.objects.all().order_by('major_group')
+    univ_region_qs = UnivRegion.objects.all().order_by('univ_region')
 
     context = {
+        'univ_region_item': univ_region_qs,
         'major_group_item': major_group_qs
     }
     return render(request, template, context)
@@ -175,11 +179,13 @@ def major_search(request):
     template = "analysis/major.html"
 
     major_group_qs = MajorGroup.objects.all().order_by('major_group')
+    univ_region_qs = UnivRegion.objects.all().order_by('univ_region')
     univ_major_qs = UnivMajor.objects.all()
     student_qs = Student.objects.all()
     final_step = ['합격', '충원합격', '불합격']
 
     major_group_query = request.GET.get('major_group')
+    univ_region_query = request.GET.get('univ_region')
     univ_major_query = request.GET.get('univ_major')
     ko_en_math_soc_or_sci_100_min_query = request.GET.get('ko_en_math_soc_or_sci_100_min')
     ko_en_math_soc_or_sci_100_max_query = request.GET.get('ko_en_math_soc_or_sci_100_max')
@@ -188,6 +194,9 @@ def major_search(request):
 
     if major_group_query != '' and major_group_query is not None:
         student_qs = student_qs.filter(major_group=major_group_query)
+
+    if univ_region_query != '' and univ_region_query is not None:
+        student_qs = student_qs.filter(univ_region=univ_region_query)
 
     if univ_major_query != '' and univ_major_query is not None:
         univ_major_qs = univ_major_qs.filter(univ_major__icontains=univ_major_query)
@@ -223,7 +232,9 @@ def major_search(request):
     context = {
         'queryset': student_qs,
         'major_group_item': major_group_qs,
+        'univ_region_item': univ_region_qs,
         'current_major_group': int(major_group_query),
+        'current_univ_region': int(univ_region_query),
         'current_univ_major': univ_major_query,
         'current_major_group_str': current_major_group_str,
         'current_ko_en_math_soc_or_sci_100_min': ko_en_math_soc_or_sci_100_min_query,
