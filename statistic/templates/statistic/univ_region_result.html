@@ -30,9 +30,8 @@
       function drawTable() {
         var data = new google.visualization.DataTable();
         data.addColumn('string', '등급');
-        data.addColumn('number', '{{current_major_group_str|safe}}');
-        data.addColumn('number', '{{current_univ_region_str|safe}}');
-        data.addColumn('number', '비율(%)');
+        data.addColumn('number', '{{current_major_group_str}}');
+        data.addColumn('number', '{{current_univ_region_str}}');
 
         data.addRows({{grade_column2_table|safe}});
 
@@ -133,8 +132,16 @@
 
 <hr/>
 <h6>{{current_entrance_year}} {{current_major_group_str}}계열 {{current_univ_region_str}}지역 등급분포</h6>
-<div id="grade_column2"></div>
-<div id="grade_column2_table"></div>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div id="grade_column2"></div>
+    </div>
+    <div class="col">
+      <div id="grade_column2_table"></div>
+    </div>
+  </div>
+</div>
 
 <hr/>
 <h6>{{current_entrance_year}} {{current_major_group_str}}계열 {{current_univ_region_str}}지역 지원대학</h6>

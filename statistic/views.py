@@ -692,48 +692,58 @@ def univ_region_result(request):
             'color: #3162C7; stroke-color: #000000; stroke-width: 2; opacity: 0.8',
         ])
 
-    # 계열, 대학지역 기준 등급분포(table chart)1
+    # 계열, 지역기준 등급분포(table chart)1
     grade_column2_table = []
-    univ_region_list = []
-    sum_list = ['합', 0, 0, 0, 0, 0]
 
     for i in range(1, 9):
-        grade_column2_table.append([str(i), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+        grade_column2_table.append([str(i), 0, 0])
 
-    for idx, univ_region in enumerate(univ_region_qs):
-        if str(MajorGroup.objects.get(pk=major_group_query)) == '자연':
-            grade_freq_qs = Student.objects \
-                .filter(entrance_year=entrance_year_query) \
-                .filter(major_group=major_group_query) \
-                .filter(univ_region=univ_region.pk) \
-                .values_list(Floor('ko_en_math_sci_100')) \
-                .annotate(student_grade_count=Count(Floor('ko_en_math_sci_100')))
-        elif str(MajorGroup.objects.get(pk=major_group_query)) == '공통':
-            grade_freq_qs = Student.objects \
-                .filter(entrance_year=entrance_year_query) \
-                .filter(major_group=major_group_query) \
-                .filter(univ_region=univ_region.pk) \
-                .values_list(Floor('ko_en_math_soc_sci_100')) \
-                .annotate(student_grade_count=Count(Floor('ko_en_math_soc_sci_100')))
-        else:
-            grade_freq_qs = Student.objects \
-                .filter(entrance_year=entrance_year_query) \
-                .filter(major_group=major_group_query) \
-                .filter(univ_region=univ_region.pk) \
-                .values_list(Floor('ko_en_math_soc_100')) \
-                .annotate(student_grade_count=Count(Floor('ko_en_math_soc_100')))
+    if str(MajorGroup.objects.get(pk=major_group_query)) == '자연':
+        grade_freq_qs = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .values_list(Floor('ko_en_math_sci_100')) \
+            .annotate(student_grade_count=Count(Floor('ko_en_math_sci_100')))
+    elif str(MajorGroup.objects.get(pk=major_group_query)) == '공통':
+        grade_freq_qs = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .values_list(Floor('ko_en_math_soc_sci_100')) \
+            .annotate(student_grade_count=Count(Floor('ko_en_math_soc_sci_100')))
+    else:
+        grade_freq_qs = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .values_list(Floor('ko_en_math_soc_100')) \
+            .annotate(student_grade_count=Count(Floor('ko_en_math_soc_100')))
 
-        for data in grade_freq_qs:
-            grade_column2_table[int(data[0] - 1)][idx + 1] = data[1]
+    for data in grade_freq_qs:
+        grade_column2_table[int(data[0] - 1)][1] = data[1]
 
-        univ_region_list.append(univ_region.univ_region)
+    if str(MajorGroup.objects.get(pk=major_group_query)) == '자연':
+        grade_freq_qs = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(univ_region=univ_region_query) \
+            .values_list(Floor('ko_en_math_sci_100')) \
+            .annotate(student_grade_count=Count(Floor('ko_en_math_sci_100')))
+    elif str(MajorGroup.objects.get(pk=major_group_query)) == '공통':
+        grade_freq_qs = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(univ_region=univ_region_query) \
+            .values_list(Floor('ko_en_math_soc_sci_100')) \
+            .annotate(student_grade_count=Count(Floor('ko_en_math_soc_sci_100')))
+    else:
+        grade_freq_qs = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(univ_region=univ_region_query) \
+            .values_list(Floor('ko_en_math_soc_100')) \
+            .annotate(student_grade_count=Count(Floor('ko_en_math_soc_100')))
 
-    for row in grade_column2_table:
-        row[5] = sum(row[1:5])
-        for i in range(1, 6):
-            sum_list[i] += row[i]
-    grade_column2_table.append(sum_list)
-
+    for data in grade_freq_qs:
+        grade_column2_table[int(data[0] - 1)][2] = data[1]
 
     #계열, 대학지역 기준 지원대학 현황(bar chart) - 지원대학 사례 순위
     univ_name_list = []
