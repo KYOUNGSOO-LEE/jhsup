@@ -7,7 +7,7 @@
       google.charts.load("current", {packages:['corechart']});
       google.charts.setOnLoadCallback(drawChart);
       function drawChart() {
-        var data = google.visualization.arrayToDataTable({{grade_column2|safe}});
+        var data = google.visualization.arrayToDataTable({{grade_column|safe}});
 
         var view = new google.visualization.DataView(data);
 
@@ -17,7 +17,7 @@
           bar: {groupWidth: "80%"},
           legend: { position: "none" },
         };
-        var chart = new google.visualization.ColumnChart(document.getElementById("grade_column2"));
+        var chart = new google.visualization.ColumnChart(document.getElementById("grade_column"));
         chart.draw(view, options);
     }
     </script>
@@ -32,8 +32,9 @@
         data.addColumn('string', '등급');
         data.addColumn('number', '{{current_major_group_str}}');
         data.addColumn('number', '{{current_univ_region_str}}');
+        data.addColumn('number', '비율(%)');
 
-        data.addRows({{grade_column2_table|safe}});
+        data.addRows({{grade_column_table|safe}});
 
         var options = {
             width: 350,
@@ -42,7 +43,7 @@
             allowHtml: true,
         };
 
-        var table = new google.visualization.Table(document.getElementById('grade_column2_table'));
+        var table = new google.visualization.Table(document.getElementById('grade_column_table'));
         table.draw(data, options);
       }
     </script>
@@ -135,10 +136,10 @@
 <div class="container">
   <div class="row">
     <div class="col">
-      <div id="grade_column2"></div>
+      <div id="grade_column"></div>
     </div>
     <div class="col">
-      <div id="grade_column2_table"></div>
+      <div id="grade_column_table"></div>
     </div>
   </div>
 </div>

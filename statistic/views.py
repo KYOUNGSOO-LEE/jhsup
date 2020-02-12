@@ -657,7 +657,7 @@ def univ_region_result(request):
     #계열, 대학지역기준 등급분포(column chart)
     grade_list = []
     grade_freq_list = []
-    grade_column2 = [['등급', '사례수', {'role': 'style'}]]
+    grade_column = [['등급', '사례수', {'role': 'style'}]]
 
     if str(MajorGroup.objects.get(pk=major_group_query)) == '자연':
         grade_freq_qs = Student.objects \
@@ -686,17 +686,17 @@ def univ_region_result(request):
         grade_freq_list.append(grade[1])
 
     for i in range(0, len(grade_list)):
-        grade_column2.append([
+        grade_column.append([
             grade_list[i],
             grade_freq_list[i],
             'color: #3162C7; stroke-color: #000000; stroke-width: 2; opacity: 0.8',
         ])
 
     # 계열, 지역기준 등급분포(table chart)1
-    grade_column2_table = []
+    grade_column_table = []
 
     for i in range(1, 9):
-        grade_column2_table.append([str(i), 0, 0])
+        grade_column_table.append([str(i), 0, 0, 0])
 
     if str(MajorGroup.objects.get(pk=major_group_query)) == '자연':
         grade_freq_qs = Student.objects \
@@ -718,7 +718,7 @@ def univ_region_result(request):
             .annotate(student_grade_count=Count(Floor('ko_en_math_soc_100')))
 
     for data in grade_freq_qs:
-        grade_column2_table[int(data[0] - 1)][1] = data[1]
+        grade_column_table[int(data[0] - 1)][1] = data[1]
 
     if str(MajorGroup.objects.get(pk=major_group_query)) == '자연':
         grade_freq_qs = Student.objects \
@@ -743,7 +743,11 @@ def univ_region_result(request):
             .annotate(student_grade_count=Count(Floor('ko_en_math_soc_100')))
 
     for data in grade_freq_qs:
-        grade_column2_table[int(data[0] - 1)][2] = data[1]
+        grade_column_table[int(data[0] - 1)][2] = data[1]
+
+    for i in range(0, 8):
+        if grade_column_table[i][1] != 0:
+            grade_column_table[i][3] = round((grade_column_table[i][2] / grade_column_table[i][1]) * 100, 1)
 
     #계열, 대학지역 기준 지원대학 현황(bar chart) - 지원대학 사례 순위
     univ_name_list = []
@@ -857,8 +861,8 @@ def univ_region_result(request):
         'current_univ_region_str': str(UnivRegion.objects.get(pk=univ_region_query)),
         'current_admission1': admission1_query,
 
-        'grade_column2': grade_column2,
-        'grade_column2_table': grade_column2_table,
+        'grade_column': grade_column,
+        'grade_column_table': grade_column_table,
         'univ_psf_bar': univ_psf_bar,
     }
     return render(request, template, context)
