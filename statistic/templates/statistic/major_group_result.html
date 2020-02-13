@@ -24,7 +24,8 @@
 
         // Set chart options
         var options = {
-          'height':400,
+            width: 550,
+            height: 600,
           pieSliceText: 'label',
         };
 
@@ -34,7 +35,30 @@
       }
     </script>
 
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['table']});
+      google.charts.setOnLoadCallback(drawTable);
+
+      function drawTable() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'univ_region');
+        data.addColumn('number', 'univ_region_freq');
+        data.addRows({{univ_region_pie | safe}});
+
+        var options = {
+            width: 350,
+            height: 600,
+            showRowNumber: false,
+            allowHtml: true,
+        };
+
+        var table = new google.visualization.Table(document.getElementById('univ_region_table'));
+        table.draw(data, options);
+      }
+    </script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       // Load the Visualization API and the corechart package.
       google.charts.load('current', {'packages':['corechart']});
@@ -55,13 +79,37 @@
 
         // Set chart options
         var options = {
-          'height':400,
+            width: 550,
+            height: 300,
           pieSliceText: 'label',
         };
 
         // Instantiate and draw our chart, passing in some options.
         var chart = new google.visualization.PieChart(document.getElementById('admission1_pie'));
         chart.draw(data, options);
+      }
+    </script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['table']});
+      google.charts.setOnLoadCallback(drawTable);
+
+      function drawTable() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'admission1');
+        data.addColumn('number', 'admission1_freq');
+        data.addRows({{admission1_pie | safe}});
+
+        var options = {
+            width: 350,
+            height: 300,
+            showRowNumber: false,
+            allowHtml: true,
+        };
+
+        var table = new google.visualization.Table(document.getElementById('admission1_table'));
+        table.draw(data, options);
       }
     </script>
 
@@ -150,11 +198,29 @@
 
 <hr/>
 <h6>{{current_entrance_year}} {{current_major_group_str}}계열 지원지역 비율</h6>
-<div id="univ_region_pie"></div>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div id="univ_region_pie"></div>
+    </div>
+    <div class="col">
+      <div id="univ_region_table"></div>
+    </div>
+  </div>
+</div>
 
 <hr/>
 <h6>{{current_entrance_year}} {{current_major_group_str}}계열 전형비율</h6>
-<div id="admission1_pie"></div>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div id="admission1_pie"></div>
+    </div>
+    <div class="col">
+      <div id="admission1_table"></div>
+    </div>
+  </div>
+</div>
 
 <hr/>
 <h6>{{current_entrance_year}} {{current_major_group_str}}계열 등급분포</h6>
