@@ -189,6 +189,25 @@ def major_group_result(request):
     entrance_year_query = request.GET.get('entrance_year')
     major_group_query = request.GET.get('major_group')
 
+    # 계열기준 대학소재 비율(pie chart)
+    univ_region_list = []
+    univ_region_freq_list = []
+
+    for univ_region in univ_region_qs:
+        univ_region = univ_region.univ_region
+        univ_region_freq = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(univ_region__univ_region__contains=univ_region) \
+            .count()
+        univ_region_list.append(univ_region)
+        univ_region_freq_list.append(univ_region_freq)
+
+    univ_region_pie = []
+    for i in range(0, len(univ_region_list)):
+        univ_region_pie.append([univ_region_list[i], univ_region_freq_list[i]])
+    univ_region_pie.sort(key=lambda x: x[1], reverse=True)
+
     #계열기준 전형비율(pie chart)
     admission1_list = []
     admission1_freq_list = []
@@ -206,6 +225,7 @@ def major_group_result(request):
     admission1_pie = []
     for i in range(0, len(admission1_list)):
         admission1_pie.append([admission1_list[i], admission1_freq_list[i]])
+    admission1_pie.sort(key=lambda x: x[1], reverse=True)
 
     #계열기준 등급분포(column chart)
     grade_list = []
@@ -283,25 +303,6 @@ def major_group_result(request):
         for i in range(1, 6):
             sum_list[i] += row[i]
     grade_column1_table.append(sum_list)
-
-    #계열기준 대학소재 비율(pie chart)
-    univ_region_list = []
-    univ_region_freq_list = []
-
-    for univ_region in univ_region_qs:
-        univ_region = univ_region.univ_region
-        univ_region_freq = Student.objects \
-            .filter(entrance_year=entrance_year_query) \
-            .filter(major_group=major_group_query) \
-            .filter(univ_region__univ_region__contains=univ_region) \
-            .count()
-        univ_region_list.append(univ_region)
-        univ_region_freq_list.append(univ_region_freq)
-
-    univ_region_pie = []
-    for i in range(0, len(univ_region_list)):
-        univ_region_pie.append([univ_region_list[i], univ_region_freq_list[i]])
-    univ_region_pie.sort(key=lambda x: x[1])
 
     context = {
         'entrance_year_item': entrance_year_qs,
