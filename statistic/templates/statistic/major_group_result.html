@@ -18,8 +18,8 @@
 
         // Create the data table.
         var data = new google.visualization.DataTable();
-        data.addColumn('string', 'univ_region');
-        data.addColumn('number', 'univ_region_freq');
+        data.addColumn('string', '지역');
+        data.addColumn('number', '지원수');
         data.addRows({{univ_region_pie | safe}});
 
         // Set chart options
@@ -42,9 +42,10 @@
 
       function drawTable() {
         var data = new google.visualization.DataTable();
-        data.addColumn('string', 'univ_region');
-        data.addColumn('number', 'univ_region_freq');
-        data.addRows({{univ_region_pie | safe}});
+        data.addColumn('string', '지역');
+        data.addColumn('number', '지원수');
+        data.addColumn('number', '비율(%)');
+        data.addRows({{univ_region_table | safe}});
 
         var options = {
             width: 350,
@@ -73,8 +74,8 @@
 
         // Create the data table.
         var data = new google.visualization.DataTable();
-        data.addColumn('string', 'admission1');
-        data.addColumn('number', 'admission1_freq');
+        data.addColumn('string', '전형');
+        data.addColumn('number', '지원수');
         data.addRows({{admission1_pie | safe}});
 
         // Set chart options
@@ -97,9 +98,10 @@
 
       function drawTable() {
         var data = new google.visualization.DataTable();
-        data.addColumn('string', 'admission1');
-        data.addColumn('number', 'admission1_freq');
-        data.addRows({{admission1_pie | safe}});
+        data.addColumn('string', '전형');
+        data.addColumn('number', '지원수');
+        data.addColumn('number', '비율(%)');
+        data.addRows({{admission1_table | safe}});
 
         var options = {
             width: 350,
@@ -145,6 +147,7 @@
         data.addColumn('number', '{{admission1_list.1|safe}}');
         data.addColumn('number', '{{admission1_list.2|safe}}');
         data.addColumn('number', '{{admission1_list.3|safe}}');
+        data.addColumn('number', '{{admission1_list.4|safe}}');
         data.addColumn('number', '합');
 
         data.addRows({{grade_column1_table|safe}});

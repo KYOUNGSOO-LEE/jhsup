@@ -87,7 +87,7 @@ def student_region_result(request):
     univ_pass_freq_list = []
     univ_supplement_freq_list = []
     univ_fail_freq_list = []
-    univ_psf_bar = [['대학명', '합격', {'role': 'style'} , '충원합격', {'role': 'style'}, '불합격', {'role': 'style'}]]
+    univ_psf_bar = [['대학명', '합격', {'role': 'style'}, '충원합격', {'role': 'style'}, '불합격', {'role': 'style'}]]
 
     if student_region_query == '충청도':
         for univ in univ_name_list:
@@ -153,7 +153,7 @@ def student_region_result(request):
 
     context = {
         'entrance_year_item': entrance_year_qs,
-        'current_entrance_year': entrance_year_query,
+        'current_entrance_year': int(entrance_year_query),
         'current_region': student_region_query,
 
         'student_region_pie': student_region_pie,
@@ -208,6 +208,13 @@ def major_group_result(request):
         univ_region_pie.append([univ_region_list[i], univ_region_freq_list[i]])
     univ_region_pie.sort(key=lambda x: x[1], reverse=True)
 
+    univ_region_table = []
+    total = sum(univ_region_freq_list)
+    for i in range(0, len(univ_region_list)):
+        ratio = round((univ_region_freq_list[i] / total) * 100, 1)
+        univ_region_table.append([univ_region_list[i], univ_region_freq_list[i], ratio])
+    univ_region_table.sort(key=lambda x: x[1], reverse=True)
+
     #계열기준 전형비율(pie chart)
     admission1_list = []
     admission1_freq_list = []
@@ -225,6 +232,13 @@ def major_group_result(request):
     admission1_pie = []
     for i in range(0, len(admission1_list)):
         admission1_pie.append([admission1_list[i], admission1_freq_list[i]])
+    admission1_pie.sort(key=lambda x: x[1], reverse=True)
+
+    admission1_table = []
+    total = sum(univ_region_freq_list)
+    for i in range(0, len(admission1_list)):
+        ratio = round((admission1_freq_list[i] / total) * 100, 1)
+        admission1_table.append([admission1_list[i], admission1_freq_list[i], ratio])
     admission1_pie.sort(key=lambda x: x[1], reverse=True)
 
     #계열기준 등급분포(column chart)
@@ -265,10 +279,10 @@ def major_group_result(request):
     #계열기준 등급분포(table chart)
     grade_column1_table = []
     admission1_list = []
-    sum_list = ['합', 0, 0, 0, 0, 0]
+    sum_list = ['합', 0, 0, 0, 0, 0, 0]
 
     for i in range(1, 9):
-        grade_column1_table.append([str(i), 0, 0, 0, 0, 0])
+        grade_column1_table.append([str(i), 0, 0, 0, 0, 0, 0])
 
     for idx, admission1 in enumerate(admission1_qs):
         if str(MajorGroup.objects.get(pk=major_group_query)) == '자연':
@@ -299,8 +313,8 @@ def major_group_result(request):
         admission1_list.append(admission1['admission1'])
 
     for row in grade_column1_table:
-        row[5] = sum(row[1:5])
-        for i in range(1, 6):
+        row[6] = sum(row[1:6])
+        for i in range(1, 7):
             sum_list[i] += row[i]
     grade_column1_table.append(sum_list)
 
@@ -308,16 +322,18 @@ def major_group_result(request):
         'entrance_year_item': entrance_year_qs,
         'major_group_item': major_group_qs,
 
-        'current_entrance_year': entrance_year_query,
+        'current_entrance_year': int(entrance_year_query),
         'current_major_group': int(major_group_query),
         'current_major_group_str': str(MajorGroup.objects.get(pk=major_group_query)),
 
         'admission1_list': admission1_list,
 
         'admission1_pie': admission1_pie,
+        'admission1_table': admission1_table,
         'grade_column1': grade_column1,
         'grade_column1_table': grade_column1_table,
         'univ_region_pie': univ_region_pie,
+        'univ_region_table': univ_region_table,
     }
     return render(request, template, context)
 
@@ -611,7 +627,7 @@ def admission1_result(request):
         'major_group_item': major_group_qs,
         'admission1_item': admission1_qs,
 
-        'current_entrance_year': entrance_year_query,
+        'current_entrance_year': int(entrance_year_query),
         'current_major_group': int(major_group_query),
         'current_major_group_str': str(MajorGroup.objects.get(pk=major_group_query)),
         'current_admission1': admission1_query,
