@@ -239,7 +239,7 @@ def major_group_result(request):
     for i in range(0, len(admission1_list)):
         ratio = round((admission1_freq_list[i] / total) * 100, 1)
         admission1_table.append([admission1_list[i], admission1_freq_list[i], ratio])
-    admission1_pie.sort(key=lambda x: x[1], reverse=True)
+    admission1_table.sort(key=lambda x: x[1], reverse=True)
 
     #계열기준 등급분포(column chart)
     grade_list = []
