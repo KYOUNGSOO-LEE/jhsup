@@ -189,7 +189,7 @@ def major_group_result(request):
     entrance_year_query = request.GET.get('entrance_year')
     major_group_query = request.GET.get('major_group')
 
-    # 계열기준 대학소재 비율(pie chart)
+    # 계열기준 대학지역 비율(pie chart)
     univ_region_list = []
     univ_region_freq_list = []
 
@@ -208,6 +208,7 @@ def major_group_result(request):
         univ_region_pie.append([univ_region_list[i], univ_region_freq_list[i]])
     univ_region_pie.sort(key=lambda x: x[1], reverse=True)
 
+    # 계열기준 대학지역 비율(table chart)
     univ_region_table = []
     total = sum(univ_region_freq_list)
     for i in range(0, len(univ_region_list)):
@@ -234,12 +235,54 @@ def major_group_result(request):
         admission1_pie.append([admission1_list[i], admission1_freq_list[i]])
     admission1_pie.sort(key=lambda x: x[1], reverse=True)
 
+    #계열기준 전형비율(table chart)
     admission1_table = []
     total = sum(univ_region_freq_list)
     for i in range(0, len(admission1_list)):
         ratio = round((admission1_freq_list[i] / total) * 100, 1)
         admission1_table.append([admission1_list[i], admission1_freq_list[i], ratio])
     admission1_table.sort(key=lambda x: x[1], reverse=True)
+
+    #계열기준 전형별 합격률(column chart)
+    admission1_pass_freq_list = []
+    admission1_supplement_freq_list = []
+    admission1_fail_freq_list = []
+    admission1_column = [['전형', '합격', '충원합격', '불합격']]
+
+    for admission1 in admission1_qs:
+        admission1 = list(admission1.values())[0]
+
+        admission1_pass_freq_count = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(admission1__admission1__contains=admission1) \
+            .filter(final_step='합격')\
+            .count()
+        admission1_pass_freq_list.append(admission1_pass_freq_count)
+        
+        admission1_supplement_freq_count = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(admission1__admission1__contains=admission1) \
+            .filter(final_step='충원합격')\
+            .count()
+        admission1_supplement_freq_list.append(admission1_supplement_freq_count)
+        
+        admission1_fail_freq_count = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .filter(admission1__admission1__contains=admission1) \
+            .filter(final_step='불합격')\
+            .count()
+        admission1_fail_freq_list.append(admission1_fail_freq_count)
+
+    for i in range(0, len(admission1_list)):
+        admission1_column.append([
+            admission1_list[i], 
+            admission1_pass_freq_list[i], 
+            admission1_supplement_freq_list[i], 
+            admission1_fail_freq_list[i],
+            ])
 
     #계열기준 등급분포(column chart)
     grade_list = []
@@ -330,6 +373,7 @@ def major_group_result(request):
 
         'admission1_pie': admission1_pie,
         'admission1_table': admission1_table,
+        'admission1_column': admission1_column,
         'grade_column1': grade_column1,
         'grade_column1_table': grade_column1_table,
         'univ_region_pie': univ_region_pie,

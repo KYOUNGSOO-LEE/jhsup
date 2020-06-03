@@ -100,7 +100,7 @@
         var data = new google.visualization.DataTable();
         data.addColumn('string', '전형');
         data.addColumn('number', '지원수');
-        data.addColumn('number', '지원비율(%)');
+        data.addColumn('number', '비율(%)');
         data.addRows({{admission1_table | safe}});
 
         var options = {
@@ -114,6 +114,24 @@
         table.draw(data, options);
       }
     </script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load("current", {packages:['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable({{admission1_column|safe}});
+
+        var options = {
+          width: 550,
+          height: 300,
+          bar: {groupWidth: "80%"},
+          isStacked: true,
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById("admission1_column"));
+        chart.draw(data, options);
+    }
+    </script> 
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
@@ -200,7 +218,7 @@
 </form>
 
 <hr/>
-<h6>{{current_entrance_year}} {{current_major_group_str}}계열 지원지역 비율</h6>
+<h6>{{current_entrance_year}} {{current_major_group_str}}계열 지역별 지원율</h6>
 <div class="container">
   <div class="row">
     <div class="col">
@@ -213,7 +231,7 @@
 </div>
 
 <hr/>
-<h6>{{current_entrance_year}} {{current_major_group_str}}계열 전형비율</h6>
+<h6>{{current_entrance_year}} {{current_major_group_str}}계열 전형별 지원율 및 합격률</h6>
 <div class="container">
   <div class="row">
     <div class="col">
@@ -221,6 +239,11 @@
     </div>
     <div class="col">
       <div id="admission1_table"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div id="admission1_column"></div>
     </div>
   </div>
 </div>
