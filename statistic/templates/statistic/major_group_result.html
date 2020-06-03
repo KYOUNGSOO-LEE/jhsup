@@ -82,7 +82,7 @@
         var options = {
             width: 550,
             height: 300,
-          pieSliceText: 'label',
+            pieSliceText: 'label',
         };
 
         // Instantiate and draw our chart, passing in some options.
@@ -124,8 +124,9 @@
 
         var options = {
           width: 550,
-          height: 300,
+          height: 500,
           bar: {groupWidth: "80%"},
+          colors:['#F15F5F', '#3DB7CC', '#FAF4C0'],
           isStacked: true,
         };
         var chart = new google.visualization.ColumnChart(document.getElementById("admission1_column"));

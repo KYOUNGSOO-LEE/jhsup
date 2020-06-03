@@ -247,7 +247,7 @@ def major_group_result(request):
     admission1_pass_freq_list = []
     admission1_supplement_freq_list = []
     admission1_fail_freq_list = []
-    admission1_column = [['전형', '합격', '충원합격', '불합격']]
+    admission1_column = [['전형', '합격', {'role': 'style'}, '충원합격', {'role': 'style'}, '불합격', {'role': 'style'}]]
 
     for admission1 in admission1_qs:
         admission1 = list(admission1.values())[0]
@@ -279,9 +279,12 @@ def major_group_result(request):
     for i in range(0, len(admission1_list)):
         admission1_column.append([
             admission1_list[i], 
-            admission1_pass_freq_list[i], 
-            admission1_supplement_freq_list[i], 
+            admission1_pass_freq_list[i],
+            'stroke-color: #000000; stroke-width: 1; opacity: 0.5',
+            admission1_supplement_freq_list[i],
+            'stroke-color: #000000; stroke-width: 1; opacity: 0.5',
             admission1_fail_freq_list[i],
+            'stroke-color: #000000; stroke-width: 1; opacity: 0.5',
             ])
 
     #계열기준 등급분포(column chart)
