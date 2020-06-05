@@ -123,7 +123,7 @@
         var data = google.visualization.arrayToDataTable({{admission1_column|safe}});
 
         var options = {
-          width: 550,
+          width: 600,
           height: 500,
           bar: {groupWidth: "80%"},
           colors:['#F15F5F', '#3DB7CC', '#FAF4C0'],
@@ -161,12 +161,15 @@
 
       function drawTable() {
         var data = new google.visualization.DataTable();
-        data.addColumn('string', '등급');
-        data.addColumn('number', '{{admission1_list.0|safe}}');
-        data.addColumn('number', '{{admission1_list.1|safe}}');
-        data.addColumn('number', '{{admission1_list.2|safe}}');
-        data.addColumn('number', '{{admission1_list.3|safe}}');
-        data.addColumn('number', '{{admission1_list.4|safe}}');
+        data.addColumn('string', '전형');
+        data.addColumn('number', '1');
+        data.addColumn('number', '2');
+        data.addColumn('number', '3');
+        data.addColumn('number', '4');
+        data.addColumn('number', '5');
+        data.addColumn('number', '6');
+        data.addColumn('number', '7');
+        data.addColumn('number', '8');
         data.addColumn('number', '합');
 
         data.addRows({{grade_column1_table|safe}});
@@ -219,6 +222,19 @@
 </form>
 
 <hr/>
+<h6>{{current_entrance_year}} {{current_major_group_str}}계열 등급별 지원분포</h6>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div id="grade_column1"></div>
+    </div>
+    <div class="col">
+      <div id="grade_column1_table"></div>
+    </div>
+  </div>
+</div>
+
+<hr/>
 <h6>{{current_entrance_year}} {{current_major_group_str}}계열 지역별 지원율</h6>
 <div class="container">
   <div class="row">
@@ -245,19 +261,6 @@
   <div class="row">
     <div class="col">
       <div id="admission1_column"></div>
-    </div>
-  </div>
-</div>
-
-<hr/>
-<h6>{{current_entrance_year}} {{current_major_group_str}}계열 등급분포</h6>
-<div class="container">
-  <div class="row">
-    <div class="col">
-      <div id="grade_column1"></div>
-    </div>
-    <div class="col">
-      <div id="grade_column1_table"></div>
     </div>
   </div>
 </div>

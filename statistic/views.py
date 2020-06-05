@@ -189,6 +189,78 @@ def major_group_result(request):
     entrance_year_query = request.GET.get('entrance_year')
     major_group_query = request.GET.get('major_group')
 
+    #계열기준 등급분포(column chart)
+    grade_list = []
+    grade_freq_list = []
+    grade_column1 = [['등급', '사례수', {'role': 'style'}]]
+
+    if str(MajorGroup.objects.get(pk=major_group_query)) == '자연':
+        grade_freq_qs = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .values_list(Floor('ko_en_math_sci_100')) \
+            .annotate(student_grade_count=Count(Floor('ko_en_math_sci_100')))
+    elif str(MajorGroup.objects.get(pk=major_group_query)) == '공통':
+        grade_freq_qs = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .values_list(Floor('ko_en_math_soc_sci_100')) \
+            .annotate(student_grade_count=Count(Floor('ko_en_math_soc_sci_100')))
+    else:
+        grade_freq_qs = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(major_group=major_group_query) \
+            .values_list(Floor('ko_en_math_soc_100')) \
+            .annotate(student_grade_count=Count(Floor('ko_en_math_soc_100')))
+
+    for grade in grade_freq_qs:
+        grade_list.append(int(grade[0]))
+        grade_freq_list.append(grade[1])
+
+    for i in range(0, len(grade_list)):
+        grade_column1.append([
+            grade_list[i],
+            grade_freq_list[i],
+            'stroke-color: #000000; stroke-width: 2; opacity: 0.8',
+        ])
+
+    #계열기준 등급분포(table chart)
+    grade_column1_list = []
+    grade_column1_table = []
+
+    for idx, admission1 in enumerate(admission1_qs):
+        if str(MajorGroup.objects.get(pk=major_group_query)) == '자연':
+            grade_freq_qs = Student.objects \
+                .filter(entrance_year=entrance_year_query) \
+                .filter(major_group=major_group_query) \
+                .filter(admission1__admission1__contains=admission1['admission1']) \
+                .values_list(Floor('ko_en_math_sci_100')) \
+                .annotate(student_grade_count=Count(Floor('ko_en_math_sci_100')))
+        elif str(MajorGroup.objects.get(pk=major_group_query)) == '공통':
+            grade_freq_qs = Student.objects \
+                .filter(entrance_year=entrance_year_query) \
+                .filter(major_group=major_group_query) \
+                .filter(admission1__admission1__contains=admission1['admission1']) \
+                .values_list(Floor('ko_en_math_soc_sci_100')) \
+                .annotate(student_grade_count=Count(Floor('ko_en_math_soc_sci_100')))
+        else:
+            grade_freq_qs = Student.objects \
+                .filter(entrance_year=entrance_year_query) \
+                .filter(major_group=major_group_query) \
+                .filter(admission1__admission1__contains=admission1['admission1']) \
+                .values_list(Floor('ko_en_math_soc_100')) \
+                .annotate(student_grade_count=Count(Floor('ko_en_math_soc_100')))
+
+        grade_column1_list = []
+        for i in range(1, 9):
+            grade_column1_list.append(0)
+        for data in grade_freq_qs:
+            grade_column1_list[int(data[0] - 1)] = data[1]
+        grade_column1_list.append(sum(grade_column1_list))
+        grade_column1_list.insert(0, admission1['admission1'])
+        grade_column1_table.append(grade_column1_list)
+    grade_column1_table.sort(key=lambda x: x[9], reverse=True)
+    
     # 계열기준 대학지역 비율(pie chart)
     univ_region_list = []
     univ_region_freq_list = []
@@ -247,7 +319,7 @@ def major_group_result(request):
     admission1_pass_freq_list = []
     admission1_supplement_freq_list = []
     admission1_fail_freq_list = []
-    admission1_column = [['전형', '합격', {'role': 'style'}, '충원합격', {'role': 'style'}, '불합격', {'role': 'style'}]]
+    admission1_column = []
 
     for admission1 in admission1_qs:
         admission1 = list(admission1.values())[0]
@@ -286,83 +358,8 @@ def major_group_result(request):
             admission1_fail_freq_list[i],
             'stroke-color: #000000; stroke-width: 1; opacity: 0.5',
             ])
-
-    #계열기준 등급분포(column chart)
-    grade_list = []
-    grade_freq_list = []
-    grade_column1 = [['등급', '사례수', {'role': 'style'}]]
-
-    if str(MajorGroup.objects.get(pk=major_group_query)) == '자연':
-        grade_freq_qs = Student.objects \
-            .filter(entrance_year=entrance_year_query) \
-            .filter(major_group=major_group_query) \
-            .values_list(Floor('ko_en_math_sci_100')) \
-            .annotate(student_grade_count=Count(Floor('ko_en_math_sci_100')))
-    elif str(MajorGroup.objects.get(pk=major_group_query)) == '공통':
-        grade_freq_qs = Student.objects \
-            .filter(entrance_year=entrance_year_query) \
-            .filter(major_group=major_group_query) \
-            .values_list(Floor('ko_en_math_soc_sci_100')) \
-            .annotate(student_grade_count=Count(Floor('ko_en_math_soc_sci_100')))
-    else:
-        grade_freq_qs = Student.objects \
-            .filter(entrance_year=entrance_year_query) \
-            .filter(major_group=major_group_query) \
-            .values_list(Floor('ko_en_math_soc_100')) \
-            .annotate(student_grade_count=Count(Floor('ko_en_math_soc_100')))
-
-    for grade in grade_freq_qs:
-        grade_list.append(int(grade[0]))
-        grade_freq_list.append(grade[1])
-
-    for i in range(0, len(grade_list)):
-        grade_column1.append([
-            grade_list[i],
-            grade_freq_list[i],
-            'stroke-color: #000000; stroke-width: 2; opacity: 0.8',
-        ])
-
-    #계열기준 등급분포(table chart)
-    grade_column1_table = []
-    admission1_list = []
-    sum_list = ['합', 0, 0, 0, 0, 0, 0]
-
-    for i in range(1, 9):
-        grade_column1_table.append([str(i), 0, 0, 0, 0, 0, 0])
-
-    for idx, admission1 in enumerate(admission1_qs):
-        if str(MajorGroup.objects.get(pk=major_group_query)) == '자연':
-            grade_freq_qs = Student.objects \
-                .filter(entrance_year=entrance_year_query) \
-                .filter(major_group=major_group_query) \
-                .filter(admission1__admission1__contains=admission1['admission1']) \
-                .values_list(Floor('ko_en_math_sci_100')) \
-                .annotate(student_grade_count=Count(Floor('ko_en_math_sci_100')))
-        elif str(MajorGroup.objects.get(pk=major_group_query)) == '공통':
-            grade_freq_qs = Student.objects \
-                .filter(entrance_year=entrance_year_query) \
-                .filter(major_group=major_group_query) \
-                .filter(admission1__admission1__contains=admission1['admission1']) \
-                .values_list(Floor('ko_en_math_soc_sci_100')) \
-                .annotate(student_grade_count=Count(Floor('ko_en_math_soc_sci_100')))
-        else:
-            grade_freq_qs = Student.objects \
-                .filter(entrance_year=entrance_year_query) \
-                .filter(major_group=major_group_query) \
-                .filter(admission1__admission1__contains=admission1['admission1']) \
-                .values_list(Floor('ko_en_math_soc_100')) \
-                .annotate(student_grade_count=Count(Floor('ko_en_math_soc_100')))
-
-        for data in grade_freq_qs:
-            grade_column1_table[int(data[0] - 1)][idx + 1] = data[1]
-
-        admission1_list.append(admission1['admission1'])
-
-    for row in grade_column1_table:
-        row[6] = sum(row[1:6])
-        for i in range(1, 7):
-            sum_list[i] += row[i]
-    grade_column1_table.append(sum_list)
+    admission1_column.sort(key=lambda x: x[1], reverse=True)
+    admission1_column.insert(0, ['전형', '합격', {'role': 'style'}, '충원합격', {'role': 'style'}, '불합격', {'role': 'style'}])
 
     context = {
         'entrance_year_item': entrance_year_qs,
