@@ -15,12 +15,12 @@
         var options = {
           width: 550,
           height: 300,
-          bar: {groupWidth: "80%"},
+          bar: {groupWidth: "50%"},
           legend: { position: "none" },
         };
         var chart = new google.visualization.ColumnChart(document.getElementById("grade_column1"));
         chart.draw(view, options);
-    }
+      }
     </script>
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -71,14 +71,15 @@
         // Create the data table.
         var data = new google.visualization.DataTable();
         data.addColumn('string', '지역');
-        data.addColumn('number', '지원수');
+        data.addColumn('number', '지원');
         data.addRows({{univ_region_pie | safe}});
 
         // Set chart options
         var options = {
             width: 550,
             height: 600,
-          pieSliceText: 'label',
+            legend: { position: 'top', maxLines: 5 },
+            pieSliceText: 'label',
         };
 
         // Instantiate and draw our chart, passing in some options.
@@ -95,8 +96,8 @@
       function drawTable() {
         var data = new google.visualization.DataTable();
         data.addColumn('string', '지역');
-        data.addColumn('number', '지원수');
-        data.addColumn('number', '비율(%)');
+        data.addColumn('number', '지원');
+        data.addColumn('number', '지원비율(%)');
         data.addRows({{univ_region_table | safe}});
 
         var options = {
@@ -127,13 +128,14 @@
         // Create the data table.
         var data = new google.visualization.DataTable();
         data.addColumn('string', '전형');
-        data.addColumn('number', '지원수');
+        data.addColumn('number', '지원');
         data.addRows({{admission1_pie | safe}});
 
         // Set chart options
         var options = {
             width: 550,
-            height: 300,
+            height: 400,
+            legend: { position: 'top', maxLines: 3 },
             pieSliceText: 'label',
         };
 
@@ -151,13 +153,13 @@
       function drawTable() {
         var data = new google.visualization.DataTable();
         data.addColumn('string', '전형');
-        data.addColumn('number', '지원수');
-        data.addColumn('number', '비율(%)');
+        data.addColumn('number', '지원');
+        data.addColumn('number', '지원비율(%)');
         data.addRows({{admission1_table | safe}});
 
         var options = {
             width: 350,
-            height: 300,
+            height: 400,
             showRowNumber: false,
             allowHtml: true,
         };
@@ -175,16 +177,42 @@
         var data = google.visualization.arrayToDataTable({{admission1_column|safe}});
 
         var options = {
-          width: 600,
-          height: 500,
-          bar: {groupWidth: "60%"},
+          width: 500,
+          height: 400,
+          legend: { position: 'top', maxLines: 3 },
+          bar: {groupWidth: "50%"},
           colors:['#F15F5F', '#3DB7CC', '#FAF4C0'],
           isStacked: true,
         };
         var chart = new google.visualization.ColumnChart(document.getElementById("admission1_column"));
         chart.draw(data, options);
     }
-    </script> 
+    </script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['table']});
+      google.charts.setOnLoadCallback(drawTable);
+
+      function drawTable() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', '전형');
+        data.addColumn('number', '합격');
+        data.addColumn('number', '충원합격');
+        data.addColumn('number', '불합격');
+        data.addRows({{admission1_table2 | safe}});
+
+        var options = {
+            width: 350,
+            height: 400,
+            showRowNumber: false,
+            allowHtml: true,
+        };
+
+        var table = new google.visualization.Table(document.getElementById('admission1_table2'));
+        table.draw(data, options);
+      }
+    </script>
 
 {% endblock %}
 
@@ -258,9 +286,16 @@
       <div id="admission1_table"></div>
     </div>
   </div>
+</div>
+
+<br><br>
+<div class="container">
   <div class="row">
     <div class="col">
       <div id="admission1_column"></div>
+    </div>
+    <div class="col">
+      <div id="admission1_table2"></div>
     </div>
   </div>
 </div>

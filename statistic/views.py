@@ -260,7 +260,7 @@ def major_group_result(request):
         grade_column1_list.insert(0, admission1['admission1'])
         grade_column1_table.append(grade_column1_list)
     grade_column1_table.sort(key=lambda x: x[9], reverse=True)
-    
+
     # 계열기준 대학지역 비율(pie chart)
     univ_region_list = []
     univ_region_freq_list = []
@@ -285,7 +285,11 @@ def major_group_result(request):
     total = sum(univ_region_freq_list)
     for i in range(0, len(univ_region_list)):
         ratio = round((univ_region_freq_list[i] / total) * 100, 1)
-        univ_region_table.append([univ_region_list[i], univ_region_freq_list[i], ratio])
+        univ_region_table.append([
+            univ_region_list[i], 
+            univ_region_freq_list[i], 
+            ratio,
+            ])
     univ_region_table.sort(key=lambda x: x[1], reverse=True)
 
     #계열기준 전형비율(pie chart)
@@ -312,7 +316,11 @@ def major_group_result(request):
     total = sum(univ_region_freq_list)
     for i in range(0, len(admission1_list)):
         ratio = round((admission1_freq_list[i] / total) * 100, 1)
-        admission1_table.append([admission1_list[i], admission1_freq_list[i], ratio])
+        admission1_table.append([
+            admission1_list[i], 
+            admission1_freq_list[i], 
+            ratio,
+            ])
     admission1_table.sort(key=lambda x: x[1], reverse=True)
 
     #계열기준 전형별 합격률(column chart)
@@ -361,6 +369,17 @@ def major_group_result(request):
     admission1_column.sort(key=lambda x: x[1], reverse=True)
     admission1_column.insert(0, ['전형', '합격', {'role': 'style'}, '충원합격', {'role': 'style'}, '불합격', {'role': 'style'}])
 
+    #계열기준 전형별 합격률(table chart)
+    admission1_table2 = []
+    for i in range(0, len(admission1_list)):
+        admission1_table2.append([
+            admission1_list[i], 
+            admission1_pass_freq_list[i],
+            admission1_supplement_freq_list[i],
+            admission1_fail_freq_list[i],
+            ])
+    admission1_table2.sort(key=lambda x: x[1], reverse=True)
+
     context = {
         'entrance_year_item': entrance_year_qs,
         'major_group_item': major_group_qs,
@@ -371,13 +390,16 @@ def major_group_result(request):
 
         'admission1_list': admission1_list,
 
+        'grade_column1': grade_column1,
+        'grade_column1_table': grade_column1_table,
+
+        'univ_region_pie': univ_region_pie,
+        'univ_region_table': univ_region_table,
+
         'admission1_pie': admission1_pie,
         'admission1_table': admission1_table,
         'admission1_column': admission1_column,
-        'grade_column1': grade_column1,
-        'grade_column1_table': grade_column1_table,
-        'univ_region_pie': univ_region_pie,
-        'univ_region_table': univ_region_table,
+        'admission1_table2': admission1_table2,
     }
     return render(request, template, context)
 
