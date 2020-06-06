@@ -27,37 +27,35 @@ def student_region_result(request):
     entrance_year_query = request.GET.get('entrance_year')
     student_region_query = request.GET.get('student_region')
 
-    student_region_freq_qs = Student.objects\
-        .filter(entrance_year=entrance_year_query)\
-        .values_list('student_region')\
-        .annotate(student_region_count=Count('student_region'))\
-        .order_by('-student_region_count')
-    student_region_list = []
-    student_region_freq_list = []
+    entrance_year_freq_qs = Student.objects\
+        .values_list('entrance_year')\
+        .annotate(entrance_year_count=Count('entrance_year'))\
 
-    for student_region in student_region_freq_qs:
-        student_region_list.append(student_region[0])
-        student_region_freq_list.append(student_region[1])
+    entrance_year_list = []
+    entrance_year_freq_list = []
 
-    #출신지역 비율(pie chart, table chart)
-    student_region_pie = []
-    student_region_table = []
-    n = sum(student_region_freq_list)
-    for i in range(0,len(student_region_list)):
-        student_region_pie.append([
-            student_region_list[i],
-            student_region_freq_list[i]
+    for entrance_year in entrance_year_freq_qs:
+        entrance_year_list.append(entrance_year[0])
+        entrance_year_freq_list.append(entrance_year[1])
+
+    #연도별 지원수(table chart)
+    entrance_year_table = []
+    total = sum(entrance_year_freq_list)
+    for i in range(0,len(entrance_year_list)):
+        entrance_year_table.append([
+            str(entrance_year_list[i]),
+            entrance_year_freq_list[i]
         ])
-        student_region_table.append([
-            student_region_list[i],
-            student_region_freq_list[i],
-            round((student_region_freq_list[i]/n) * 100, 1)
+
+    #연도별 지원수(line chart)
+    entrance_year_line = []
+    total = sum(entrance_year_freq_list)
+    for i in range(0,len(entrance_year_list)):
+        entrance_year_line.append([
+            str(entrance_year_list[i]),
+            entrance_year_freq_list[i]
         ])
-    student_region_table.append([
-        '합',
-        sum(student_region_freq_list),
-        (sum(student_region_freq_list) / n) * 100
-    ])
+    entrance_year_line.insert(0, ['입시년도', '지원수'])
 
     #출신지역기준 지원대학
     univ_name_list = []
@@ -156,9 +154,9 @@ def student_region_result(request):
         'current_entrance_year': int(entrance_year_query),
         'current_region': student_region_query,
 
-        'student_region_pie': student_region_pie,
-        'student_region_table': student_region_table,
-        'univ_psf_bar': univ_psf_bar
+        'entrance_year_line': entrance_year_line,
+        'entrance_year_table': entrance_year_table,
+        'univ_psf_bar': univ_psf_bar,
     }
     return render(request, template, context)
 

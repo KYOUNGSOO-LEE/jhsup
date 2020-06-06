@@ -1,36 +1,25 @@
 {% extends "base.html" %}
-{% block title %} 출신지역기준 {% endblock %}
+{% block title %} 연도별 수시지원 분석 {% endblock %}
 
 {% block head %}
     <!--Load the AJAX API-->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-      // Load the Visualization API and the corechart package.
       google.charts.load('current', {'packages':['corechart']});
-
-      // Set a callback to run when the Google Visualization API is loaded.
       google.charts.setOnLoadCallback(drawChart);
 
-      // Callback that creates and populates a data table,
-      // instantiates the pie chart, passes in the data and
-      // draws it.
       function drawChart() {
+        var data = google.visualization.arrayToDataTable({{entrance_year_line|safe}});
 
-        // Create the data table.
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'student_region');
-        data.addColumn('number', 'student_region_freq');
-        data.addRows({{student_region_pie | safe}});
-
-        // Set chart options
         var options = {
-            width: 550,
-            height: 300,
-            pieSliceText: 'label',
+          curveType: 'function',
+          legend: { position: 'bottom' },
+          width: 350,
+          height: 300,
         };
 
-        // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.PieChart(document.getElementById('student_region_pie'));
+        var chart = new google.visualization.LineChart(document.getElementById('entrance_year_line'));
+
         chart.draw(data, options);
       }
     </script>
@@ -42,10 +31,9 @@
 
       function drawTable() {
         var data = new google.visualization.DataTable();
-        data.addColumn('string', '지역');
-        data.addColumn('number', '사례(건)');
-        data.addColumn('number', '비율(%)');
-        data.addRows({{student_region_table | safe}});
+        data.addColumn('string', '입시년도');
+        data.addColumn('number', '지원(건)');
+        data.addRows({{entrance_year_table|safe}});
 
         var options = {
             showRowNumber: false,
@@ -54,7 +42,7 @@
             height: 300,
         };
 
-        var table = new google.visualization.Table(document.getElementById('student_region_table'));
+        var table = new google.visualization.Table(document.getElementById('entrance_year_table'));
         table.draw(data, options);
       }
     </script>
@@ -104,7 +92,7 @@
 
 {% block content %}
 
-<h4> 출신지역기준 </h4>
+<h4> 연도별 수시지원 분석 </h4>
 <p class="font-weight-bold text-info">
     &#8251 기준 : 인문, 예체능(국영수사100), 자연(국영수과100), 공통(국영수사과100)<br>
 </p>
@@ -129,15 +117,15 @@
 </form>
 <hr/>
 
-<h6>지역별 사례 수 및 비율</h6>
+<h6>사례수</h6>
 <br>
 <div class="container">
   <div class="row">
     <div class="col">
-      <div id="student_region_pie"></div>
+      <div id="entrance_year_line"></div>
     </div>
     <div class="col">
-      <div id="student_region_table"></div>
+      <div id="entrance_year_table"></div>
     </div>
   </div>
 </div>
