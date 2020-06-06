@@ -374,7 +374,7 @@ def major_group_result(request):
             admission1_fail_freq_list[i],
             'stroke-color: #000000; stroke-width: 1; opacity: 0.5',
             ])
-    admission1_column.sort(key=lambda x: x[1], reverse=True)
+    admission1_column.sort(key=lambda x: (x[3], x[1]), reverse=True)
     admission1_column.insert(0, ['전형', '합격', {'role': 'style'}, '충원합격', {'role': 'style'}, '불합격', {'role': 'style'}])
 
     #계열기준 전형별 합격률(table chart)
@@ -384,10 +384,16 @@ def major_group_result(request):
         p = admission1_pass_freq_list[i]
         s = admission1_supplement_freq_list[i]
         f = admission1_fail_freq_list[i]
-        ratio = round((p + s) / (p + s + f) * 100, 1)
+
+        if p + s + f == 0:
+            ratio = 0
+        else:
+            ratio = round((p + s) / (p + s + f) * 100, 1)
+
         total_p += p
         total_s += s
         total_f += f
+
         admission1_table2.append([
             admission1_list[i], 
             admission1_pass_freq_list[i],
@@ -395,8 +401,14 @@ def major_group_result(request):
             admission1_fail_freq_list[i],
             ratio,
             ])
-    admission1_table2.sort(key=lambda x: x[1], reverse=True)
-    admission1_table2.append(['계', total_p, total_s, total_f, round((total_p + total_s) / (total_p + total_s + total_f) * 100, 1)])
+
+    if total_p + total_s + total_f == 0:
+        total_ratio =0
+    else:
+        total_ratio = round((total_p + total_s) / (total_p + total_s + total_f) * 100, 1)
+        
+    admission1_table2.sort(key=lambda x: (x[3], x[1]), reverse=True)
+    admission1_table2.append(['계', total_p, total_s, total_f, total_ratio])
 
     context = {
         'entrance_year_item': entrance_year_qs,

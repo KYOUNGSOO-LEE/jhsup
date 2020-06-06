@@ -71,7 +71,7 @@
         // Create the data table.
         var data = new google.visualization.DataTable();
         data.addColumn('string', '지역');
-        data.addColumn('number', '지원');
+        data.addColumn('number', '지원(건)');
         data.addRows({{univ_region_pie | safe}});
 
         // Set chart options
@@ -96,7 +96,7 @@
       function drawTable() {
         var data = new google.visualization.DataTable();
         data.addColumn('string', '지역');
-        data.addColumn('number', '지원');
+        data.addColumn('number', '지원(건)');
         data.addColumn('number', '지원비율(%)');
         data.addRows({{univ_region_table | safe}});
 
@@ -128,7 +128,7 @@
         // Create the data table.
         var data = new google.visualization.DataTable();
         data.addColumn('string', '전형');
-        data.addColumn('number', '지원');
+        data.addColumn('number', '지원(건)');
         data.addRows({{admission1_pie | safe}});
 
         // Set chart options
@@ -153,7 +153,7 @@
       function drawTable() {
         var data = new google.visualization.DataTable();
         data.addColumn('string', '전형');
-        data.addColumn('number', '지원');
+        data.addColumn('number', '지원(건)');
         data.addColumn('number', '지원비율(%)');
         data.addRows({{admission1_table | safe}});
 
@@ -197,9 +197,9 @@
       function drawTable() {
         var data = new google.visualization.DataTable();
         data.addColumn('string', '전형');
-        data.addColumn('number', '합격');
-        data.addColumn('number', '충원합격');
-        data.addColumn('number', '불합격');
+        data.addColumn('number', '합격(건)');
+        data.addColumn('number', '충원합격(건)');
+        data.addColumn('number', '불합격(건)');
         data.addColumn('number', '합격률(%)');
         data.addRows({{admission1_table2 | safe}});
 
