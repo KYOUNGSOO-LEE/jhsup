@@ -256,12 +256,14 @@ def major_group_result(request):
             grade_column1_list.append(0)
         for data in grade_freq_qs:
             grade_column1_list[int(data[0] - 1)] = data[1]
+
         grade_column1_list.append(sum(grade_column1_list))
         grade_column1_list.insert(0, admission1['admission1'])
         grade_column1_table.append(grade_column1_list)
+
     grade_column1_table.sort(key=lambda x: x[9], reverse=True)
 
-    # 계열기준 대학지역 비율(pie chart)
+    # 계열기준 지역별 지원율(pie chart)
     univ_region_list = []
     univ_region_freq_list = []
 
@@ -280,17 +282,20 @@ def major_group_result(request):
         univ_region_pie.append([univ_region_list[i], univ_region_freq_list[i]])
     univ_region_pie.sort(key=lambda x: x[1], reverse=True)
 
-    # 계열기준 대학지역 비율(table chart)
+    # 계열기준 지역별 지원율(table chart)
     univ_region_table = []
     total = sum(univ_region_freq_list)
+    total_ratio = 0
     for i in range(0, len(univ_region_list)):
         ratio = round((univ_region_freq_list[i] / total) * 100, 1)
+        total_ratio += ratio
         univ_region_table.append([
             univ_region_list[i], 
             univ_region_freq_list[i], 
             ratio,
             ])
     univ_region_table.sort(key=lambda x: x[1], reverse=True)
+    univ_region_table.append(['계', total, total_ratio])
 
     #계열기준 전형비율(pie chart)
     admission1_list = []
@@ -313,15 +318,18 @@ def major_group_result(request):
 
     #계열기준 전형비율(table chart)
     admission1_table = []
+    total_ratio = 0
     total = sum(univ_region_freq_list)
     for i in range(0, len(admission1_list)):
         ratio = round((admission1_freq_list[i] / total) * 100, 1)
+        total_ratio += ratio
         admission1_table.append([
             admission1_list[i], 
             admission1_freq_list[i], 
             ratio,
             ])
     admission1_table.sort(key=lambda x: x[1], reverse=True)
+    admission1_table.append(['계', total, total_ratio])
 
     #계열기준 전형별 합격률(column chart)
     admission1_pass_freq_list = []
@@ -371,14 +379,24 @@ def major_group_result(request):
 
     #계열기준 전형별 합격률(table chart)
     admission1_table2 = []
+    total_p = 0; total_s = 0; total_f = 0; total_ratio = 0;
     for i in range(0, len(admission1_list)):
+        p = admission1_pass_freq_list[i]
+        s = admission1_supplement_freq_list[i]
+        f = admission1_fail_freq_list[i]
+        ratio = round((p + s) / (p + s + f) * 100, 1)
+        total_p += p
+        total_s += s
+        total_f += f
         admission1_table2.append([
             admission1_list[i], 
             admission1_pass_freq_list[i],
             admission1_supplement_freq_list[i],
             admission1_fail_freq_list[i],
+            ratio,
             ])
     admission1_table2.sort(key=lambda x: x[1], reverse=True)
+    admission1_table2.append(['계', total_p, total_s, total_f, round((total_p + total_s) / (total_p + total_s + total_f) * 100, 1)])
 
     context = {
         'entrance_year_item': entrance_year_qs,
@@ -387,8 +405,6 @@ def major_group_result(request):
         'current_entrance_year': int(entrance_year_query),
         'current_major_group': int(major_group_query),
         'current_major_group_str': str(MajorGroup.objects.get(pk=major_group_query)),
-
-        'admission1_list': admission1_list,
 
         'grade_column1': grade_column1,
         'grade_column1_table': grade_column1_table,

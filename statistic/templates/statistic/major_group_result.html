@@ -177,7 +177,7 @@
         var data = google.visualization.arrayToDataTable({{admission1_column|safe}});
 
         var options = {
-          width: 500,
+          width: 550,
           height: 400,
           legend: { position: 'top', maxLines: 3 },
           bar: {groupWidth: "50%"},
@@ -186,7 +186,7 @@
         };
         var chart = new google.visualization.ColumnChart(document.getElementById("admission1_column"));
         chart.draw(data, options);
-    }
+      }
     </script>
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -200,6 +200,7 @@
         data.addColumn('number', '합격');
         data.addColumn('number', '충원합격');
         data.addColumn('number', '불합격');
+        data.addColumn('number', '합격률(%)');
         data.addRows({{admission1_table2 | safe}});
 
         var options = {
@@ -260,7 +261,7 @@
       <div id="grade_column1_table"></div>
     </div>
   </div>
-</div>
+</div><br><br>
 
 <hr/>
 <h6>{{current_entrance_year}} {{current_major_group_str}}계열 지역별 지원율</h6>
@@ -273,7 +274,7 @@
       <div id="univ_region_table"></div>
     </div>
   </div>
-</div>
+</div><br><br>
 
 <hr/>
 <h6>{{current_entrance_year}} {{current_major_group_str}}계열 전형별 지원율 및 합격률</h6>
