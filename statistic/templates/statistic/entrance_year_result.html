@@ -5,16 +5,16 @@
     <!--Load the AJAX API-->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
+      google.charts.load('current', {'packages':['line']});
       google.charts.setOnLoadCallback(drawChart);
 
       function drawChart() {
         var data = google.visualization.arrayToDataTable({{entrance_year_line|safe}});
 
         var options = {
-          curveType: 'function',
           legend: { position: 'bottom' },
-          width: 350,
+          'chartArea': {'width': '70%', 'height': '70%'},
+          width: 600,
           height: 300,
         };
 
@@ -46,12 +46,6 @@
         table.draw(data, options);
       }
     </script>
-
-    <style>
-        .google-visualization-table-td {
-            text-align: center !important;
-        }
-    </style>
 
     <script>
       google.charts.load('current', {packages: ['corechart', 'bar']});
@@ -88,6 +82,39 @@
       }
     </script>
 
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['table']});
+      google.charts.setOnLoadCallback(drawTable);
+
+      function drawTable() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', '대학명');
+        data.addColumn('number', '합격(건)');
+        data.addColumn('number', '충원합격(건)');
+        data.addColumn('number', '불합격(건)');
+        data.addColumn('number', '계(건)');
+        data.addColumn('number', '합격률(%)');
+        data.addRows({{univ_psf_table|safe}});
+
+        var options = {
+            showRowNumber: false,
+            allowHtml: true,
+            width: '90%',
+            height: '90%',
+        };
+
+        var table = new google.visualization.Table(document.getElementById('univ_psf_table'));
+        table.draw(data, options);
+      }
+    </script>
+
+    <style>
+        .google-visualization-table-td {
+            text-align: center !important;
+        }
+    </style>
+
 {% endblock %}
 
 {% block content %}
@@ -108,7 +135,6 @@
       </select>
     </div>
 
-    <input type="hidden" id="student_region" name="student_region" value="충청도">
     <div class="col-auto my-1">
       <button type="submit" class="btn btn-warning">검색</button>
     </div>
@@ -117,7 +143,7 @@
 </form>
 <hr/>
 
-<h6>사례수</h6>
+<h6>연도별 지원수</h6>
 <br>
 <div class="container">
   <div class="row">
@@ -131,32 +157,15 @@
 </div>
 
 <hr/>
-<h6>지역별 지원대학</h6>
-<br>
-<ul class="nav nav-tabs">
-  <li class="nav-item">
-    <a class="{% if current_region == '충청도' %}nav-link active{%else%}nav-link{% endif %}"
-       href="{% url 'static_student_region_result' %}?entrance_year={{ current_entrance_year }}&student_region=충청도">충청도</a>
-  </li>
-  <li class="nav-item">
-    <a class="{% if current_region == '대전' %}nav-link active{%else%}nav-link{% endif %}"
-       href="{% url 'static_student_region_result' %}?entrance_year={{ current_entrance_year }}&student_region=대전">대전</a>
-  </li>
-  <li class="nav-item">
-    <a class="{% if current_region == '세종' %}nav-link active{%else%}nav-link{% endif %}"
-       href="{% url 'static_student_region_result' %}?entrance_year={{ current_entrance_year }}&student_region=세종">세종</a>
-  </li>
-  <li class="nav-item">
-    <a class="{% if current_region == '충남' %}nav-link active{%else%}nav-link{% endif %}"
-       href="{% url 'static_student_region_result' %}?entrance_year={{ current_entrance_year }}&student_region=충남">충남</a>
-  </li>
-  <li class="nav-item">
-    <a class="{% if current_region == '충북' %}nav-link active{%else%}nav-link{% endif %}"
-       href="{% url 'static_student_region_result' %}?entrance_year={{ current_entrance_year }}&student_region=충북">충북</a>
-  </li>
-</ul>
+<h6>{{current_entrance_year}} 지원수 상위대학 </h6>
 <br>
 
 <div id="univ_psf_bar"></div>
+<br>
+
+<hr/>
+<h6>{{current_entrance_year}} 지원수 상위대학 합격률 </h6>
+<br><br>
+<div id="univ_psf_table"></div>
 
 {% endblock content %}

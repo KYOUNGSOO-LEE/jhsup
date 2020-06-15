@@ -7,8 +7,8 @@ from django.contrib.auth.decorators import login_required
 
 
 @login_required(login_url="login")
-def student_region(request):
-    template = "statistic/student_region.html"
+def entrance_year(request):
+    template = "statistic/entrance_year.html"
 
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
 
@@ -19,10 +19,10 @@ def student_region(request):
 
 
 @login_required(login_url="login")
-def student_region_result(request):
-    template = "statistic/student_region_result.html"
+def entrance_year_result(request):
+    template = "statistic/entrance_year_result.html"
 
-    #지역별 사례수
+    #입시년도별 지원수
     entrance_year_qs = Student.objects.values('entrance_year').order_by('entrance_year').distinct()
     entrance_year_query = request.GET.get('entrance_year')
     student_region_query = request.GET.get('student_region')
@@ -38,7 +38,7 @@ def student_region_result(request):
         entrance_year_list.append(entrance_year[0])
         entrance_year_freq_list.append(entrance_year[1])
 
-    #연도별 지원수(table chart)
+    #입시년도별 지원수(table chart)
     entrance_year_table = []
     total = sum(entrance_year_freq_list)
     for i in range(0,len(entrance_year_list)):
@@ -57,87 +57,49 @@ def student_region_result(request):
         ])
     entrance_year_line.insert(0, ['입시년도', '지원수'])
 
-    #출신지역기준 지원대학
+    #입시년도별 지원수 상위대학
     univ_name_list = []
     univ_freq_list = []
     univ_name_qs = UnivName.objects.all()
 
-    if student_region_query == '충청도':
-        univ_freq_qs = Student.objects\
-                           .filter(entrance_year=entrance_year_query)\
-                           .values_list('univ_name')\
-                           .annotate(univ_count=Count('univ_name'))\
-                           .order_by('-univ_count')[:25]
-    else:
-        univ_freq_qs = Student.objects\
-                           .filter(entrance_year=entrance_year_query) \
-                           .filter(student_region=student_region_query) \
-                           .values_list('univ_name') \
-                           .annotate(univ_count=Count('univ_name')) \
-                           .order_by('-univ_count')[:25]
+    univ_freq_qs = Student.objects\
+        .filter(entrance_year=entrance_year_query)\
+        .values_list('univ_name')\
+        .annotate(univ_count=Count('univ_name'))\
+        .order_by('-univ_count')[:25]
 
     for univ in univ_freq_qs:
         univ_name = univ_name_qs.get(pk=univ[0])
         univ_name_list.append(univ_name.univ_name)
         univ_freq_list.append(univ[1])
 
-    #출신지역기준 지원대학 합격/불합격(bar chart)
+    #입시년도별 지원수 상위대학 합격/불합격(bar chart)
     univ_pass_freq_list = []
     univ_supplement_freq_list = []
     univ_fail_freq_list = []
     univ_psf_bar = [['대학명', '합격', {'role': 'style'}, '충원합격', {'role': 'style'}, '불합격', {'role': 'style'}]]
 
-    if student_region_query == '충청도':
-        for univ in univ_name_list:
-            univ_name = univ_name_qs.get(univ_name=univ)
-            univ_pass_freq_count = Student.objects\
-                .filter(entrance_year=entrance_year_query)\
-                .filter(univ_name=univ_name.id) \
-                .filter(final_step='합격') \
-                .count()
-            univ_supplement_freq_count = Student.objects\
-                .filter(entrance_year=entrance_year_query) \
-                .filter(univ_name=univ_name.id) \
-                .filter(final_step='충원합격') \
-                .count()
-            univ_fail_freq_count = Student.objects \
-                .filter(entrance_year=entrance_year_query) \
-                .filter(univ_name=univ_name.id) \
-                .filter(final_step='불합격') \
-                .count()
-            univ_pass_freq_list.append(univ_pass_freq_count)
-            univ_supplement_freq_list.append(univ_supplement_freq_count)
-            univ_fail_freq_list.append(univ_fail_freq_count)
-
-    else:
-        for univ in univ_name_list:
-            univ_name = univ_name_qs.get(univ_name=univ)
-            univ_pass_freq_count = Student.objects \
-                .filter(entrance_year=entrance_year_query) \
-                .filter(student_region=student_region_query)\
-                .filter(univ_name=univ_name.id) \
-                .filter(final_step='합격') \
-                .count()
-            univ_supplement_freq_count = Student.objects \
-                .filter(entrance_year=entrance_year_query) \
-                .filter(student_region=student_region_query) \
-                .filter(univ_name=univ_name.id) \
-                .filter(final_step='충원합격') \
-                .count()
-            univ_fail_freq_count = Student.objects \
-                .filter(entrance_year=entrance_year_query) \
-                .filter(student_region=student_region_query)\
-                .filter(univ_name=univ_name.id) \
-                .filter(final_step='불합격') \
-                .count()
-            univ_pass_freq_list.append(univ_pass_freq_count)
-            univ_supplement_freq_list.append(univ_supplement_freq_count)
-            univ_fail_freq_list.append(univ_fail_freq_count)
-
-    univ_pass_freq_list = univ_pass_freq_list[:25]
-    univ_supplement_freq_list = univ_supplement_freq_list[:25]
-    univ_fail_freq_list = univ_fail_freq_list[:25]
-
+    for univ in univ_name_list:
+        univ_name = univ_name_qs.get(univ_name=univ)
+        univ_pass_freq_count = Student.objects\
+            .filter(entrance_year=entrance_year_query)\
+            .filter(univ_name=univ_name.id) \
+            .filter(final_step='합격') \
+            .count()
+        univ_supplement_freq_count = Student.objects\
+            .filter(entrance_year=entrance_year_query) \
+            .filter(univ_name=univ_name.id) \
+            .filter(final_step='충원합격') \
+            .count()
+        univ_fail_freq_count = Student.objects \
+            .filter(entrance_year=entrance_year_query) \
+            .filter(univ_name=univ_name.id) \
+            .filter(final_step='불합격') \
+            .count()
+        univ_pass_freq_list.append(univ_pass_freq_count)
+        univ_supplement_freq_list.append(univ_supplement_freq_count)
+        univ_fail_freq_list.append(univ_fail_freq_count)
+        
     for i in range(0, len(univ_name_list)):
         univ_psf_bar.append([
             univ_name_list[i],
@@ -149,6 +111,19 @@ def student_region_result(request):
             'stroke-color: #000000; stroke-width: 1; opacity: 0.5',
         ])
 
+    #입시년도별 지원수 상위대학 합격/불합격(table chart)
+    univ_psf_table = []
+    for i in range(0, len(univ_name_list)):
+        pass_ratio = round((univ_pass_freq_list[i] + univ_supplement_freq_list[i]) / univ_freq_list[i] * 100, 1)
+        univ_psf_table.append([
+            univ_name_list[i],
+            univ_pass_freq_list[i],
+            univ_supplement_freq_list[i],
+            univ_fail_freq_list[i],
+            univ_freq_list[i],
+            pass_ratio,
+        ])
+
     context = {
         'entrance_year_item': entrance_year_qs,
         'current_entrance_year': int(entrance_year_query),
@@ -157,6 +132,7 @@ def student_region_result(request):
         'entrance_year_line': entrance_year_line,
         'entrance_year_table': entrance_year_table,
         'univ_psf_bar': univ_psf_bar,
+        'univ_psf_table': univ_psf_table,
     }
     return render(request, template, context)
 
