@@ -261,13 +261,16 @@ def major_group_result(request):
     total = sum(univ_region_freq_list)
     total_ratio = 0
     for i in range(0, len(univ_region_list)):
-        ratio = round((univ_region_freq_list[i] / total) * 100, 1)
-        total_ratio += ratio
+        if total != 0:
+            ratio = round((univ_region_freq_list[i] / total) * 100, 1)
+        else:
+            ratio = 0
         univ_region_table.append([
             univ_region_list[i], 
             univ_region_freq_list[i], 
             ratio,
             ])
+    total_ratio = 100
     univ_region_table.sort(key=lambda x: x[1], reverse=True)
     univ_region_table.append(['계', total, total_ratio])
 
@@ -295,13 +298,16 @@ def major_group_result(request):
     total_ratio = 0
     total = sum(univ_region_freq_list)
     for i in range(0, len(admission1_list)):
-        ratio = round((admission1_freq_list[i] / total) * 100, 1)
-        total_ratio += ratio
+        if total != 0:
+            ratio = round((admission1_freq_list[i] / total) * 100, 1)
+        else:
+            ratio = 0
         admission1_table.append([
             admission1_list[i], 
             admission1_freq_list[i], 
             ratio,
             ])
+    total_ratio = 100
     admission1_table.sort(key=lambda x: x[1], reverse=True)
     admission1_table.append(['계', total, total_ratio])
 
